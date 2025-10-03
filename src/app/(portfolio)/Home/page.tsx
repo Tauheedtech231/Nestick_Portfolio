@@ -142,7 +142,7 @@ export default function Home() {
             cutting-edge research, and a commitment to global impact.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Link href="/Programms">
+            <Link href="https://nes-tick.vercel.app">
               <button className="px-8 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold text-lg hover:from-blue-600 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
               Go to Applicant Portal
               </button>
