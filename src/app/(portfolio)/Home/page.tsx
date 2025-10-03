@@ -144,7 +144,7 @@ export default function Home() {
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link href="/Programms">
               <button className="px-8 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold text-lg hover:from-blue-600 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                Explore Programs
+              Go to Applicant Portal
               </button>
             </Link>
             <Link href="/Contact">
