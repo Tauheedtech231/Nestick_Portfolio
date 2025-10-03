@@ -11,7 +11,7 @@ export default function Navbar() {
   const navItems = [
     { label: "Home", href: "/" },
     { label: "About Us", href: "/About" },
-    { label: "Programs", href: "/Programs" },
+    { label: "Programs", href: "/Programms" },
     { label: "Students Life", href: "/Student_Life" },
     { label: "Scholarship", href: "/Scholarships" },
     { label: "Admission guidance", href: "/Admission" },
