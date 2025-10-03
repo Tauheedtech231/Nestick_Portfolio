@@ -197,7 +197,7 @@ export default function AdmissionsSection() {
             <p className="text-gray-600 dark:text-gray-300 mb-8 text-lg">
               Start your admission process today and take the first step toward your educational goals.
             </p>
-            <Link href="/applicant">
+            <Link href="https://nes-tick.vercel.app">
               <button className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                 Go to Applicant Portal
                 <svg 
