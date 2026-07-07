@@ -1,309 +1,330 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ChevronLeftIcon, ChevronRightIcon, PlayIcon, PauseIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
+import Stats from "./Stats";
 
 export default function Home() {
-  const [currentNews, setCurrentNews] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const bgColor = '#F8FAFC';
+  const accentColor = '#0D9488'; // Teal
 
-  const [fade, setFade] = useState(true);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
-
- const stats = [
-    { value: 25, label: "Years of Excellence in Education", suffix: "+" },
-    { value: 40, label: "Qualified Faculty Members", suffix: "+" },
-    { value: 15, label: "Academic & Professional Programs", suffix: "+" }
-   
-  ];
-
-  // Counter animation state
-  const [statsCount, setStatsCount] = useState(stats.map(() => 0));
-
+  // Check if mobile
   useEffect(() => {
-    const interval = setInterval(() => {
-      setStatsCount((prev) =>
-        prev.map((val, i) => (val < stats[i].value ? val + 1 : val))
-      );
-    }, 30);
-
-    return () => clearInterval(interval);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Auto slide - alternate between right and full screen (5 seconds)
+  useEffect(() => {
+    // Don't auto-slide on mobile
+    if (isMobile) return;
+    
+    const interval = setInterval(() => {
+      if (!isTransitioning) {
+        if (isFullScreen) {
+          // Move to next slide with right position
+          setIsFullScreen(false);
+          setIsTransitioning(true);
+          setCurrentSlide((prev) => (prev + 1) % slides.length);
+          setTimeout(() => setIsTransitioning(false), 800);
+        } else {
+          // Switch to full screen
+          setIsFullScreen(true);
+          setIsTransitioning(true);
+          setTimeout(() => setIsTransitioning(false), 800);
+        }
+      }
+    }, 5000); // 5 seconds per state
+    return () => clearInterval(interval);
+  }, [isFullScreen, isTransitioning, isMobile]);
 
-
-  const news = [
+  const slides = [
     {
-      title: "New Research Center for Sustainable Energy Opens",
-      desc: "State-of-the-art facility to advance renewable energy research and innovation.",
-      img: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2069&q=80",
+      eyebrow: "Welcome To",
+      title: "Aspire College",
+      desc: "Leading educational institution in Pakistan. We offer innovative learning, cutting-edge research, and a commitment to global impact.",
+      cta: "Get Started",
+      ctaLink: "/admission",
+      image: "https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80"
     },
     {
-      title: "Student Innovation Wins International Competition",
-      desc: "Engineering team develops groundbreaking solution for clean water access.",
-      img: "/st.jpg"
+      eyebrow: "Our Programs",
+      title: "Academic Excellence",
+      desc: "Explore our diverse range of academic programs designed to nurture future leaders and innovators.",
+      cta: "View Programs",
+      ctaLink: "/programms",
+      image: "https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80"
     },
     {
-      title: "Campus Expansion Breaks Ground",
-      desc: "New student center and innovation hub to enhance campus experience.",
-      img: "https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2064&q=80",
-    },
+      eyebrow: "Campus Life",
+      title: "Beyond Academics",
+      desc: "Experience vibrant campus life with state-of-the-art facilities, clubs, and extracurricular activities.",
+      cta: "Explore Campus",
+      ctaLink: "/student_life",
+      image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80"
+    }
   ];
 
-  // Touch swipe handlers
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
+  const handlePrev = () => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
     
-    const distance = touchStart - touchEnd;
-    const minSwipeDistance = 50;
+    // On mobile, just change slide
+    if (isMobile) {
+      setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+      setTimeout(() => setIsTransitioning(false), 800);
+      return;
+    }
+    
+    setIsFullScreen(false);
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    setTimeout(() => setIsTransitioning(false), 800);
+  };
 
-    if (Math.abs(distance) < minSwipeDistance) return;
-
-    if (distance > 0) {
-      // Swipe left - next
-      nextNews();
+  const handleNext = () => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    
+    // On mobile, just change slide
+    if (isMobile) {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setTimeout(() => setIsTransitioning(false), 800);
+      return;
+    }
+    
+    // If in split view, go to full screen with same image
+    if (!isFullScreen) {
+      setIsFullScreen(true);
+      setTimeout(() => setIsTransitioning(false), 800);
     } else {
-      // Swipe right - previous
-      prevNews();
+      // If in full screen, go to split view with next image
+      setIsFullScreen(false);
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setTimeout(() => setIsTransitioning(false), 800);
     }
   };
 
-  // Auto news slider with fade effect
-  useEffect(() => {
-    if (!isAutoPlaying) return;
-
-    const interval = setInterval(() => {
-      setFade(false);
-      setTimeout(() => {
-        setCurrentNews((prev) => (prev + 1) % news.length);
-        setFade(true);
-      }, 300);
-    }, 5000);
-    
-    return () => clearInterval(interval);
-  }, [isAutoPlaying, news.length]);
-
-
-
-  const nextNews = useCallback(() => {
-    setFade(false);
-    setTimeout(() => {
-      setCurrentNews((prev) => (prev + 1) % news.length);
-      setFade(true);
-    }, 300);
-  }, [news.length]);
-
-  const prevNews = useCallback(() => {
-    setFade(false);
-    setTimeout(() => {
-      setCurrentNews((prev) => (prev - 1 + news.length) % news.length);
-      setFade(true);
-    }, 300);
-  }, [news.length]);
-
-  const goToSlide = (index: number) => {
-    setFade(false);
-    setTimeout(() => {
-      setCurrentNews(index);
-      setFade(true);
-    }, 300);
-  };
-
-  const toggleAutoPlay = () => {
-    setIsAutoPlaying(!isAutoPlaying);
-  };
-
   return (
-    <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col transition-colors duration-300">
+    <div className={`min-h-screen flex flex-col pt-[85px] sm:pt-[93px]`}
+      style={{ backgroundColor: bgColor }}
+    >
       {/* Hero Section */}
-      <section
-        className="relative flex min-h-[70vh] items-center justify-center bg-cover bg-center py-20 text-white text-center"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6)), url("https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2067&q=80")',
-        }}
+      <section className="relative w-full h-[calc(100vh-85px)] sm:h-[calc(100vh-95px)] min-h-[450px] overflow-hidden"
+        style={{ backgroundColor: '#101820' }}
       >
-        <div className="px-4 max-w-4xl mx-auto">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-6">
-            Excellence in Education & Innovation
-          </h1>
-          <p className="mt-4 text-lg sm:text-xl text-gray-100 max-w-2xl mx-auto leading-relaxed">
-            At Aspire College, we nurture future leaders through innovative learning, 
-            cutting-edge research, and a commitment to global impact.
-          </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Link href="https://nes-tick.vercel.app">
-              <button className="px-8 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold text-lg hover:from-blue-600 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-              Go to Applicant Portal
-              </button>
-            </Link>
-            <Link href="/Contact">
-              <button className="px-8 py-3 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 text-white font-semibold text-lg hover:from-gray-800 hover:to-black transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                Contact Now
-              </button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
- 
-<section className="py-16 sm:py-20 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 dark:text-white mb-12">
-          Why Choose Aspire College?
-        </h2>
-
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {stats.map((stat, i) => (
-            <div
-              key={i}
-              className="group p-8 rounded-2xl bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col items-center text-center border border-gray-100 dark:border-gray-600 hover:border-blue-200 dark:hover:border-blue-400"
-            >
-              {/* Animated Value */}
-              <div className="text-5xl font-bold text-blue-600 dark:text-blue-400 mb-4 group-hover:scale-110 transition-transform duration-300">
-                {statsCount[i]}
-                {stat.suffix}
-              </div>
-              <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-                {stat.label}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-
-      {/* Enhanced News Slider */}
-      <section className="py-16 sm:py-20 bg-white dark:bg-gray-900">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Campus News & Events
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Stay updated with the latest happenings and achievements at our campus
-            </p>
-          </div>
-
+        {/* Background Image - Full Screen Mode */}
+        <div
+          className="absolute inset-0 transition-all duration-800 ease-in-out z-0"
+          style={{
+            opacity: isFullScreen ? 1 : 0,
+            transform: isFullScreen ? 'scale(1)' : 'scale(1.1)',
+          }}
+        >
+          <Image
+            src={slides[currentSlide].image}
+            alt={slides[currentSlide].title}
+            fill
+            className="object-cover"
+            priority
+          />
+          {/* Light overlay for text readability in full screen */}
           <div 
-            className="relative max-w-4xl mx-auto"
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 100%)'
+            }}
+          />
+        </div>
+
+        {/* Right side image panel - Split View Mode */}
+        {!isMobile && (
+          <div 
+            className="absolute top-0 right-0 h-full w-[60%] overflow-hidden transition-all duration-800 ease-in-out z-10"
+            style={{
+              clipPath: isFullScreen ? 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' : 'polygon(28% 0, 100% 0, 100% 100%, 0% 100%)',
+              opacity: isFullScreen ? 0 : 1,
+            }}
           >
-            {/* Slider Controls */}
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-4">
-                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                  {currentNews + 1} / {news.length}
-                </span>
-                <button
-                  onClick={toggleAutoPlay}
-                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                  aria-label={isAutoPlaying ? "Pause slideshow" : "Play slideshow"}
+            <div
+              className="relative w-full h-full transition-all duration-800 ease-out"
+              style={{
+                transform: isTransitioning ? 'translateX(100%) scale(0.95)' : 'translateX(0) scale(1)',
+                opacity: isTransitioning ? 0 : 1,
+              }}
+            >
+              <Image
+                src={slides[currentSlide].image}
+                alt={slides[currentSlide].title}
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Left side dark background - only in split view */}
+        {!isMobile && (
+          <div 
+            className="absolute inset-0 z-0 transition-all duration-800 ease-in-out"
+            style={{
+              opacity: isFullScreen ? 0 : 1,
+              background: 'linear-gradient(to right, #101820 0%, #101820 40%, transparent 100%)',
+            }}
+          />
+        )}
+
+        {/* Mobile background overlay */}
+        {isMobile && (
+          <div 
+            className="absolute inset-0 z-0"
+            style={{
+              background: 'linear-gradient(to bottom, rgba(16,24,32,0.3) 0%, rgba(16,24,32,0.7) 100%)',
+            }}
+          />
+        )}
+
+        {/* Left Content - Position changes based on mode */}
+        <div 
+          className="relative z-20 h-full flex flex-col justify-center transition-all duration-800 ease-in-out"
+          style={{
+            paddingLeft: isMobile ? '5%' : (isFullScreen ? '0' : '8%'),
+            paddingRight: isMobile ? '5%' : (isFullScreen ? '0' : '0'),
+            alignItems: isMobile ? 'center' : (isFullScreen ? 'center' : 'flex-start'),
+            textAlign: isMobile ? 'center' : (isFullScreen ? 'center' : 'left'),
+          }}
+        >
+          <div 
+            className="transition-all duration-800 ease-out"
+            style={{
+              transform: isTransitioning ? 'translateX(-100px) scale(0.9)' : 'translateX(0) scale(1)',
+              opacity: isTransitioning ? 0 : 1,
+              maxWidth: isMobile ? '100%' : (isFullScreen ? '800px' : '640px'),
+              width: '100%',
+              padding: isMobile ? '0' : (isFullScreen ? '0 20px' : '0'),
+            }}
+          >
+            <div 
+              className="text-[clamp(1.2rem,2.5vw,2.2rem)] font-bold tracking-[2px] uppercase transition-all duration-800 ease-out"
+              style={{ 
+                color: isMobile ? '#1fb6a6' : (isFullScreen ? '#FFFFFF' : '#1fb6a6'),
+                transform: isTransitioning ? 'translateX(-100px) scale(0.9)' : 'translateX(0) scale(1)',
+                opacity: isTransitioning ? 0 : 1,
+                textShadow: isMobile ? 'none' : (isFullScreen ? '0 2px 20px rgba(0,0,0,0.5)' : 'none'),
+              }}
+            >
+              {slides[currentSlide].eyebrow}
+            </div>
+            <div 
+              className="text-[clamp(2rem,3.5vw,3.8rem)] font-extrabold mt-1 mb-4 leading-[1.1] transition-all duration-800 ease-out"
+              style={{
+                transform: isTransitioning ? 'translateX(-120px) scale(0.9)' : 'translateX(0) scale(1)',
+                opacity: isTransitioning ? 0 : 1,
+                transitionDelay: '100ms',
+                color: isMobile ? '#FFFFFF' : (isFullScreen ? '#FFFFFF' : '#FFFFFF'),
+                textShadow: isMobile ? '0 2px 20px rgba(0,0,0,0.7)' : (isFullScreen ? '0 2px 30px rgba(0,0,0,0.7)' : 'none'),
+              }}
+            >
+              {slides[currentSlide].title}
+            </div>
+            <div 
+              className="text-[0.9rem] md:text-[0.95rem] leading-[1.6] max-w-[480px] transition-all duration-800 ease-out"
+              style={{
+                transform: isTransitioning ? 'translateX(-140px) scale(0.9)' : 'translateX(0) scale(1)',
+                opacity: isTransitioning ? 0 : 1,
+                transitionDelay: '200ms',
+                margin: isMobile ? '0 auto' : (isFullScreen ? '0 auto' : '0'),
+                textShadow: isMobile ? '0 1px 15px rgba(0,0,0,0.7)' : (isFullScreen ? '0 1px 15px rgba(0,0,0,0.5)' : 'none'),
+                color: isMobile ? '#d7dce2' : (isFullScreen ? '#FFFFFF' : '#d7dce2'),
+              }}
+            >
+              {slides[currentSlide].desc}
+            </div>
+            
+            {/* Two Buttons */}
+            <div
+              className="flex flex-wrap gap-4 mt-6 transition-all duration-800 ease-out"
+              style={{
+                transform: isTransitioning ? 'translateX(-160px) scale(0.9)' : 'translateX(0) scale(1)',
+                opacity: isTransitioning ? 0 : 1,
+                transitionDelay: '300ms',
+                justifyContent: isMobile ? 'center' : (isFullScreen ? 'center' : 'flex-start'),
+              }}
+            >
+              <Link href="https://nes-tick-wxih.vercel.app/">
+                <button 
+                  className="px-6 md:px-8 py-2.5 md:py-3 rounded-full font-semibold text-sm md:text-base transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 cursor-pointer"
+                  style={{
+                    backgroundColor: accentColor,
+                    color: '#FFFFFF',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#0F766E';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = accentColor;
+                  }}
                 >
-                  {isAutoPlaying ? (
-                    <PauseIcon className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                  ) : (
-                    <PlayIcon className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                  )}
+                  Applicant Portal
                 </button>
-              </div>
+              </Link>
               
-              <div className="flex gap-2">
-                <button
-                  onClick={prevNews}
-                  className="p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 group"
-                  aria-label="Previous news"
+              <Link href="/Contact">
+                <button 
+                  className="px-6 md:px-8 py-2.5 md:py-3 rounded-full font-semibold text-sm md:text-base transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 cursor-pointer"
+                  style={{
+                    backgroundColor: 'transparent',
+                    color: '#FFFFFF',
+                    border: '2px solid #FFFFFF',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#FFFFFF';
+                    e.currentTarget.style.color = '#101820';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.color = '#FFFFFF';
+                  }}
                 >
-                  <ChevronLeftIcon className="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+                  Contact Us
                 </button>
-                <button
-                  onClick={nextNews}
-                  className="p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 group"
-                  aria-label="Next news"
-                >
-                  <ChevronRightIcon className="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
-                </button>
-              </div>
-            </div>
-
-            {/* Slider Content */}
-            <div className={`transition-all duration-500 transform ${fade ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
-                <div className="relative group">
-                  <div
-                    className="aspect-video w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                    style={{ backgroundImage: `url(${news[currentNews].img})` }}
-                  />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-300" />
-                  
-                  {/* Progress Bar */}
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700">
-                    <div 
-                      className={`h-full bg-blue-600 transition-all duration-100 ${isAutoPlaying ? 'animate-progress' : ''}`}
-                      style={{ 
-                        animation: isAutoPlaying ? `progress 5s linear` : 'none',
-                        width: isAutoPlaying ? '100%' : '0%'
-                      }}
-                    />
-                  </div>
-                </div>
-                
-                <div className="p-6 sm:p-8">
-                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
-                    {news[currentNews].title}
-                  </h3>
-                  <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                    {news[currentNews].desc}
-                  </p>
-                  
-                  <div className="mt-6 flex items-center justify-between">
-                    <button className="text-blue-600 dark:text-blue-400 font-semibold hover:text-blue-700 dark:hover:text-blue-300 transition-colors flex items-center gap-2 group">
-                      Read full story
-                      <ChevronRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </button>
-                    
-                    <div className="flex gap-1">
-                      {news.map((_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => goToSlide(index)}
-                          className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                            index === currentNews
-                              ? 'bg-blue-600 scale-125'
-                              : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
-                          }`}
-                          aria-label={`Go to slide ${index + 1}`}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Mobile Swipe Hint */}
-            <div className="mt-4 text-center">
-              <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center justify-center gap-2">
-                <span className="hidden sm:inline">Swipe or use arrows to navigate</span>
-                <span className="inline sm:hidden">Swipe to navigate</span>
-              </p>
+              </Link>
             </div>
           </div>
         </div>
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={handlePrev}
+          className="absolute top-1/2 -translate-y-1/2 z-30 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white text-xl md:text-2xl p-2 md:p-3 rounded-full transition-all duration-300 cursor-pointer left-[2%] hover:scale-110"
+          disabled={isTransitioning}
+        >
+          &#10094;
+        </button>
+        <button
+          onClick={handleNext}
+          className="absolute top-1/2 -translate-y-1/2 z-30 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white text-xl md:text-2xl p-2 md:p-3 rounded-full transition-all duration-300 cursor-pointer right-[2%] hover:scale-110"
+          disabled={isTransitioning}
+        >
+          &#10095;
+        </button>
+
+     
+
+       
       </section>
+
+      {/* Stats Component */}
+      <Stats />
     </div>
   );
 }

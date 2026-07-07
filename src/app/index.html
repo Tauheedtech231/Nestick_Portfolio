@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admission Process</title>
+<style>
+  :root{
+    --bg:#F7F8FA;
+    --blue:#2F6FED;    --blue-light:#EAF1FE;
+    --green:#22A559;   --green-light:#E9F9EF;
+    --purple:#9B3FE0;  --purple-light:#F5EBFC;
+    --orange:#F5850B;  --orange-light:#FEF1E2;
+    --pink:#EF3D8C;    --pink-light:#FDEAF3;
+    --teal:#1AB4A6;    --teal-light:#E7FAF8;
+    --text-dark:#1F2430;
+    --text-body:#6B7280;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Arial,sans-serif;
+    padding:48px 32px;
+  }
+  .board{
+    max-width:1200px;
+    margin:0 auto;
+    position:relative;
+  }
+  .topbar{
+    display:flex;
+    gap:6px;
+    justify-content:center;
+    margin-bottom:36px;
+  }
+  .topbar span{
+    width:26px;height:5px;border-radius:3px;
+  }
+  .row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:28px;
+    position:relative;
+  }
+  .row + .row{ margin-top:64px; }
+  .card{
+    position:relative;
+    padding-top:8px;
+  }
+  .icon-wrap{
+    position:relative;
+    width:132px;
+    height:132px;
+    margin-bottom:20px;
+  }
+  .dashed-ring{
+    position:absolute;
+    top:8px; left:8px;
+    width:116px; height:116px;
+    border-radius:50%;
+    border:2px dashed;
+    opacity:.55;
+  }
+  .solid-circle{
+    position:absolute;
+    top:0; left:0;
+    width:100px; height:100px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  }
+  .solid-circle svg{ width:44px; height:44px; }
+  .badge{
+    position:absolute;
+    top:-6px; left:70px;
+    width:34px; height:34px;
+    border-radius:50%;
+    color:#fff;
+    font-weight:700;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 3px 8px rgba(0,0,0,0.18);
+    z-index:2;
+  }
+  .arrows{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:1px;
+    margin-bottom:6px;
+  }
+  h3{
+    margin:0 0 8px 0;
+    font-size:19px;
+    color:var(--text-dark);
+  }
+  p.desc{
+    margin:0 0 14px 0;
+    color:var(--text-body);
+    font-size:14.5px;
+    line-height:1.5;
+    max-width:230px;
+  }
+  ul{
+    list-style:none;
+    margin:0; padding:0;
+  }
+  ul li{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13.5px;
+    color:var(--text-body);
+    margin-bottom:7px;
+  }
+  ul li svg{ width:15px; height:15px; flex-shrink:0; }
+
+  /* connector overlay */
+  .connectors{
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    pointer-events:none;
+    overflow:visible;
+  }
+  .end-dot{
+    fill:#fff;
+  }
+</style>
+</head>
+<body>
+
+<div class="board">
+
+  <div class="topbar">
+    <span style="background:var(--blue)"></span>
+    <span style="background:var(--green)"></span>
+    <span style="background:var(--purple)"></span>
+    <span style="background:var(--pink)"></span>
+    <span style="background:var(--orange)"></span>
+    <span style="background:var(--teal)"></span>
+  </div>
+
+  <!-- ROW 1 -->
+  <div class="row" style="position:relative;">
+    <svg class="connectors" viewBox="0 0 1200 60" preserveAspectRatio="none" style="overflow:visible;">
+      <path d="M65 20 H 1130" stroke="#2F6FED" stroke-width="2.5" fill="none" />
+      <path d="M420 20 L409 13 M420 20 L409 27" stroke="#2F6FED" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M840 20 L829 13 M840 20 L829 27" stroke="#22A559" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- purple dashed corner dropping down to row 2 -->
+      <path d="M1130 20 V 55" stroke="#9B3FE0" stroke-width="2.5" fill="none" stroke-dasharray="6 6"/>
+      <path d="M1130 60 L1123 48 M1130 60 L1137 48" stroke="#9B3FE0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>
+
+    <div class="card">
+      <div class="icon-wrap">
+        <div class="dashed-ring" style="border-color:var(--blue);"></div>
+        <div class="solid-circle" style="background:var(--blue-light);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.6"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.5 3.1-6 7-6s7 2.5 7 6"/></svg>
+        </div>
+        <div class="badge" style="background:var(--blue);">01</div>
+      </div>
+      <div class="arrows" style="color:var(--blue);">&gt;&gt;&gt;</div>
+      <h3>Register / Login</h3>
+      <p class="desc">Create your applicant account or login to existing account</p>
+      <ul>
+        <li>{check:blue} Secure account creation</li>
+        <li>{check:blue} Email verification</li>
+        <li>{check:blue} Profile management</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="icon-wrap">
+        <div class="dashed-ring" style="border-color:var(--green);"></div>
+        <div class="solid-circle" style="background:var(--green-light);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.6"><path d="M7 3h7l4 4v14H7z"/><path d="M13 3v5h4"/><path d="M9.5 13h6M9.5 16.5h6"/></svg>
+        </div>
+        <div class="badge" style="background:var(--green);">02</div>
+      </div>
+      <div class="arrows" style="color:var(--green);">&gt;&gt;&gt;</div>
+      <h3>Fill Application</h3>
+      <p class="desc">Complete the online admission application form</p>
+      <ul>
+        <li>{check:green} Personal information</li>
+        <li>{check:green} Academic history</li>
+        <li>{check:green} Program preferences</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="icon-wrap">
+        <div class="dashed-ring" style="border-color:var(--purple);"></div>
+        <div class="solid-circle" style="background:var(--purple-light);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="1.6"><path d="M12 16V5"/><path d="M7 9l5-5 5 5"/><path d="M5 16v3h14v-3"/></svg>
+        </div>
+        <div class="badge" style="background:var(--purple);">03</div>
+      </div>
+      <div class="arrows" style="color:var(--purple);">&gt;&gt;&gt;</div>
+      <h3>Upload Documents</h3>
+      <p class="desc">Submit required documents and certificates</p>
+      <ul>
+        <li>{check:purple} Transcripts</li>
+        <li>{check:purple} CNIC/B-Form</li>
+        <li>{check:purple} Photographs</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ROW 2 -->
+  <div class="row" style="position:relative;">
+    <svg class="connectors" viewBox="0 0 1200 40" preserveAspectRatio="none" style="overflow:visible;">
+      <path d="M1130 20 H 65" stroke="var(--pink)" stroke-width="2.5" fill="none" />
+      <path d="M780 20 L791 13 M780 20 L791 27" stroke="var(--pink)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M360 20 L371 13 M360 20 L371 27" stroke="var(--orange)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- orange loop accent on far left -->
+      <path d="M65 20 C 20 20, 20 60, 65 60" stroke="var(--orange)" stroke-width="2.5" fill="none"/>
+    </svg>
+
+    <div class="card">
+      <div class="icon-wrap">
+        <div class="dashed-ring" style="border-color:var(--orange);"></div>
+        <div class="solid-circle" style="background:var(--orange-light);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.6"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><path d="M6.5 14.5h4"/></svg>
+        </div>
+        <div class="badge" style="background:var(--orange);">04</div>
+      </div>
+      <div class="arrows" style="color:var(--orange);">&gt;&gt;&gt;</div>
+      <h3>Pay Fee</h3>
+      <p class="desc">Submit admission processing fee</p>
+      <ul>
+        <li>{check:orange} Online payment</li>
+        <li>{check:orange} Bank challan</li>
+        <li>{check:orange} Secure transaction</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="icon-wrap">
+        <div class="dashed-ring" style="border-color:var(--pink);"></div>
+        <div class="solid-circle" style="background:var(--pink-light);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--pink)" stroke-width="1.8" stroke-linecap="round"><path d="M6 18v-4"/><path d="M12 18v-8"/><path d="M18 18V7"/></svg>
+        </div>
+        <div class="badge" style="background:var(--pink);">05</div>
+      </div>
+      <div class="arrows" style="color:var(--pink);">&gt;&gt;&gt;</div>
+      <h3>Track Status</h3>
+      <p class="desc">Monitor your application status online</p>
+      <ul>
+        <li>{check:pink} Real-time updates</li>
+        <li>{check:pink} Status notifications</li>
+        <li>{check:pink} Review feedback</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="icon-wrap">
+        <div class="dashed-ring" style="border-color:var(--teal);"></div>
+        <div class="solid-circle" style="background:var(--teal-light);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6l9 7 9-7"/></svg>
+        </div>
+        <div class="badge" style="background:var(--teal);">06</div>
+      </div>
+      <div class="arrows" style="color:var(--teal);">&gt;&gt;&gt;</div>
+      <h3>Get Admission Letter</h3>
+      <p class="desc">Receive official admission confirmation</p>
+      <ul>
+        <li>{check:teal} Official letter</li>
+        <li>{check:teal} Next steps</li>
+        <li>{check:teal} Welcome package</li>
+      </ul>
+    </div>
+  </div>
+
+  <svg width="100%" height="0" style="overflow:visible;position:relative;">
+    <g transform="translate(1140,-18)">
+      <line x1="-40" y1="0" x2="0" y2="0" stroke="var(--teal)" stroke-width="2.5"/>
+      <circle cx="8" cy="0" r="8" fill="#fff" stroke="var(--teal)" stroke-width="2.5"/>
+      <circle cx="8" cy="0" r="3" fill="var(--teal)"/>
+    </g>
+  </svg>
+
+</div>
+
+<script>
+// Replace {check:color} placeholders with inline check-circle svg icons
+document.querySelectorAll('li').forEach(li=>{
+  const html = li.innerHTML;
+  const m = html.match(/\{check:(\w+)\}/);
+  if(m){
+    const color = getComputedStyle(document.documentElement).getPropertyValue('--'+m[1]).trim();
+    const svg = `<svg viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2"><circle cx="12" cy="12" r="9.5" opacity="0.35"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>`;
+    li.innerHTML = html.replace(m[0], svg);
+  }
+});
+</script>
+
+</body>
+</html>
