@@ -4,19 +4,17 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { motion, useInView, useScroll, useTransform, Variants } from 'framer-motion';
+import VisionMissionSection from './VisionMissionSection';
+import ContactSection from './ContactSection';
 
 export default function AboutUs() {
   // Refs for sections
   const heroRef = useRef<HTMLDivElement | null>(null);
   const historyRef = useRef<HTMLDivElement | null>(null);
-  const visionRef = useRef<HTMLDivElement | null>(null);
-  const formRef = useRef<HTMLDivElement | null>(null);
 
   // Check if sections are in view
   const heroInView = useInView(heroRef, { once: true, amount: 0.3 });
   const historyInView = useInView(historyRef, { once: true, amount: 0.3 });
-  const visionInView = useInView(visionRef, { once: true, amount: 0.3 });
-  const formInView = useInView(formRef, { once: true, amount: 0.3 });
 
   // Colors - Blue + Teal Theme
   const BLUE_600 = '#2563EB';
@@ -59,13 +57,14 @@ export default function AboutUs() {
 
   // Scroll to contact form
   const scrollToContact = () => {
-    if (formRef.current) {
-      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const contactElement = document.getElementById('contact-section');
+    if (contactElement) {
+      contactElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
   return (
-    <div id="about" className="min-h-screen bg-white transition-colors duration-300 overflow-hidden pt-[85px] sm:pt-[93px]">
+    <div id="about" className="min-h-screen bg-white transition-colors duration-300 overflow-hidden pt-[85px] sm:pt-[95px]">
       {/* Hero Section - Clean Image with Text Overlay Only */}
       <motion.section 
         ref={heroRef}
@@ -247,195 +246,13 @@ export default function AboutUs() {
         </div>
       </motion.section>
 
-      {/* Vision & Mission Section */}
-      <motion.section 
-        ref={visionRef}
-        initial="hidden"
-        animate={visionInView ? "visible" : "hidden"}
-        variants={staggerContainer}
-        className="py-16 bg-white"
-      >
-        <div className="container mx-auto px-6">
-          <motion.div 
-            variants={fadeInUp}
-            className="text-center mb-12"
-          >
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#1E293B] mb-3">
-              Our Guiding Principles
-            </h2>
-            <p className="text-base text-[#475569] max-w-2xl mx-auto">
-              Driving excellence through visionary leadership and purposeful mission
-            </p>
-          </motion.div>
+      {/* Vision & Mission Section - Independent Component */}
+      <VisionMissionSection />
 
-          <div className="grid lg:grid-cols-2 gap-6 lg:gap-10">
-            {/* Vision Card - Blue */}
-            <motion.div
-              variants={fadeInUp}
-              whileHover={{ 
-                y: -6,
-                transition: { type: "spring", stiffness: 300 }
-              }}
-              className="group relative bg-gradient-to-br from-[#DBEAFE] to-[#BFDBFE] p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-500 overflow-hidden cursor-pointer"
-            >
-              <div className="relative z-10">
-                <motion.div 
-                  className="flex items-center mb-4"
-                  whileHover={{ x: 5 }}
-                >
-                  <motion.div 
-                    className="w-12 h-12 bg-white rounded-xl flex items-center justify-center mr-4 shadow-md cursor-pointer"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    transition={{ type: "spring", stiffness: 400 }}
-                  >
-                    <svg className="w-6 h-6 text-[#2563EB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  </motion.div>
-                  <h3 className="text-2xl font-bold text-[#1E293B]">Our Vision</h3>
-                </motion.div>
-                <p className="text-[#475569] text-base leading-relaxed">
-                  To be a globally recognized institution that empowers students to become innovative leaders, 
-                  critical thinkers, and responsible citizens who drive positive change in an interconnected world.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Mission Card - Teal */}
-            <motion.div
-              variants={fadeInUp}
-              whileHover={{ 
-                y: -6,
-                transition: { type: "spring", stiffness: 300 }
-              }}
-              className="group relative bg-gradient-to-br from-[#E6F7F5] to-[#CCF2EE] p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-500 overflow-hidden cursor-pointer"
-            >
-              <div className="relative z-10">
-                <motion.div 
-                  className="flex items-center mb-4"
-                  whileHover={{ x: 5 }}
-                >
-                  <motion.div 
-                    className="w-12 h-12 bg-white rounded-xl flex items-center justify-center mr-4 shadow-md cursor-pointer"
-                    whileHover={{ scale: 1.1, rotate: -5 }}
-                    transition={{ type: "spring", stiffness: 400 }}
-                  >
-                    <svg className="w-6 h-6 text-[#0D9488]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  </motion.div>
-                  <h3 className="text-2xl font-bold text-[#1E293B]">Our Mission</h3>
-                </motion.div>
-                <p className="text-[#475569] text-base leading-relaxed">
-                  To provide transformative education through innovative curricula, world-class faculty, 
-                  and state-of-the-art facilities that foster intellectual growth, ethical values, and 
-                  lifelong learning skills essential for success in the 21st century.
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Full Width Form - Clean White */}
-      <motion.section 
-        ref={formRef}
-        initial="hidden"
-        animate={formInView ? "visible" : "hidden"}
-        variants={staggerContainer}
-        className="w-full bg-white scroll-mt-[95px]"
-      >
-        <motion.div 
-          variants={fadeInUp}
-          className="w-full px-0"
-        >
-          <div className="w-full py-16 px-6 md:px-8 lg:px-10 bg-white">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-10">
-                <h2 className="text-3xl sm:text-4xl font-bold text-[#1E293B] mb-3">
-                  Get in Touch
-                </h2>
-                <p className="text-base text-[#475569] max-w-2xl mx-auto">
-                  Have questions? We'd love to hear from you. Reach out to us anytime.
-                </p>
-              </div>
-
-              <div className="bg-[#F8FAFC] rounded-2xl shadow-lg p-6 md:p-8">
-                <form className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-[#475569] mb-1">Full Name</label>
-                    <input 
-                      type="text" 
-                      placeholder="Your full name"
-                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0D9488] focus:border-transparent transition-all duration-300 text-[#1E293B] cursor-pointer"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-[#475569] mb-1">Email Address</label>
-                    <input 
-                      type="email" 
-                      placeholder="your@email.com"
-                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0D9488] focus:border-transparent transition-all duration-300 text-[#1E293B] cursor-pointer"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-[#475569] mb-1">Message</label>
-                    <textarea 
-                      rows={4}
-                      placeholder="Write your message here..."
-                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0D9488] focus:border-transparent transition-all duration-300 resize-none text-[#1E293B] cursor-pointer"
-                    />
-                  </div>
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    type="submit"
-                    className="w-full py-3.5 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
-                    style={{
-                      background: 'linear-gradient(135deg, #0D9488 0%, #2563EB 100%)',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.opacity = '0.9';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.opacity = '1';
-                    }}
-                  >
-                    Send Message
-                  </motion.button>
-                </form>
-
-                {/* Contact Info - Below Form */}
-                <div className="mt-6 pt-6 border-t border-gray-200 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-                  <div className="cursor-pointer">
-                    <svg className="w-5 h-5 text-[#0D9488] mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    <p className="text-sm text-[#475569] font-medium">Address</p>
-                    <p className="text-xs text-[#64748B]">123 Education Street, City</p>
-                  </div>
-                  <div className="cursor-pointer">
-                    <svg className="w-5 h-5 text-[#0D9488] mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                    <p className="text-sm text-[#475569] font-medium">Phone</p>
-                    <p className="text-xs text-[#64748B]">+92 300 1234567</p>
-                  </div>
-                  <div className="cursor-pointer">
-                    <svg className="w-5 h-5 text-[#0D9488] mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    <p className="text-sm text-[#475569] font-medium">Email</p>
-                    <p className="text-xs text-[#64748B]">info@aspirecollege.edu.pk</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </motion.section>
+      {/* Contact Section - Independent Component */}
+      <div id="contact-section">
+        <ContactSection />
+      </div>
     </div>
   );
 }

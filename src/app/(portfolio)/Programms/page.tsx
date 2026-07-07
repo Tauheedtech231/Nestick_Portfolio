@@ -16,7 +16,7 @@ interface Program {
   image: string;
   description: string;
   highlights: string[];
-  level?: 'school' | 'college' | 'academy' | 'olevel' | 'alevel';
+  level?: 'school' | 'olevel' | 'alevel' | 'college' | 'technical';
   category?: string;
 }
 
@@ -29,25 +29,367 @@ export default function ProgramsPage() {
   const [filteredPrograms, setFilteredPrograms] = useState<Program[]>([]);
   const [activeFilter, setActiveFilter] = useState<string>('all');
 
-  // Comprehensive Programs Data
+  // All Programs Data - School, O-Level, A-Level, College, Technical Only
   const programs: Program[] = [
-    // College Programs
+    // ==================== SCHOOL (Board System) ====================
     {
       id: 1,
-      name: 'ICom',
-      fullName: 'Intermediate in Commerce',
-      duration: '2 Years',
-      eligibility: 'Matric Science/Arts with minimum 50% marks',
-      feePerYear: '₹45,000',
-      feePerSemester: '₹22,500',
-      image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      description: 'Comprehensive commerce education focusing on accounting, business, and economics principles.',
-      highlights: ['Accounting Fundamentals', 'Business Studies', 'Economics', 'Business Mathematics'],
-      level: 'college',
-      category: 'commerce'
+      name: 'Play Group',
+      fullName: 'Play Group (Age 2-3 Years)',
+      duration: '1 Year',
+      eligibility: 'Age 2+ years',
+      feePerYear: '₹15,000',
+      feePerSemester: '₹7,500',
+      image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Early childhood education program focusing on social, emotional, and cognitive development through play-based learning.',
+      highlights: ['Social Skills', 'Cognitive Development', 'Creative Play', 'Motor Skills'],
+      level: 'school',
+      category: 'primary'
     },
     {
       id: 2,
+      name: 'Nursery',
+      fullName: 'Nursery (Age 3-4 Years)',
+      duration: '1 Year',
+      eligibility: 'Age 3+ years',
+      feePerYear: '₹18,000',
+      feePerSemester: '₹9,000',
+      image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Foundation years program introducing basic literacy, numeracy, and social skills.',
+      highlights: ['Basic Literacy', 'Numeracy', 'Social Skills', 'Art & Craft'],
+      level: 'school',
+      category: 'primary'
+    },
+    {
+      id: 3,
+      name: 'Kindergarten (KG)',
+      fullName: 'Kindergarten (Age 4-5 Years)',
+      duration: '1 Year',
+      eligibility: 'Age 4+ years',
+      feePerYear: '₹20,000',
+      feePerSemester: '₹10,000',
+      image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Kindergarten program preparing children for formal schooling with structured learning activities.',
+      highlights: ['Reading Readiness', 'Writing Skills', 'Basic Math', 'Science Exploration'],
+      level: 'school',
+      category: 'primary'
+    },
+    {
+      id: 4,
+      name: 'Prep',
+      fullName: 'Preparatory (Age 5-6 Years)',
+      duration: '1 Year',
+      eligibility: 'Age 5+ years',
+      feePerYear: '₹22,000',
+      feePerSemester: '₹11,000',
+      image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Preparatory program bridging early years and primary education with comprehensive learning.',
+      highlights: ['Reading', 'Writing', 'Mathematics', 'Science', 'Social Studies'],
+      level: 'school',
+      category: 'primary'
+    },
+    {
+      id: 5,
+      name: 'Primary School',
+      fullName: 'Primary Education (Class 1-5)',
+      duration: '5 Years',
+      eligibility: 'Completion of Prep',
+      feePerYear: '₹25,000',
+      feePerSemester: '₹12,500',
+      image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Primary education building strong foundation in core subjects with holistic development.',
+      highlights: ['Mathematics', 'English', 'Science', 'Social Studies', 'Arts & Crafts'],
+      level: 'school',
+      category: 'primary'
+    },
+    {
+      id: 6,
+      name: 'Middle School',
+      fullName: 'Middle School (Class 6-8)',
+      duration: '3 Years',
+      eligibility: 'Completion of Primary education',
+      feePerYear: '₹30,000',
+      feePerSemester: '₹15,000',
+      image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Middle school program bridging primary and secondary education with comprehensive subjects.',
+      highlights: ['Advanced Mathematics', 'Science', 'English Literature', 'Computer Basics', 'Social Studies'],
+      level: 'school',
+      category: 'middle'
+    },
+    {
+      id: 7,
+      name: 'Matric (SSC)',
+      fullName: 'Secondary School Certificate (Class 9-10)',
+      duration: '2 Years',
+      eligibility: 'Completion of Middle school',
+      feePerYear: '₹35,000',
+      feePerSemester: '₹17,500',
+      image: 'https://images.unsplash.com/photo-1523050854058-8df90110c7f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Comprehensive secondary education program preparing students for higher studies and board examinations.',
+      highlights: ['Science Group', 'Arts Group', 'Computer Science', 'Commerce Group'],
+      level: 'school',
+      category: 'secondary'
+    },
+    {
+      id: 8,
+      name: 'Intermediate (HSSC)',
+      fullName: 'Higher Secondary School Certificate (Class 11-12)',
+      duration: '2 Years',
+      eligibility: 'Matriculation with minimum 50% marks',
+      feePerYear: '₹45,000',
+      feePerSemester: '₹22,500',
+      image: 'https://images.unsplash.com/photo-1523050854058-8df90110c7f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Higher secondary education program with specialized streams for professional careers.',
+      highlights: ['Pre-Medical', 'Pre-Engineering', 'Computer Science', 'Commerce', 'Humanities'],
+      level: 'college',
+      category: 'intermediate'
+    },
+
+    // ==================== O LEVEL ====================
+    {
+      id: 9,
+      name: 'O-Level Mathematics',
+      fullName: 'Cambridge O-Level Mathematics',
+      duration: '2 Years',
+      eligibility: 'Age 14+ years',
+      feePerYear: '₹80,000',
+      feePerSemester: '₹40,000',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level Mathematics focusing on algebra, geometry, trigonometry, and statistics.',
+      highlights: ['Algebra', 'Geometry', 'Trigonometry', 'Statistics'],
+      level: 'olevel',
+      category: 'olevel'
+    },
+    {
+      id: 10,
+      name: 'O-Level English',
+      fullName: 'Cambridge O-Level English Language & Literature',
+      duration: '2 Years',
+      eligibility: 'Age 14+ years',
+      feePerYear: '₹80,000',
+      feePerSemester: '₹40,000',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level English focusing on language skills, literature analysis, and creative writing.',
+      highlights: ['Language Skills', 'Literature Analysis', 'Creative Writing', 'Comprehension'],
+      level: 'olevel',
+      category: 'olevel'
+    },
+    {
+      id: 11,
+      name: 'O-Level Physics',
+      fullName: 'Cambridge O-Level Physics',
+      duration: '2 Years',
+      eligibility: 'Age 14+ years',
+      feePerYear: '₹80,000',
+      feePerSemester: '₹40,000',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level Physics covering mechanics, electricity, waves, and modern physics.',
+      highlights: ['Mechanics', 'Electricity', 'Waves', 'Modern Physics'],
+      level: 'olevel',
+      category: 'olevel'
+    },
+    {
+      id: 12,
+      name: 'O-Level Chemistry',
+      fullName: 'Cambridge O-Level Chemistry',
+      duration: '2 Years',
+      eligibility: 'Age 14+ years',
+      feePerYear: '₹80,000',
+      feePerSemester: '₹40,000',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level Chemistry covering organic, inorganic, and physical chemistry.',
+      highlights: ['Organic Chemistry', 'Inorganic Chemistry', 'Physical Chemistry', 'Laboratory Skills'],
+      level: 'olevel',
+      category: 'olevel'
+    },
+    {
+      id: 13,
+      name: 'O-Level Biology',
+      fullName: 'Cambridge O-Level Biology',
+      duration: '2 Years',
+      eligibility: 'Age 14+ years',
+      feePerYear: '₹80,000',
+      feePerSemester: '₹40,000',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level Biology covering cells, genetics, ecology, and human physiology.',
+      highlights: ['Cell Biology', 'Genetics', 'Ecology', 'Human Physiology'],
+      level: 'olevel',
+      category: 'olevel'
+    },
+    {
+      id: 14,
+      name: 'O-Level Computer Science',
+      fullName: 'Cambridge O-Level Computer Science',
+      duration: '2 Years',
+      eligibility: 'Age 14+ years',
+      feePerYear: '₹80,000',
+      feePerSemester: '₹40,000',
+      image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level Computer Science focusing on programming, algorithms, and computational thinking.',
+      highlights: ['Programming', 'Algorithms', 'Computational Thinking', 'Data Structures'],
+      level: 'olevel',
+      category: 'olevel'
+    },
+    {
+      id: 15,
+      name: 'O-Level Business Studies',
+      fullName: 'Cambridge O-Level Business Studies',
+      duration: '2 Years',
+      eligibility: 'Age 14+ years',
+      feePerYear: '₹80,000',
+      feePerSemester: '₹40,000',
+      image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level Business Studies covering business operations, marketing, and finance.',
+      highlights: ['Business Operations', 'Marketing', 'Finance', 'Entrepreneurship'],
+      level: 'olevel',
+      category: 'olevel'
+    },
+    {
+      id: 16,
+      name: 'O-Level Accounting',
+      fullName: 'Cambridge O-Level Accounting',
+      duration: '2 Years',
+      eligibility: 'Age 14+ years',
+      feePerYear: '₹80,000',
+      feePerSemester: '₹40,000',
+      image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level Accounting covering financial statements, bookkeeping, and analysis.',
+      highlights: ['Financial Statements', 'Bookkeeping', 'Accounting Principles', 'Analysis'],
+      level: 'olevel',
+      category: 'olevel'
+    },
+
+    // ==================== A LEVEL ====================
+    {
+      id: 17,
+      name: 'A-Level Mathematics',
+      fullName: 'Cambridge A-Level Mathematics',
+      duration: '2 Years',
+      eligibility: 'O-Level Mathematics with minimum C grade',
+      feePerYear: '₹100,000',
+      feePerSemester: '₹50,000',
+      image: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge A-Level Mathematics covering pure mathematics, mechanics, and statistics.',
+      highlights: ['Pure Mathematics', 'Mechanics', 'Statistics', 'Further Mathematics'],
+      level: 'alevel',
+      category: 'alevel'
+    },
+    {
+      id: 18,
+      name: 'A-Level Physics',
+      fullName: 'Cambridge A-Level Physics',
+      duration: '2 Years',
+      eligibility: 'O-Level Physics with minimum C grade',
+      feePerYear: '₹100,000',
+      feePerSemester: '₹50,000',
+      image: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge A-Level Physics covering advanced mechanics, electromagnetism, and quantum physics.',
+      highlights: ['Advanced Mechanics', 'Electromagnetism', 'Quantum Physics', 'Thermodynamics'],
+      level: 'alevel',
+      category: 'alevel'
+    },
+    {
+      id: 19,
+      name: 'A-Level Chemistry',
+      fullName: 'Cambridge A-Level Chemistry',
+      duration: '2 Years',
+      eligibility: 'O-Level Chemistry with minimum C grade',
+      feePerYear: '₹100,000',
+      feePerSemester: '₹50,000',
+      image: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge A-Level Chemistry covering advanced organic, inorganic, and physical chemistry.',
+      highlights: ['Advanced Organic', 'Inorganic Chemistry', 'Physical Chemistry', 'Analytical Chemistry'],
+      level: 'alevel',
+      category: 'alevel'
+    },
+    {
+      id: 20,
+      name: 'A-Level Biology',
+      fullName: 'Cambridge A-Level Biology',
+      duration: '2 Years',
+      eligibility: 'O-Level Biology with minimum C grade',
+      feePerYear: '₹100,000',
+      feePerSemester: '₹50,000',
+      image: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge A-Level Biology covering molecular biology, genetics, and advanced ecology.',
+      highlights: ['Molecular Biology', 'Genetics', 'Advanced Ecology', 'Biochemistry'],
+      level: 'alevel',
+      category: 'alevel'
+    },
+    {
+      id: 21,
+      name: 'A-Level Computer Science',
+      fullName: 'Cambridge A-Level Computer Science',
+      duration: '2 Years',
+      eligibility: 'O-Level Computer Science with minimum C grade',
+      feePerYear: '₹100,000',
+      feePerSemester: '₹50,000',
+      image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge A-Level Computer Science covering advanced programming, algorithms, and software development.',
+      highlights: ['Advanced Programming', 'Algorithms', 'Software Development', 'Data Science'],
+      level: 'alevel',
+      category: 'alevel'
+    },
+    {
+      id: 22,
+      name: 'A-Level Economics',
+      fullName: 'Cambridge A-Level Economics',
+      duration: '2 Years',
+      eligibility: 'O-Level Economics with minimum C grade',
+      feePerYear: '₹100,000',
+      feePerSemester: '₹50,000',
+      image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge A-Level Economics covering microeconomics, macroeconomics, and global economics.',
+      highlights: ['Microeconomics', 'Macroeconomics', 'Global Economics', 'Economic Policy'],
+      level: 'alevel',
+      category: 'alevel'
+    },
+    {
+      id: 23,
+      name: 'A-Level Business',
+      fullName: 'Cambridge A-Level Business',
+      duration: '2 Years',
+      eligibility: 'O-Level Business with minimum C grade',
+      feePerYear: '₹100,000',
+      feePerSemester: '₹50,000',
+      image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge A-Level Business covering strategic management, marketing, and business operations.',
+      highlights: ['Strategic Management', 'Marketing', 'Business Operations', 'International Business'],
+      level: 'alevel',
+      category: 'alevel'
+    },
+
+    // ==================== COLLEGE (Intermediate) ====================
+    {
+      id: 24,
+      name: 'FSc Pre-Medical',
+      fullName: 'FSc Pre-Medical (Biology, Chemistry, Physics)',
+      duration: '2 Years',
+      eligibility: 'Matric Science with minimum 65% marks',
+      feePerYear: '₹50,000',
+      feePerSemester: '₹25,000',
+      image: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Pre-medical program preparing students for medical and dental colleges.',
+      highlights: ['Biology', 'Chemistry', 'Physics', 'Medical Preparation'],
+      level: 'college',
+      category: 'science'
+    },
+    {
+      id: 25,
+      name: 'FSc Pre-Engineering',
+      fullName: 'FSc Pre-Engineering (Mathematics, Chemistry, Physics)',
+      duration: '2 Years',
+      eligibility: 'Matric Science with minimum 65% marks',
+      feePerYear: '₹50,000',
+      feePerSemester: '₹25,000',
+      image: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Pre-engineering program preparing students for engineering universities.',
+      highlights: ['Mathematics', 'Chemistry', 'Physics', 'Engineering Preparation'],
+      level: 'college',
+      category: 'science'
+    },
+    {
+      id: 26,
       name: 'ICS',
       fullName: 'Intermediate in Computer Science',
       duration: '2 Years',
@@ -55,150 +397,79 @@ export default function ProgramsPage() {
       feePerYear: '₹55,000',
       feePerSemester: '₹27,500',
       image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      description: 'Cutting-edge computer science program with hands-on programming and software development.',
-      highlights: ['Programming Fundamentals', 'Web Development', 'Database Systems', 'Computer Networks'],
+      description: 'Computer science program focusing on programming and IT fundamentals.',
+      highlights: ['Programming', 'IT Fundamentals', 'Database Systems', 'Computer Networks'],
       level: 'college',
       category: 'science'
     },
     {
-      id: 3,
-      name: 'FSc',
-      fullName: 'Faculty of Science',
+      id: 27,
+      name: 'I.Com',
+      fullName: 'Intermediate in Commerce',
       duration: '2 Years',
-      eligibility: 'Matric Science with minimum 65% marks',
-      feePerYear: '₹50,000',
-      feePerSemester: '₹25,000',
-      image: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      description: 'Rigorous science program preparing students for engineering and medical fields.',
-      highlights: ['Physics', 'Chemistry', 'Mathematics', 'Biology Options'],
+      eligibility: 'Matric Science/Arts with minimum 50% marks',
+      feePerYear: '₹45,000',
+      feePerSemester: '₹22,500',
+      image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Commerce program focusing on accounting, business, and economics.',
+      highlights: ['Accounting', 'Business Studies', 'Economics', 'Business Mathematics'],
       level: 'college',
-      category: 'science'
+      category: 'commerce'
     },
     {
-      id: 4,
+      id: 28,
       name: 'FA',
-      fullName: 'Faculty of Arts',
+      fullName: 'Faculty of Arts (Humanities)',
       duration: '2 Years',
       eligibility: 'Matric Arts/Science with minimum 45% marks',
       feePerYear: '₹40,000',
       feePerSemester: '₹20,000',
       image: 'https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      description: 'Diverse arts program offering humanities, social sciences, and creative arts.',
+      description: 'Arts program offering humanities, social sciences, and creative arts.',
       highlights: ['Literature', 'Social Sciences', 'Fine Arts', 'Language Studies'],
       level: 'college',
       category: 'arts'
     },
-    // School Programs
+
+    // ==================== TECHNICAL ====================
     {
-      id: 5,
-      name: 'Primary',
-      fullName: 'Primary Education (Class 1-5)',
-      duration: '5 Years',
-      eligibility: 'Age 5+ years',
-      feePerYear: '₹25,000',
-      feePerSemester: '₹12,500',
-      image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      description: 'Strong foundation in core subjects with focus on holistic development and character building.',
-      highlights: ['Mathematics', 'English', 'Science', 'Social Studies', 'Arts & Crafts'],
-      level: 'school',
-      category: 'primary'
-    },
-    {
-      id: 6,
-      name: 'Middle',
-      fullName: 'Middle School (Class 6-8)',
+      id: 29,
+      name: 'DAE',
+      fullName: 'Diploma of Associate Engineering',
       duration: '3 Years',
-      eligibility: 'Completion of Primary education',
-      feePerYear: '₹30,000',
-      feePerSemester: '₹15,000',
-      image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      description: 'Comprehensive middle school program bridging primary and secondary education.',
-      highlights: ['Advanced Mathematics', 'Science', 'English Literature', 'Computer Basics', 'Social Studies'],
-      level: 'school',
-      category: 'middle'
+      eligibility: 'Matric Science with minimum 50% marks',
+      feePerYear: '₹60,000',
+      feePerSemester: '₹30,000',
+      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Technical diploma program preparing students for engineering technician careers.',
+      highlights: ['Civil', 'Mechanical', 'Electrical', 'Electronics'],
+      level: 'technical',
+      category: 'technical'
     },
     {
-      id: 7,
-      name: 'Matric',
-      fullName: 'Matriculation (Class 9-10)',
+      id: 30,
+      name: 'DIT',
+      fullName: 'Diploma in Information Technology',
       duration: '2 Years',
-      eligibility: 'Completion of Middle school',
-      feePerYear: '₹35,000',
-      feePerSemester: '₹17,500',
-      image: 'https://images.unsplash.com/photo-1523050854058-8df90110c7f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      description: 'Comprehensive secondary education program preparing students for higher studies.',
-      highlights: ['Science Group', 'Arts Group', 'Computer Science', 'Commerce Group'],
-      level: 'school',
-      category: 'secondary'
-    },
-    // O/A Level Programs
-    {
-      id: 8,
-      name: 'O-Level',
-      fullName: 'Cambridge O-Level',
-      duration: '2 Years',
-      eligibility: 'Age 14+ years with previous academic record',
-      feePerYear: '₹80,000',
-      feePerSemester: '₹40,000',
-      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      description: 'Internationally recognized O-Level program preparing students for global education.',
-      highlights: ['Science Subjects', 'Commerce Subjects', 'Arts Subjects', 'English Language'],
-      level: 'olevel',
-      category: 'olevel'
-    },
-    {
-      id: 9,
-      name: 'A-Level',
-      fullName: 'Cambridge A-Level',
-      duration: '2 Years',
-      eligibility: 'O-Level completion with minimum C grade',
-      feePerYear: '₹100,000',
-      feePerSemester: '₹50,000',
-      image: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      description: 'Advanced level program for higher education pathways to top universities worldwide.',
-      highlights: ['Advanced Science', 'Advanced Mathematics', 'Business Studies', 'Humanities'],
-      level: 'alevel',
-      category: 'alevel'
-    },
-    // Academy Programs
-    {
-      id: 10,
-      name: 'CSS',
-      fullName: 'CSS Preparation Course',
-      duration: '1 Year',
-      eligibility: 'Graduation with minimum 50% marks',
-      feePerYear: '₹120,000',
-      feePerSemester: '₹60,000',
-      image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      description: 'Comprehensive CSS exam preparation with expert guidance and study material.',
-      highlights: ['Compulsory Subjects', 'Optional Subjects', 'Mock Tests', 'Interview Preparation'],
-      level: 'academy',
-      category: 'competitive'
-    },
-    {
-      id: 11,
-      name: 'PMS',
-      fullName: 'PMS Preparation Course',
-      duration: '1 Year',
-      eligibility: 'Graduation with minimum 50% marks',
-      feePerYear: '₹100,000',
-      feePerSemester: '₹50,000',
-      image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      description: 'Focused PMS exam preparation with experienced faculty and comprehensive resources.',
-      highlights: ['General Knowledge', 'Current Affairs', 'Essay Writing', 'Subject Specialization'],
-      level: 'academy',
-      category: 'competitive'
+      eligibility: 'Matric Science with minimum 50% marks',
+      feePerYear: '₹50,000',
+      feePerSemester: '₹25,000',
+      image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Diploma program providing practical IT and computer skills.',
+      highlights: ['Software', 'Networking', 'Hardware', 'Database'],
+      level: 'technical',
+      category: 'technical'
     }
   ];
 
   // Filter options
   const filterOptions = [
     { value: 'all', label: 'All Programs' },
-    { value: 'school', label: '🏫 School' },
-    { value: 'college', label: '🎓 College' },
-    { value: 'academy', label: '📚 Academy' },
-    { value: 'olevel', label: '🌍 O-Level' },
-    { value: 'alevel', label: '🎯 A-Level' },
+    { value: 'school', label: 'School (Board)' },
+    { value: 'olevel', label: 'O-Level' },
+    { value: 'alevel', label: 'A-Level' },
+    { value: 'college', label: 'College' },
+    { value: 'technical', label: 'Technical' },
   ];
 
   // Filter programs based on search and filter
@@ -293,14 +564,24 @@ export default function ProgramsPage() {
 
   return (
     <div className="min-h-screen bg-white transition-colors duration-300 pt-[85px] sm:pt-[95px]">
-      {/* Hero Section */}
-      <section className="relative py-16 sm:py-20 flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#101820' }}>
+      {/* Hero Section with High Quality Image */}
+      <section className="relative py-20 sm:py-28 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Programs Hero"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
+        </div>
+
         <div className="container mx-auto px-6 text-center relative z-10">
           <motion.h1 
             variants={headingVariants}
             initial="hidden"
             animate="visible"
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4"
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white"
             style={{ textShadow: '0 2px 20px rgba(0,0,0,0.5)' }}
           >
             <span className="text-white">Our </span>
@@ -373,7 +654,7 @@ export default function ProgramsPage() {
             </div>
           </div>
 
-          {/* Cards Grid - Fixed 3 Columns */}
+          {/* Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredPrograms.map((program, index) => (
               <motion.div
@@ -383,7 +664,7 @@ export default function ProgramsPage() {
                 transition={{
                   duration: 0.6,
                   ease: [0.25, 0.1, 0.25, 1],
-                  delay: Math.min(index * 0.08, 0.4),
+                  delay: Math.min(index * 0.04, 0.5),
                 }}
                 className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden flex flex-col max-w-full"
               >
@@ -512,7 +793,6 @@ export default function ProgramsPage() {
             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
             className="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto"
           >
-            {/* Modal Header */}
             <div className="sticky top-0 bg-white z-10 rounded-t-2xl border-b border-[#E2E8F0] px-6 py-4 flex justify-between items-center">
               <div>
                 <h3 className="text-xl font-bold text-[#1E293B]">{selectedProgram.name}</h3>
@@ -526,9 +806,7 @@ export default function ProgramsPage() {
               </button>
             </div>
 
-            {/* Modal Content */}
             <div className="p-6 space-y-6">
-              {/* Program Image */}
               <div className="relative h-48 rounded-xl overflow-hidden">
                 <img
                   src={selectedProgram.image}
@@ -543,13 +821,11 @@ export default function ProgramsPage() {
                 </div>
               </div>
 
-              {/* Description */}
               <div>
                 <h4 className="font-semibold text-[#1E293B] mb-2">About this Program</h4>
                 <p className="text-[#475569] text-sm leading-relaxed">{selectedProgram.description}</p>
               </div>
 
-              {/* Highlights with Check Icons */}
               <div>
                 <h4 className="font-semibold text-[#1E293B] mb-3">Program Highlights</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -562,7 +838,6 @@ export default function ProgramsPage() {
                 </div>
               </div>
 
-              {/* Eligibility & Fee */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl" style={{ backgroundColor: '#F8FAFC' }}>
                   <h4 className="font-semibold text-[#1E293B] text-sm mb-1">Eligibility</h4>
@@ -575,7 +850,6 @@ export default function ProgramsPage() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Link href="/Admission" className="w-full sm:flex-1">
                   <button

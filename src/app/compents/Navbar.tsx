@@ -31,8 +31,8 @@ export default function Navbar() {
 
   // Always White Theme
   const accentColor = '#1E40AF'; // Dark Blue
-  const navBgColor = '#FFFFFF'; // Always White
-  const navTextColor = '#1E293B'; // Dark text
+  const navBgColor = '#FFFFFF';
+  const navTextColor = '#1E293B';
   const navActiveColor = accentColor;
   const menuBgColor = '#FFFFFF';
   const borderColor = 'rgba(30, 64, 175, 0.15)';
@@ -54,24 +54,24 @@ export default function Navbar() {
           fontFamily: "'Inter', sans-serif",
         }}
       >
-        {/* ① LOGO BLOCK */}
+        {/* ① LOGO BLOCK - BARA KAR DIYA */}
         <div 
           className="h-full rounded-l-[16px] sm:rounded-l-[20px] flex items-center gap-3 sm:gap-4 flex-shrink-0"
           style={{
             background: 'transparent',
-            padding: '0 12px 0 12px',
+            padding: '0 16px 0 16px',
           }}
         >
           <div 
-            className="w-[48px] h-[48px] sm:w-[60px] sm:h-[60px] flex items-center justify-center flex-shrink-0 cursor-pointer hover:scale-105 transition-transform duration-200"
+            className="w-[56px] h-[56px] sm:w-[70px] sm:h-[70px] flex items-center justify-center flex-shrink-0 cursor-pointer hover:scale-105 transition-transform duration-200"
             onClick={() => window.location.href = '/'}
           >
             <Image
               src="/logo.png"
               alt="Logo"
-              width={56}
-              height={56}
-              className="rounded-full w-[56px] h-[56px] object-cover"
+              width={70}
+              height={70}
+              className="rounded-full w-[70px] h-[70px] object-cover"
             />
           </div>
         </div>
@@ -115,16 +115,16 @@ export default function Navbar() {
 
         {/* ③ RIGHT CONTROLS */}
         <div className="flex items-center gap-1 sm:gap-3 pr-2 sm:pr-4 flex-shrink-0 ml-auto">
-          {/* Apply Now Button - Redirects to /Admission */}
+          {/* Apply Now Button - BARA KAR DIYA */}
           <Link
             href="/Admission"
             style={{
               background: accentColor,
               color: '#FFFFFF',
               fontFamily: "'Inter', sans-serif",
-              padding: '8px 16px',
-              borderRadius: '28px',
-              fontSize: '13px',
+              padding: '10px 22px',
+              borderRadius: '30px',
+              fontSize: '15px',
               fontWeight: '600',
               border: 'none',
               cursor: 'pointer',
