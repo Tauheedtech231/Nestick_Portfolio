@@ -1,7 +1,9 @@
 "use client";
-import Image from 'next/image';
 
-import { useState } from 'react';
+import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 interface GalleryItem {
   id: number;
@@ -9,6 +11,7 @@ interface GalleryItem {
   image: string;
   type: 'campus' | 'event' | 'video';
   videoUrl?: string;
+  description?: string;
 }
 
 const galleryData: GalleryItem[] = [
@@ -17,411 +20,442 @@ const galleryData: GalleryItem[] = [
     id: 1,
     title: "Main Campus Building",
     image: "https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    type: "campus"
+    type: "campus",
+    description: "Our beautiful main campus building with modern architecture and state-of-the-art facilities."
   },
   {
     id: 2,
     title: "Library Interior",
     image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    type: "campus"
+    type: "campus",
+    description: "Spacious library with thousands of books, study areas, and digital resources."
   },
   {
     id: 3,
     title: "Science Laboratory",
     image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    type: "campus"
+    type: "campus",
+    description: "Modern science labs equipped with latest technology for practical learning."
   },
   {
     id: 4,
     title: "Student Common Area",
     image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    type: "campus"
+    type: "campus",
+    description: "Vibrant common area where students gather, collaborate, and relax."
   },
   {
     id: 5,
     title: "Sports Ground",
     image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    type: "campus"
+    type: "campus",
+    description: "Well-maintained sports ground for cricket, football, and athletics."
   },
   {
     id: 6,
     title: "Auditorium",
     image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    type: "campus"
+    type: "campus",
+    description: "State-of-the-art auditorium for events, seminars, and performances."
   },
   // Event Photos
   {
     id: 7,
     title: "Annual Science Fair",
     image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    type: "event"
+    type: "event",
+    description: "Students showcasing innovative science projects at annual science fair."
   },
   {
     id: 8,
     title: "Graduation Ceremony",
     image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    type: "event"
+    type: "event",
+    description: "Celebrating the success and achievements of our graduating students."
   },
   {
     id: 9,
     title: "Cultural Festival",
     image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    type: "event"
+    type: "event",
+    description: "Vibrant cultural festival celebrating diversity and talent."
   },
   {
     id: 10,
     title: "Sports Day",
     image: "https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    type: "event"
+    type: "event",
+    description: "Annual sports day with competitive events and team spirit."
   },
   {
     id: 11,
     title: "Workshop Session",
     image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    type: "event"
+    type: "event",
+    description: "Interactive workshops by industry experts and professionals."
   },
   {
     id: 12,
     title: "Guest Lecture",
     image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    type: "event"
+    type: "event",
+    description: "Distinguished guest speakers sharing knowledge and insights."
   },
-  // Video Tours - Real College Videos
+  // Video Tours
   {
     id: 13,
-    title: "Harvard University Campus Tour",
-    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    title: "Virtual Campus Tour",
+    image: "https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     type: "video",
-    videoUrl: "https://youtu.be/0iZAAM3NOFk?si=RCIOTFYYUPcJ7qj5"
+    videoUrl: "https://www.youtube.com/embed/0iZAAM3NOFk",
+    description: "Take a virtual tour of our beautiful campus and facilities."
   },
   {
     id: 14,
-    title: "Stanford University Tour",
+    title: "University Life",
     image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     type: "video",
-    videoUrl: "https://youtu.be/0iZAAM3NOFk?si=RCIOTFYYUPcJ7qj5"
+    videoUrl: "https://www.youtube.com/embed/0iZAAM3NOFk",
+    description: "Experience the vibrant student life at Aspire College."
   },
   {
     id: 15,
-    title: "MIT Campus Life",
-    image: "https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    title: "Campus Facilities Tour",
+    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     type: "video",
-    videoUrl: "https://youtu.be/0iZAAM3NOFk?si=RCIOTFYYUPcJ7qj5"
-  },
- 
+    videoUrl: "https://www.youtube.com/embed/0iZAAM3NOFk",
+    description: "Explore our state-of-the-art facilities and learning spaces."
+  }
 ];
 
 export default function GalleryPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: ''
-  });
+  const [activeFilter, setActiveFilter] = useState<string>('all');
+  const [filteredData, setFilteredData] = useState<GalleryItem[]>(galleryData);
+  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const campusPhotos = galleryData.filter(item => item.type === 'campus');
-  const eventPhotos = galleryData.filter(item => item.type === 'event');
-  const videoTours = galleryData.filter(item => item.type === 'video');
+  // Filter options
+  const filterOptions = [
+    { value: 'all', label: 'All' },
+    { value: 'campus', label: 'Campus' },
+    { value: 'event', label: 'Events' },
+    { value: 'video', label: 'Videos' },
+  ];
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  // Filter data based on active filter
+  useEffect(() => {
+    if (activeFilter === 'all') {
+      setFilteredData(galleryData);
+    } else {
+      setFilteredData(galleryData.filter(item => item.type === activeFilter));
+    }
+  }, [activeFilter]);
+
+  const openModal = (item: GalleryItem) => {
+    setSelectedItem(item);
+    setIsModalOpen(true);
+    document.body.style.overflow = 'hidden';
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-    alert('Thank you for your message! We will get back to you soon.');
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      subject: '',
-      message: ''
-    });
+  const closeModal = () => {
+    setIsModalOpen(false);
+    document.body.style.overflow = 'unset';
+    setTimeout(() => setSelectedItem(null), 300);
+  };
+
+  // Colors
+  const TEAL_600 = '#0D9488';
+  const BLUE_600 = '#2563EB';
+  const DARK_TEXT = '#1E293B';
+  const MUTED_TEXT = '#64748B';
+  const LIGHT_BG = '#F8FAFC';
+
+  // Animation variants
+  const headingVariants:Variants = {
+    hidden: { opacity: 0, x: -200 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 1.2,
+        ease: [0.25, 0.1, 0.25, 1],
+        delay: 0.2,
+      }
+    }
+  };
+
+  const subHeadingVariants:Variants = {
+    hidden: { opacity: 0, x: -180 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 1.2,
+        ease: [0.25, 0.1, 0.25, 1],
+        delay: 0.4,
+      }
+    }
+  };
+
+  const filterVariants:Variants = {
+    hidden: { opacity: 0, x: 300 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 1.4,
+        ease: [0.25, 0.1, 0.25, 1],
+        delay: 0.6,
+      }
+    }
+  };
+
+  const itemVariants:Variants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.25, 0.1, 0.25, 1],
+      }
+    }
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
-      {/* Header */}
-      <section className="py-16 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 dark:from-blue-950 dark:via-purple-950 dark:to-indigo-950 text-white">
-        <div className="container mx-auto px-4 sm:px-6 text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">College Gallery</h1>
-          <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-            Explore our campus, events, and facilities through photos and virtual tours
-          </p>
+    <div className="min-h-screen bg-white transition-colors duration-300 pt-[40px] ">
+      {/* Hero Section */}
+      <section className="relative py-20 overflow-hidden" style={{ backgroundColor: '#101820' }}>
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <motion.div 
+            className="text-center max-w-4xl mx-auto"
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.h1 
+              variants={headingVariants}
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white"
+              style={{ textShadow: '0 2px 20px rgba(0,0,0,0.5)' }}
+            >
+              Our <span style={{ color: TEAL_600 }}>Gallery</span>
+            </motion.h1>
+
+            <motion.p 
+              variants={subHeadingVariants}
+              className="text-base sm:text-lg text-blue-100 max-w-2xl mx-auto leading-relaxed"
+              style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}
+            >
+              Explore our campus, events, and facilities through photos and virtual tours
+            </motion.p>
+
+            {/* Filter Options */}
+            <motion.div 
+              variants={filterVariants}
+              className="flex flex-wrap justify-center gap-2 mt-8"
+            >
+              {filterOptions.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => setActiveFilter(option.value)}
+                  className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
+                    activeFilter === option.value
+                      ? 'bg-[#0D9488] text-white shadow-md'
+                      : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </motion.div>
+
+            {/* Results Count */}
+            <motion.div 
+              className="mt-3 text-sm text-white/60"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1 }}
+            >
+              Showing {filteredData.length} {filteredData.length === 1 ? 'item' : 'items'}
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Campus Photos Section */}
-      <section className="py-16">
+      {/* Gallery Grid - 3 Cards per row with Continuous Float */}
+      <section className="py-16" style={{ backgroundColor: LIGHT_BG }}>
         <div className="container mx-auto px-4 sm:px-6">
-          <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-8 text-center">
-            Campus Photos
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {campusPhotos.map((item) => (
-              <div
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredData.map((item, index) => (
+              <motion.div
                 key={item.id}
-                className="group relative bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+                variants={itemVariants}
+                initial="hidden"
+                animate="visible"
+                transition={{
+                  duration: 0.6,
+                  ease: [0.25, 0.1, 0.25, 1],
+                  delay: Math.min(index * 0.08, 0.5),
+                }}
+                onClick={() => openModal(item)}
+                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-[#E2E8F0] cursor-pointer group"
               >
-                <div className="relative h-64 overflow-hidden">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-gray-800 dark:text-white text-sm sm:text-base line-clamp-2">
-                    {item.title}
-                  </h3>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Event Photos Section */}
-      <section className="py-16 bg-gray-50 dark:bg-gray-800">
-        <div className="container mx-auto px-4 sm:px-6">
-          <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-8 text-center">
-            Event Photos
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {eventPhotos.map((item) => (
-              <div
-                key={item.id}
-                className="group relative bg-white dark:bg-gray-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
-              >
-                <div className="relative h-64 overflow-hidden">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-gray-800 dark:text-white text-sm sm:text-base line-clamp-2">
-                    {item.title}
-                  </h3>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Video Tours Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 sm:px-6">
-          <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-8 text-center">
-            Virtual Campus Tours
-          </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {videoTours.map((item) => (
-              <div
-                key={item.id}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
-              >
-                <div className="relative aspect-video bg-black rounded-t-xl overflow-hidden">
-                  <iframe
-                    src={item.videoUrl}
-                    title={item.title}
-                    className="w-full h-full group-hover:scale-105 transition-transform duration-300"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="font-semibold text-gray-800 dark:text-white text-lg">
-                    {item.title}
-                  </h3>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Form Section */}
-      <section id="contact" className="py-16 bg-gradient-to-br from-blue-600 to-purple-700 dark:from-blue-800 dark:to-purple-900 text-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Get In Touch</h2>
-              <p className="text-blue-100 text-lg max-w-2xl mx-auto">
-                Have questions about our programs or campus? We would love to hear from you.
-              </p>
-            </div>
-
-            <div className="grid lg:grid-cols-2 gap-12 items-start">
-              {/* Contact Information */}
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-2xl font-bold mb-4">Contact Information</h3>
-                  <p className="text-blue-100 mb-6">
-                    Reach out to us through any of the following channels. Our team is always ready to assist you.
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold">Address</h4>
-                      <p className="text-blue-100 text-sm">123 College Road, Education City</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold">Phone</h4>
-                      <p className="text-blue-100 text-sm">+1 (555) 123-4567</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold">Email</h4>
-                      <p className="text-blue-100 text-sm">admissions@aspirecollege.edu</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white/10 rounded-xl p-6 mt-8">
-                  <h4 className="font-semibold mb-2">Office Hours</h4>
-                  <p className="text-blue-100 text-sm">Monday - Friday: 8:00 AM - 6:00 PM</p>
-                  <p className="text-blue-100 text-sm">Saturday: 9:00 AM - 2:00 PM</p>
-                </div>
-              </div>
-
-              {/* Contact Form */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid sm:grid-cols-2 gap-6">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Full Name *
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        required
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
-                        placeholder="Enter your full name"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Email Address *
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        required
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
-                        placeholder="Enter your email"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid sm:grid-cols-2 gap-6">
-                    <div>
-                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Phone Number
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
-                        placeholder="Enter your phone number"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Subject *
-                      </label>
-                      <select
-                        id="subject"
-                        name="subject"
-                        required
-                        value={formData.subject}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
-                      >
-                        <option value="">Select a subject</option>
-                        <option value="admission">Admission Inquiry</option>
-                        <option value="tour">Campus Tour</option>
-                        <option value="program">Program Information</option>
-                        <option value="scholarship">Scholarship</option>
-                        <option value="other">Other</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Message *
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      rows={5}
-                      required
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
-                      placeholder="Tell us how we can help you..."
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                <div className="relative h-56 overflow-hidden">
+                  {/* Continuous Floating Animation on Images */}
+                  <motion.div
+                    className="w-full h-full"
+                    animate={{
+                      y: [0, -8, 0, 8, 0],
+                    }}
+                    transition={{
+                      duration: 6,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: index * 0.2,
+                    }}
                   >
-                    Send Message
-                  </button>
-                </form>
-              </div>
-            </div>
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  </motion.div>
+                  
+                  {/* Type Badge */}
+                  <div className="absolute top-3 right-3">
+                    <span 
+                      className="px-3 py-1 rounded-full text-xs font-medium text-white shadow-lg"
+                      style={{ 
+                        backgroundColor: item.type === 'campus' ? TEAL_600 : 
+                                      item.type === 'event' ? BLUE_600 : '#7C3AED'
+                      }}
+                    >
+                      {item.type === 'campus' ? '📸 Campus' : 
+                       item.type === 'event' ? '🎉 Event' : '🎬 Video'}
+                    </span>
+                  </div>
+
+                  {/* Click to view overlay */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
+                    <span className="text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/50 px-4 py-2 rounded-full">
+                      Click to view
+                    </span>
+                  </div>
+                </div>
+                
+                <div className="p-4">
+                  <h3 className="font-semibold text-sm sm:text-base line-clamp-2 cursor-pointer" style={{ color: DARK_TEXT }}>
+                    {item.title}
+                  </h3>
+                </div>
+              </motion.div>
+            ))}
           </div>
+
+          {filteredData.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-lg" style={{ color: MUTED_TEXT }}>No items found matching your filter.</p>
+            </div>
+          )}
         </div>
       </section>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {isModalOpen && selectedItem && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}
+            onClick={closeModal}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="sticky top-0 bg-white z-10 rounded-t-2xl border-b border-[#E2E8F0] px-6 py-4 flex justify-between items-center">
+                <h3 className="text-xl font-bold" style={{ color: DARK_TEXT }}>
+                  {selectedItem.title}
+                </h3>
+                <button
+                  onClick={closeModal}
+                  className="p-2 rounded-full hover:bg-[#F8FAFC] transition-colors cursor-pointer"
+                >
+                  <XMarkIcon className="w-6 h-6" style={{ color: MUTED_TEXT }} />
+                </button>
+              </div>
+
+              {/* Modal Content */}
+              <div className="p-6 space-y-4">
+                {/* Image/Video */}
+                <div className="relative rounded-xl overflow-hidden" style={{ backgroundColor: LIGHT_BG }}>
+                  {selectedItem.type === 'video' && selectedItem.videoUrl ? (
+                    <div className="aspect-video">
+                      <iframe
+                        src={selectedItem.videoUrl}
+                        title={selectedItem.title}
+                        className="w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  ) : (
+                    <div className="relative h-80">
+                      <Image
+                        src={selectedItem.image}
+                        alt={selectedItem.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 800px"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Description */}
+                {selectedItem.description && (
+                  <p className="text-sm leading-relaxed" style={{ color: MUTED_TEXT }}>
+                    {selectedItem.description}
+                  </p>
+                )}
+
+                {/* Type Badge */}
+                <div className="flex items-center gap-2">
+                  <span 
+                    className="px-3 py-1 rounded-full text-xs font-medium text-white"
+                    style={{ 
+                      backgroundColor: selectedItem.type === 'campus' ? TEAL_600 : 
+                                    selectedItem.type === 'event' ? BLUE_600 : '#7C3AED'
+                    }}
+                  >
+                    {selectedItem.type === 'campus' ? '📸 Campus' : 
+                     selectedItem.type === 'event' ? '🎉 Event' : '🎬 Video'}
+                  </span>
+                </div>
+
+                {/* Close Button */}
+                <button
+                  onClick={closeModal}
+                  className="w-full py-3 font-semibold rounded-full text-sm transition-all duration-300 cursor-pointer border-2"
+                  style={{ borderColor: '#E2E8F0', color: DARK_TEXT }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#F8FAFC'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
