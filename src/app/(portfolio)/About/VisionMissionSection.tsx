@@ -7,7 +7,7 @@ export default function VisionMissionSection() {
   const TEAL_600 = '#0D9488';
 
   return (
-    <section className="py-20 bg-white overflow-hidden">
+    <section className=" bg-white overflow-hidden">
       <div className="container mx-auto px-6">
         <motion.div 
           className="text-center mb-14"

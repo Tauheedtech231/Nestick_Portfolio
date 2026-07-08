@@ -35,7 +35,7 @@ export default function FAQSection() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto scroll-mt-20 pb-16">
+    <div className="max-w-4xl mx-auto scroll-mt-24  pb-16">
       <motion.div 
         className="mb-10 text-left"
         initial={{ opacity: 0, y: 30 }}

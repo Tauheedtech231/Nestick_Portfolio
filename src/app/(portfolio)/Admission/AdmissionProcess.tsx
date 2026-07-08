@@ -122,7 +122,7 @@ const nodes: NodeData[] = [
   },
 ];
 
-// Mobile responsive nodes - stacked vertically
+// Mobile responsive nodes - stacked vertically with proper spacing
 const mobileNodes: NodeData[] = [
   {
     id: "01",
@@ -141,7 +141,7 @@ const mobileNodes: NodeData[] = [
     details: ["Personal information", "Academic history", "Program preferences"],
     color: colors.blue,
     x: 50,
-    y: 130,
+    y: 160,
     w: 300,
   },
   {
@@ -151,7 +151,7 @@ const mobileNodes: NodeData[] = [
     details: ["Transcripts", "CNIC/B-Form", "Photographs"],
     color: colors.tealLight,
     x: 50,
-    y: 250,
+    y: 310,
     w: 300,
   },
   {
@@ -161,7 +161,7 @@ const mobileNodes: NodeData[] = [
     details: ["Online payment", "Bank challan", "Secure transaction"],
     color: colors.blueLight,
     x: 50,
-    y: 370,
+    y: 460,
     w: 300,
   },
   {
@@ -171,7 +171,7 @@ const mobileNodes: NodeData[] = [
     details: ["Real-time updates", "Status notifications", "Review feedback"],
     color: colors.tealDark,
     x: 50,
-    y: 490,
+    y: 610,
     w: 300,
   },
   {
@@ -181,7 +181,7 @@ const mobileNodes: NodeData[] = [
     details: ["Official letter", "Next steps", "Welcome package"],
     color: colors.blueDark,
     x: 50,
-    y: 610,
+    y: 760,
     w: 300,
   },
 ];
@@ -193,10 +193,9 @@ function pct(value: number, total: number) {
 const GRID_W = 1200;
 const GRID_H = 620;
 const MOBILE_GRID_W = 400;
-const MOBILE_GRID_H = 730;
+const MOBILE_GRID_H = 920; // Increased height for proper spacing
 const CARD_H = 100;
-const MOBILE_CARD_H = 100;
-const MOBILE_CARD_W = 300;
+const MOBILE_CARD_H = 140; // Increased for expanded view
 
 function Card({
   node,
@@ -255,7 +254,7 @@ function Card({
         style={{
           left: pct(node.x, MOBILE_GRID_W),
           top: pct(node.y, MOBILE_GRID_H),
-          width: pct(MOBILE_CARD_W, MOBILE_GRID_W),
+          width: pct(node.w, MOBILE_GRID_W),
           zIndex: 10,
         }}
       >
@@ -356,13 +355,13 @@ function MobileConnections({ isInView }: { isInView: boolean }) {
     }
   };
 
-  // Vertical connections between cards on mobile
+  // Vertical connections between cards on mobile - adjusted for new spacing
   const connections = [
-    { from: 10, to: 130 },  // 01 -> 02
-    { from: 130, to: 250 }, // 02 -> 03
-    { from: 250, to: 370 }, // 03 -> 04
-    { from: 370, to: 490 }, // 04 -> 05
-    { from: 490, to: 610 }, // 05 -> 06
+    { from: 10, to: 160 },
+    { from: 160, to: 310 },
+    { from: 310, to: 460 },
+    { from: 460, to: 610 },
+    { from: 610, to: 760 },
   ];
 
   return (
@@ -371,12 +370,10 @@ function MobileConnections({ isInView }: { isInView: boolean }) {
       className="absolute inset-0 h-full w-full pointer-events-none"
       preserveAspectRatio="none"
     >
-      <g stroke="#0D9488" strokeWidth={2.5} strokeOpacity={0.5} strokeLinecap="round">
+      <g stroke="#0D9488" strokeWidth={2.5} strokeOpacity={0.4} strokeLinecap="round">
         {connections.map((conn, idx) => {
           const y1 = conn.from + MOBILE_CARD_H;
           const y2 = conn.to;
-          // For the last connection, adjust
-          const actualY2 = idx === connections.length - 1 ? conn.to : conn.to;
           
           return (
             <motion.line
@@ -384,7 +381,7 @@ function MobileConnections({ isInView }: { isInView: boolean }) {
               x1={185}
               y1={y1}
               x2={185}
-              y2={actualY2}
+              y2={y2}
               variants={lineVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
@@ -395,15 +392,14 @@ function MobileConnections({ isInView }: { isInView: boolean }) {
         {/* Arrow heads */}
         {connections.map((conn, idx) => {
           const y1 = conn.from + MOBILE_CARD_H;
-          const y2 = idx === connections.length - 1 ? conn.to : conn.to;
-          const midY = (y1 + y2) / 2;
+          const y2 = conn.to;
           
           return (
             <motion.polygon
               key={`arrow-${idx}`}
               points={`${185},${y2 - 8} ${180},${y2} ${190},${y2}`}
               fill="#0D9488"
-              opacity={0.5}
+              opacity={0.4}
               variants={lineVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
@@ -487,7 +483,7 @@ export default function AdmissionProcess() {
         className="relative mx-auto w-full max-w-[1200px] px-4"
         style={{ 
           aspectRatio: isMobile ? `${MOBILE_GRID_W} / ${MOBILE_GRID_H}` : `${GRID_W} / ${GRID_H}`,
-          minHeight: isMobile ? '750px' : 'auto',
+          minHeight: isMobile ? '920px' : 'auto',
         }}
       >
         {/* SVG Lines - Desktop */}

@@ -61,7 +61,7 @@ export default function Home() {
       title: "Academic Excellence",
       desc: "Explore our diverse range of academic programs designed to nurture future leaders and innovators.",
       cta: "View Programs",
-      ctaLink: "/programms",
+      ctaLink: "/programs",
       image: "https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80"
     },
     {
@@ -69,7 +69,7 @@ export default function Home() {
       title: "Beyond Academics",
       desc: "Experience vibrant campus life with state-of-the-art facilities, clubs, and extracurricular activities.",
       cta: "Explore Campus",
-      ctaLink: "/student_life",
+      ctaLink: "/student-life",
       image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80"
     }
   ];
@@ -278,7 +278,7 @@ export default function Home() {
                 </button>
               </Link>
               
-              <Link href="/Contact">
+              <Link href="/contact">
                 <button 
                   className="px-6 md:px-8 py-2.5 md:py-3 rounded-full font-semibold text-sm md:text-base transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 cursor-pointer"
                   style={{
@@ -317,10 +317,6 @@ export default function Home() {
         >
           &#10095;
         </button>
-
-     
-
-       
       </section>
 
       {/* Stats Component */}

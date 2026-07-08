@@ -1239,7 +1239,7 @@ export default function MyApplicationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white pt-[100px] sm:pt-[120px]">
+    <div className="min-h-screen bg-white pt-10">
       <div className="w-full px-0">
         {/* Header - Full Width with Shadow */}
         <div 
