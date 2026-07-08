@@ -38,8 +38,8 @@ export default function ProgramsPage() {
       fullName: 'Play Group (Age 2-3 Years)',
       duration: '1 Year',
       eligibility: 'Age 2+ years',
-      feePerYear: '₹15,000',
-      feePerSemester: '₹7,500',
+      feePerYear: 'PKR 15,000',
+      feePerSemester: 'PKR 7,500',
       image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Early childhood education program focusing on social, emotional, and cognitive development through play-based learning.',
       highlights: ['Social Skills', 'Cognitive Development', 'Creative Play', 'Motor Skills'],
@@ -52,8 +52,8 @@ export default function ProgramsPage() {
       fullName: 'Nursery (Age 3-4 Years)',
       duration: '1 Year',
       eligibility: 'Age 3+ years',
-      feePerYear: '₹18,000',
-      feePerSemester: '₹9,000',
+      feePerYear: 'PKR 18,000',
+      feePerSemester: 'PKR 9,000',
       image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Foundation years program introducing basic literacy, numeracy, and social skills.',
       highlights: ['Basic Literacy', 'Numeracy', 'Social Skills', 'Art & Craft'],
@@ -66,8 +66,8 @@ export default function ProgramsPage() {
       fullName: 'Kindergarten (Age 4-5 Years)',
       duration: '1 Year',
       eligibility: 'Age 4+ years',
-      feePerYear: '₹20,000',
-      feePerSemester: '₹10,000',
+      feePerYear: 'PKR 20,000',
+      feePerSemester: 'PKR 10,000',
       image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Kindergarten program preparing children for formal schooling with structured learning activities.',
       highlights: ['Reading Readiness', 'Writing Skills', 'Basic Math', 'Science Exploration'],
@@ -80,8 +80,8 @@ export default function ProgramsPage() {
       fullName: 'Preparatory (Age 5-6 Years)',
       duration: '1 Year',
       eligibility: 'Age 5+ years',
-      feePerYear: '₹22,000',
-      feePerSemester: '₹11,000',
+      feePerYear: 'PKR 22,000',
+      feePerSemester: 'PKR 11,000',
       image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Preparatory program bridging early years and primary education with comprehensive learning.',
       highlights: ['Reading', 'Writing', 'Mathematics', 'Science', 'Social Studies'],
@@ -94,8 +94,8 @@ export default function ProgramsPage() {
       fullName: 'Primary Education (Class 1-5)',
       duration: '5 Years',
       eligibility: 'Completion of Prep',
-      feePerYear: '₹25,000',
-      feePerSemester: '₹12,500',
+      feePerYear: 'PKR 25,000',
+      feePerSemester: 'PKR 12,500',
       image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Primary education building strong foundation in core subjects with holistic development.',
       highlights: ['Mathematics', 'English', 'Science', 'Social Studies', 'Arts & Crafts'],
@@ -108,8 +108,8 @@ export default function ProgramsPage() {
       fullName: 'Middle School (Class 6-8)',
       duration: '3 Years',
       eligibility: 'Completion of Primary education',
-      feePerYear: '₹30,000',
-      feePerSemester: '₹15,000',
+      feePerYear: 'PKR 30,000',
+      feePerSemester: 'PKR 15,000',
       image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Middle school program bridging primary and secondary education with comprehensive subjects.',
       highlights: ['Advanced Mathematics', 'Science', 'English Literature', 'Computer Basics', 'Social Studies'],
@@ -121,9 +121,9 @@ export default function ProgramsPage() {
       name: 'Matric (SSC)',
       fullName: 'Secondary School Certificate (Class 9-10)',
       duration: '2 Years',
-      eligibility: 'Completion of Middle school',
-      feePerYear: '₹35,000',
-      feePerSemester: '₹17,500',
+      eligibility: 'Completion of Middle school with minimum 50% marks',
+      feePerYear: 'PKR 35,000',
+      feePerSemester: 'PKR 17,500',
       image: 'https://images.unsplash.com/photo-1523050854058-8df90110c7f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Comprehensive secondary education program preparing students for higher studies and board examinations.',
       highlights: ['Science Group', 'Arts Group', 'Computer Science', 'Commerce Group'],
@@ -136,8 +136,8 @@ export default function ProgramsPage() {
       fullName: 'Higher Secondary School Certificate (Class 11-12)',
       duration: '2 Years',
       eligibility: 'Matriculation with minimum 50% marks',
-      feePerYear: '₹45,000',
-      feePerSemester: '₹22,500',
+      feePerYear: 'PKR 45,000',
+      feePerSemester: 'PKR 22,500',
       image: 'https://images.unsplash.com/photo-1523050854058-8df90110c7f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Higher secondary education program with specialized streams for professional careers.',
       highlights: ['Pre-Medical', 'Pre-Engineering', 'Computer Science', 'Commerce', 'Humanities'],
@@ -148,12 +148,82 @@ export default function ProgramsPage() {
     // ==================== O LEVEL ====================
     {
       id: 9,
+      name: 'O-Level English Language',
+      fullName: 'Cambridge O-Level English Language',
+      duration: '2 Years',
+      eligibility: 'Completion of Grade 8 with minimum 60% marks or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level English Language focusing on language skills, comprehension, and writing.',
+      highlights: ['Language Skills', 'Comprehension', 'Creative Writing', 'Grammar'],
+      level: 'olevel',
+      category: 'olevel'
+    },
+    {
+      id: 10,
+      name: 'O-Level English Literature',
+      fullName: 'Cambridge O-Level English Literature',
+      duration: '2 Years',
+      eligibility: 'Completion of Grade 8 with minimum 60% marks or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level English Literature covering poetry, prose, and drama analysis.',
+      highlights: ['Poetry Analysis', 'Prose Studies', 'Drama', 'Literary Criticism'],
+      level: 'olevel',
+      category: 'olevel'
+    },
+    {
+      id: 11,
+      name: 'O-Level Urdu',
+      fullName: 'Cambridge O-Level Urdu (First Language)',
+      duration: '2 Years',
+      eligibility: 'Completion of Grade 8 with minimum 60% marks or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level Urdu focusing on language skills, literature, and comprehension.',
+      highlights: ['Urdu Grammar', 'Literature', 'Comprehension', 'Creative Writing'],
+      level: 'olevel',
+      category: 'olevel'
+    },
+    {
+      id: 12,
+      name: 'O-Level Islamiyat',
+      fullName: 'Cambridge O-Level Islamiyat',
+      duration: '2 Years',
+      eligibility: 'Completion of Grade 8 with minimum 60% marks or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level Islamiyat covering Islamic beliefs, history, and ethics.',
+      highlights: ['Islamic Beliefs', 'Quranic Studies', 'Hadith', 'Islamic History'],
+      level: 'olevel',
+      category: 'olevel'
+    },
+    {
+      id: 13,
+      name: 'O-Level Pakistan Studies',
+      fullName: 'Cambridge O-Level Pakistan Studies',
+      duration: '2 Years',
+      eligibility: 'Completion of Grade 8 with minimum 60% marks or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level Pakistan Studies covering history, geography, and culture of Pakistan.',
+      highlights: ['History of Pakistan', 'Geography', 'Culture', 'Government'],
+      level: 'olevel',
+      category: 'olevel'
+    },
+    {
+      id: 14,
       name: 'O-Level Mathematics',
       fullName: 'Cambridge O-Level Mathematics',
       duration: '2 Years',
-      eligibility: 'Age 14+ years',
-      feePerYear: '₹80,000',
-      feePerSemester: '₹40,000',
+      eligibility: 'Completion of Grade 8 with minimum 65% marks in Mathematics or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
       image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Cambridge O-Level Mathematics focusing on algebra, geometry, trigonometry, and statistics.',
       highlights: ['Algebra', 'Geometry', 'Trigonometry', 'Statistics'],
@@ -161,27 +231,27 @@ export default function ProgramsPage() {
       category: 'olevel'
     },
     {
-      id: 10,
-      name: 'O-Level English',
-      fullName: 'Cambridge O-Level English Language & Literature',
+      id: 15,
+      name: 'O-Level Additional Mathematics',
+      fullName: 'Cambridge O-Level Additional Mathematics',
       duration: '2 Years',
-      eligibility: 'Age 14+ years',
-      feePerYear: '₹80,000',
-      feePerSemester: '₹40,000',
+      eligibility: 'O-Level Mathematics with minimum B grade or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
       image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      description: 'Cambridge O-Level English focusing on language skills, literature analysis, and creative writing.',
-      highlights: ['Language Skills', 'Literature Analysis', 'Creative Writing', 'Comprehension'],
+      description: 'Cambridge O-Level Additional Mathematics covering advanced topics for students aiming for A-Level Mathematics.',
+      highlights: ['Advanced Algebra', 'Calculus', 'Vectors', 'Complex Numbers'],
       level: 'olevel',
       category: 'olevel'
     },
     {
-      id: 11,
+      id: 16,
       name: 'O-Level Physics',
       fullName: 'Cambridge O-Level Physics',
       duration: '2 Years',
-      eligibility: 'Age 14+ years',
-      feePerYear: '₹80,000',
-      feePerSemester: '₹40,000',
+      eligibility: 'Completion of Grade 8 with minimum 60% marks in Science or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
       image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Cambridge O-Level Physics covering mechanics, electricity, waves, and modern physics.',
       highlights: ['Mechanics', 'Electricity', 'Waves', 'Modern Physics'],
@@ -189,13 +259,13 @@ export default function ProgramsPage() {
       category: 'olevel'
     },
     {
-      id: 12,
+      id: 17,
       name: 'O-Level Chemistry',
       fullName: 'Cambridge O-Level Chemistry',
       duration: '2 Years',
-      eligibility: 'Age 14+ years',
-      feePerYear: '₹80,000',
-      feePerSemester: '₹40,000',
+      eligibility: 'Completion of Grade 8 with minimum 60% marks in Science or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
       image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Cambridge O-Level Chemistry covering organic, inorganic, and physical chemistry.',
       highlights: ['Organic Chemistry', 'Inorganic Chemistry', 'Physical Chemistry', 'Laboratory Skills'],
@@ -203,13 +273,13 @@ export default function ProgramsPage() {
       category: 'olevel'
     },
     {
-      id: 13,
+      id: 18,
       name: 'O-Level Biology',
       fullName: 'Cambridge O-Level Biology',
       duration: '2 Years',
-      eligibility: 'Age 14+ years',
-      feePerYear: '₹80,000',
-      feePerSemester: '₹40,000',
+      eligibility: 'Completion of Grade 8 with minimum 60% marks in Science or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
       image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Cambridge O-Level Biology covering cells, genetics, ecology, and human physiology.',
       highlights: ['Cell Biology', 'Genetics', 'Ecology', 'Human Physiology'],
@@ -217,13 +287,13 @@ export default function ProgramsPage() {
       category: 'olevel'
     },
     {
-      id: 14,
+      id: 19,
       name: 'O-Level Computer Science',
       fullName: 'Cambridge O-Level Computer Science',
       duration: '2 Years',
-      eligibility: 'Age 14+ years',
-      feePerYear: '₹80,000',
-      feePerSemester: '₹40,000',
+      eligibility: 'Completion of Grade 8 with minimum 60% marks or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
       image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Cambridge O-Level Computer Science focusing on programming, algorithms, and computational thinking.',
       highlights: ['Programming', 'Algorithms', 'Computational Thinking', 'Data Structures'],
@@ -231,13 +301,13 @@ export default function ProgramsPage() {
       category: 'olevel'
     },
     {
-      id: 15,
+      id: 20,
       name: 'O-Level Business Studies',
       fullName: 'Cambridge O-Level Business Studies',
       duration: '2 Years',
-      eligibility: 'Age 14+ years',
-      feePerYear: '₹80,000',
-      feePerSemester: '₹40,000',
+      eligibility: 'Completion of Grade 8 with minimum 60% marks or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
       image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Cambridge O-Level Business Studies covering business operations, marketing, and finance.',
       highlights: ['Business Operations', 'Marketing', 'Finance', 'Entrepreneurship'],
@@ -245,29 +315,85 @@ export default function ProgramsPage() {
       category: 'olevel'
     },
     {
-      id: 16,
+      id: 21,
       name: 'O-Level Accounting',
       fullName: 'Cambridge O-Level Accounting',
       duration: '2 Years',
-      eligibility: 'Age 14+ years',
-      feePerYear: '₹80,000',
-      feePerSemester: '₹40,000',
+      eligibility: 'Completion of Grade 8 with minimum 60% marks or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
       image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Cambridge O-Level Accounting covering financial statements, bookkeeping, and analysis.',
       highlights: ['Financial Statements', 'Bookkeeping', 'Accounting Principles', 'Analysis'],
       level: 'olevel',
       category: 'olevel'
     },
+    {
+      id: 22,
+      name: 'O-Level Sociology',
+      fullName: 'Cambridge O-Level Sociology',
+      duration: '2 Years',
+      eligibility: 'Completion of Grade 8 with minimum 60% marks or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level Sociology covering social structures, institutions, and human behavior.',
+      highlights: ['Social Structures', 'Social Institutions', 'Human Behavior', 'Social Change'],
+      level: 'olevel',
+      category: 'olevel'
+    },
+    {
+      id: 23,
+      name: 'O-Level Psychology',
+      fullName: 'Cambridge O-Level Psychology',
+      duration: '2 Years',
+      eligibility: 'Completion of Grade 8 with minimum 60% marks or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level Psychology covering human behavior, cognition, and mental processes.',
+      highlights: ['Human Behavior', 'Cognition', 'Mental Health', 'Social Psychology'],
+      level: 'olevel',
+      category: 'olevel'
+    },
+    {
+      id: 24,
+      name: 'O-Level Environmental Management',
+      fullName: 'Cambridge O-Level Environmental Management',
+      duration: '2 Years',
+      eligibility: 'Completion of Grade 8 with minimum 60% marks or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level Environmental Management covering ecosystems, conservation, and sustainability.',
+      highlights: ['Ecosystems', 'Conservation', 'Sustainability', 'Environmental Issues'],
+      level: 'olevel',
+      category: 'olevel'
+    },
+    {
+      id: 25,
+      name: 'O-Level Combined Sciences',
+      fullName: 'Cambridge O-Level Combined Sciences (Physics, Chemistry, Biology)',
+      duration: '2 Years',
+      eligibility: 'Completion of Grade 8 with minimum 60% marks in Science or equivalent',
+      feePerYear: 'PKR 80,000',
+      feePerSemester: 'PKR 40,000',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge O-Level Combined Sciences covering Physics, Chemistry, and Biology at a combined level for students who want a broad science foundation.',
+      highlights: ['Physics Fundamentals', 'Chemistry Basics', 'Biology Essentials', 'Lab Skills'],
+      level: 'olevel',
+      category: 'olevel'
+    },
 
     // ==================== A LEVEL ====================
     {
-      id: 17,
+      id: 26,
       name: 'A-Level Mathematics',
       fullName: 'Cambridge A-Level Mathematics',
       duration: '2 Years',
-      eligibility: 'O-Level Mathematics with minimum C grade',
-      feePerYear: '₹100,000',
-      feePerSemester: '₹50,000',
+      eligibility: 'O-Level Mathematics with minimum B grade or O-Level Additional Mathematics with minimum C grade',
+      feePerYear: 'PKR 100,000',
+      feePerSemester: 'PKR 50,000',
       image: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Cambridge A-Level Mathematics covering pure mathematics, mechanics, and statistics.',
       highlights: ['Pure Mathematics', 'Mechanics', 'Statistics', 'Further Mathematics'],
@@ -275,13 +401,41 @@ export default function ProgramsPage() {
       category: 'alevel'
     },
     {
-      id: 18,
+      id: 27,
+      name: 'A-Level Further Mathematics',
+      fullName: 'Cambridge A-Level Further Mathematics',
+      duration: '2 Years',
+      eligibility: 'A-Level Mathematics with minimum B grade or equivalent',
+      feePerYear: 'PKR 100,000',
+      feePerSemester: 'PKR 50,000',
+      image: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge A-Level Further Mathematics covering advanced topics for STEM-focused students.',
+      highlights: ['Advanced Pure', 'Advanced Mechanics', 'Advanced Statistics', 'Discrete Mathematics'],
+      level: 'alevel',
+      category: 'alevel'
+    },
+    {
+      id: 28,
+      name: 'A-Level Statistics',
+      fullName: 'Cambridge A-Level Statistics',
+      duration: '2 Years',
+      eligibility: 'A-Level Mathematics with minimum C grade or equivalent',
+      feePerYear: 'PKR 100,000',
+      feePerSemester: 'PKR 50,000',
+      image: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge A-Level Statistics covering probability, hypothesis testing, and statistical modeling.',
+      highlights: ['Probability', 'Hypothesis Testing', 'Statistical Modeling', 'Data Analysis'],
+      level: 'alevel',
+      category: 'alevel'
+    },
+    {
+      id: 29,
       name: 'A-Level Physics',
       fullName: 'Cambridge A-Level Physics',
       duration: '2 Years',
-      eligibility: 'O-Level Physics with minimum C grade',
-      feePerYear: '₹100,000',
-      feePerSemester: '₹50,000',
+      eligibility: 'O-Level Physics with minimum B grade or O-Level Combined Sciences with minimum A grade',
+      feePerYear: 'PKR 100,000',
+      feePerSemester: 'PKR 50,000',
       image: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Cambridge A-Level Physics covering advanced mechanics, electromagnetism, and quantum physics.',
       highlights: ['Advanced Mechanics', 'Electromagnetism', 'Quantum Physics', 'Thermodynamics'],
@@ -289,13 +443,13 @@ export default function ProgramsPage() {
       category: 'alevel'
     },
     {
-      id: 19,
+      id: 30,
       name: 'A-Level Chemistry',
       fullName: 'Cambridge A-Level Chemistry',
       duration: '2 Years',
-      eligibility: 'O-Level Chemistry with minimum C grade',
-      feePerYear: '₹100,000',
-      feePerSemester: '₹50,000',
+      eligibility: 'O-Level Chemistry with minimum B grade or O-Level Combined Sciences with minimum A grade',
+      feePerYear: 'PKR 100,000',
+      feePerSemester: 'PKR 50,000',
       image: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Cambridge A-Level Chemistry covering advanced organic, inorganic, and physical chemistry.',
       highlights: ['Advanced Organic', 'Inorganic Chemistry', 'Physical Chemistry', 'Analytical Chemistry'],
@@ -303,13 +457,13 @@ export default function ProgramsPage() {
       category: 'alevel'
     },
     {
-      id: 20,
+      id: 31,
       name: 'A-Level Biology',
       fullName: 'Cambridge A-Level Biology',
       duration: '2 Years',
-      eligibility: 'O-Level Biology with minimum C grade',
-      feePerYear: '₹100,000',
-      feePerSemester: '₹50,000',
+      eligibility: 'O-Level Biology with minimum B grade or O-Level Combined Sciences with minimum A grade',
+      feePerYear: 'PKR 100,000',
+      feePerSemester: 'PKR 50,000',
       image: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Cambridge A-Level Biology covering molecular biology, genetics, and advanced ecology.',
       highlights: ['Molecular Biology', 'Genetics', 'Advanced Ecology', 'Biochemistry'],
@@ -317,13 +471,13 @@ export default function ProgramsPage() {
       category: 'alevel'
     },
     {
-      id: 21,
+      id: 32,
       name: 'A-Level Computer Science',
       fullName: 'Cambridge A-Level Computer Science',
       duration: '2 Years',
-      eligibility: 'O-Level Computer Science with minimum C grade',
-      feePerYear: '₹100,000',
-      feePerSemester: '₹50,000',
+      eligibility: 'O-Level Computer Science with minimum B grade or equivalent',
+      feePerYear: 'PKR 100,000',
+      feePerSemester: 'PKR 50,000',
       image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Cambridge A-Level Computer Science covering advanced programming, algorithms, and software development.',
       highlights: ['Advanced Programming', 'Algorithms', 'Software Development', 'Data Science'],
@@ -331,13 +485,13 @@ export default function ProgramsPage() {
       category: 'alevel'
     },
     {
-      id: 22,
+      id: 33,
       name: 'A-Level Economics',
       fullName: 'Cambridge A-Level Economics',
       duration: '2 Years',
-      eligibility: 'O-Level Economics with minimum C grade',
-      feePerYear: '₹100,000',
-      feePerSemester: '₹50,000',
+      eligibility: 'O-Level Economics or Business Studies with minimum B grade or equivalent',
+      feePerYear: 'PKR 100,000',
+      feePerSemester: 'PKR 50,000',
       image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Cambridge A-Level Economics covering microeconomics, macroeconomics, and global economics.',
       highlights: ['Microeconomics', 'Macroeconomics', 'Global Economics', 'Economic Policy'],
@@ -345,29 +499,57 @@ export default function ProgramsPage() {
       category: 'alevel'
     },
     {
-      id: 23,
-      name: 'A-Level Business',
-      fullName: 'Cambridge A-Level Business',
+      id: 34,
+      name: 'A-Level Business Studies',
+      fullName: 'Cambridge A-Level Business Studies',
       duration: '2 Years',
-      eligibility: 'O-Level Business with minimum C grade',
-      feePerYear: '₹100,000',
-      feePerSemester: '₹50,000',
+      eligibility: 'O-Level Business Studies with minimum B grade or equivalent',
+      feePerYear: 'PKR 100,000',
+      feePerSemester: 'PKR 50,000',
       image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      description: 'Cambridge A-Level Business covering strategic management, marketing, and business operations.',
+      description: 'Cambridge A-Level Business Studies covering strategic management, marketing, and business operations.',
       highlights: ['Strategic Management', 'Marketing', 'Business Operations', 'International Business'],
+      level: 'alevel',
+      category: 'alevel'
+    },
+    {
+      id: 35,
+      name: 'A-Level Psychology',
+      fullName: 'Cambridge A-Level Psychology',
+      duration: '2 Years',
+      eligibility: 'O-Level Psychology with minimum B grade or equivalent',
+      feePerYear: 'PKR 100,000',
+      feePerSemester: 'PKR 50,000',
+      image: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge A-Level Psychology covering advanced human behavior, cognition, and research methods.',
+      highlights: ['Advanced Human Behavior', 'Cognition', 'Research Methods', 'Mental Health'],
+      level: 'alevel',
+      category: 'alevel'
+    },
+    {
+      id: 36,
+      name: 'A-Level Sociology',
+      fullName: 'Cambridge A-Level Sociology',
+      duration: '2 Years',
+      eligibility: 'O-Level Sociology with minimum B grade or equivalent',
+      feePerYear: 'PKR 100,000',
+      feePerSemester: 'PKR 50,000',
+      image: 'https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+      description: 'Cambridge A-Level Sociology covering advanced social theories, structures, and institutions.',
+      highlights: ['Social Theories', 'Social Structures', 'Institutions', 'Social Change'],
       level: 'alevel',
       category: 'alevel'
     },
 
     // ==================== COLLEGE (Intermediate) ====================
     {
-      id: 24,
+      id: 37,
       name: 'FSc Pre-Medical',
       fullName: 'FSc Pre-Medical (Biology, Chemistry, Physics)',
       duration: '2 Years',
       eligibility: 'Matric Science with minimum 65% marks',
-      feePerYear: '₹50,000',
-      feePerSemester: '₹25,000',
+      feePerYear: 'PKR 50,000',
+      feePerSemester: 'PKR 25,000',
       image: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Pre-medical program preparing students for medical and dental colleges.',
       highlights: ['Biology', 'Chemistry', 'Physics', 'Medical Preparation'],
@@ -375,13 +557,13 @@ export default function ProgramsPage() {
       category: 'science'
     },
     {
-      id: 25,
+      id: 38,
       name: 'FSc Pre-Engineering',
       fullName: 'FSc Pre-Engineering (Mathematics, Chemistry, Physics)',
       duration: '2 Years',
       eligibility: 'Matric Science with minimum 65% marks',
-      feePerYear: '₹50,000',
-      feePerSemester: '₹25,000',
+      feePerYear: 'PKR 50,000',
+      feePerSemester: 'PKR 25,000',
       image: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Pre-engineering program preparing students for engineering universities.',
       highlights: ['Mathematics', 'Chemistry', 'Physics', 'Engineering Preparation'],
@@ -389,13 +571,13 @@ export default function ProgramsPage() {
       category: 'science'
     },
     {
-      id: 26,
+      id: 39,
       name: 'ICS',
       fullName: 'Intermediate in Computer Science',
       duration: '2 Years',
       eligibility: 'Matric Science with minimum 60% marks',
-      feePerYear: '₹55,000',
-      feePerSemester: '₹27,500',
+      feePerYear: 'PKR 55,000',
+      feePerSemester: 'PKR 27,500',
       image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Computer science program focusing on programming and IT fundamentals.',
       highlights: ['Programming', 'IT Fundamentals', 'Database Systems', 'Computer Networks'],
@@ -403,13 +585,13 @@ export default function ProgramsPage() {
       category: 'science'
     },
     {
-      id: 27,
+      id: 40,
       name: 'I.Com',
       fullName: 'Intermediate in Commerce',
       duration: '2 Years',
       eligibility: 'Matric Science/Arts with minimum 50% marks',
-      feePerYear: '₹45,000',
-      feePerSemester: '₹22,500',
+      feePerYear: 'PKR 45,000',
+      feePerSemester: 'PKR 22,500',
       image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Commerce program focusing on accounting, business, and economics.',
       highlights: ['Accounting', 'Business Studies', 'Economics', 'Business Mathematics'],
@@ -417,13 +599,13 @@ export default function ProgramsPage() {
       category: 'commerce'
     },
     {
-      id: 28,
+      id: 41,
       name: 'FA',
       fullName: 'Faculty of Arts (Humanities)',
       duration: '2 Years',
       eligibility: 'Matric Arts/Science with minimum 45% marks',
-      feePerYear: '₹40,000',
-      feePerSemester: '₹20,000',
+      feePerYear: 'PKR 40,000',
+      feePerSemester: 'PKR 20,000',
       image: 'https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Arts program offering humanities, social sciences, and creative arts.',
       highlights: ['Literature', 'Social Sciences', 'Fine Arts', 'Language Studies'],
@@ -433,13 +615,13 @@ export default function ProgramsPage() {
 
     // ==================== TECHNICAL ====================
     {
-      id: 29,
+      id: 42,
       name: 'DAE',
       fullName: 'Diploma of Associate Engineering',
       duration: '3 Years',
       eligibility: 'Matric Science with minimum 50% marks',
-      feePerYear: '₹60,000',
-      feePerSemester: '₹30,000',
+      feePerYear: 'PKR 60,000',
+      feePerSemester: 'PKR 30,000',
       image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Technical diploma program preparing students for engineering technician careers.',
       highlights: ['Civil', 'Mechanical', 'Electrical', 'Electronics'],
@@ -447,13 +629,13 @@ export default function ProgramsPage() {
       category: 'technical'
     },
     {
-      id: 30,
+      id: 43,
       name: 'DIT',
       fullName: 'Diploma in Information Technology',
       duration: '2 Years',
       eligibility: 'Matric Science with minimum 50% marks',
-      feePerYear: '₹50,000',
-      feePerSemester: '₹25,000',
+      feePerYear: 'PKR 50,000',
+      feePerSemester: 'PKR 25,000',
       image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
       description: 'Diploma program providing practical IT and computer skills.',
       highlights: ['Software', 'Networking', 'Hardware', 'Database'],
@@ -563,17 +745,16 @@ export default function ProgramsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white transition-colors duration-300 pt-[85px] sm:pt-[95px]">
-      {/* Hero Section with High Quality Image */}
+    <div className="min-h-screen bg-white transition-colors duration-300 pt-[40px] ">
+      {/* Hero Section with High Quality Image - No Overlay */}
       <section className="relative py-20 sm:py-28 overflow-hidden">
-        {/* Background Image */}
+        {/* Background Image - No Overlay */}
         <div className="absolute inset-0 z-0">
           <img 
             src="https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Programs Hero"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
         </div>
 
         <div className="container mx-auto px-6 text-center relative z-10">
@@ -581,7 +762,7 @@ export default function ProgramsPage() {
             variants={headingVariants}
             initial="hidden"
             animate="visible"
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white"
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white drop-shadow-lg"
             style={{ textShadow: '0 2px 20px rgba(0,0,0,0.5)' }}
           >
             <span className="text-white">Our </span>
@@ -592,7 +773,7 @@ export default function ProgramsPage() {
             variants={subHeadingVariants}
             initial="hidden"
             animate="visible"
-            className="text-base sm:text-lg text-blue-100 max-w-2xl mx-auto leading-relaxed"
+            className="text-base sm:text-lg text-white drop-shadow-lg max-w-2xl mx-auto leading-relaxed"
             style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}
           >
             Discover your path to success with our diverse range of programs

@@ -114,7 +114,7 @@ export default function Home() {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col pt-[85px] sm:pt-[93px]`}
+    <div className={`min-h-screen flex flex-col pt-[30px]`}
       style={{ backgroundColor: bgColor }}
     >
       {/* Hero Section */}

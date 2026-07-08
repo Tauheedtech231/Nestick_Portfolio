@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 interface Scholarship {
   id: number;
@@ -35,7 +35,7 @@ const ScholarshipsPage = () => {
       program: "All Programs",
       eligibility: "95%+ marks in Matriculation with outstanding academic record and excellent performance in previous studies",
       amount: "100% Tuition Fee",
-      description: "High academic performance walay students ke liye top scholarship.",
+      description: "A top scholarship for students with high academic performance.",
       type: "merit",
       provider: "Aspire College",
       deadline: "January 15, 2025"
@@ -70,7 +70,7 @@ const ScholarshipsPage = () => {
       program: "All Programs",
       eligibility: "Family income below ₹500,000 annually with valid income certificate and supporting documents",
       amount: "25-75% Tuition Fee",
-      description: "Financially deserving students ke liye need-based scholarship.",
+      description: "A need-based scholarship for financially deserving students.",
       type: "need",
       provider: "Aspire College",
       deadline: "January 15, 2025"
@@ -95,7 +95,7 @@ const ScholarshipsPage = () => {
       program: "All Programs",
       eligibility: "70%+ marks & family income below ₹600,000 with both academic and financial documents",
       amount: "50-100% Tuition Fee",
-      description: "Merit + financial need dono consider hotay hain.",
+      description: "This scholarship considers both merit and financial need.",
       type: "merit_cum_need",
       provider: "Aspire College",
       deadline: "January 15, 2025"
@@ -108,7 +108,7 @@ const ScholarshipsPage = () => {
       program: "All Programs",
       eligibility: "95%+ marks & outstanding academic record with strong extracurricular activities and leadership skills",
       amount: "100% Tuition + Stipend + Books",
-      description: "Tuition + stipend + other expenses cover hotay hain.",
+      description: "This covers tuition, stipend, and other expenses.",
       type: "fully_funded",
       provider: "HEC Pakistan",
       deadline: "March 31, 2025",
@@ -122,7 +122,7 @@ const ScholarshipsPage = () => {
       program: "All Programs",
       eligibility: "80%+ marks with good academic standing and regular attendance",
       amount: "30-50% Tuition Fee",
-      description: "Fee ka kuch hissa cover hota hai.",
+      description: "A portion of the tuition fee is covered.",
       type: "partial",
       provider: "Aspire College",
       deadline: "January 15, 2025"
@@ -135,7 +135,7 @@ const ScholarshipsPage = () => {
       program: "All Programs",
       eligibility: "90%+ marks & financial need with complete documentation and interview",
       amount: "100% Tuition Waiver",
-      description: "Tuition fee mein full ya partial waiver.",
+      description: "Full or partial waiver of the tuition fee.",
       type: "tuition_waiver",
       provider: "Aspire College",
       deadline: "January 15, 2025"
@@ -148,7 +148,7 @@ const ScholarshipsPage = () => {
       program: "All Programs",
       eligibility: "District/Provincial level sports recognition with certificates and medals",
       amount: "50-100% Tuition Fee",
-      description: "Outstanding sports achievements walay students ke liye.",
+      description: "For students with outstanding sports achievements.",
       type: "sports",
       provider: "Aspire College",
       deadline: "January 15, 2025"
@@ -159,9 +159,9 @@ const ScholarshipsPage = () => {
       id: 11,
       name: "Hafiz-e-Quran Scholarship",
       program: "All Programs",
-      eligibility: "Complete Hifz-ul-Quran with certification from recognized religious institution",
+      eligibility: "Complete Hifz-ul-Quran with certification from a recognized religious institution",
       amount: "50% Tuition Fee",
-      description: "Huffaz ke liye special scholarship.",
+      description: "A special scholarship for Huffaz.",
       type: "hafiz",
       provider: "Aspire College",
       deadline: "January 15, 2025"
@@ -174,7 +174,7 @@ const ScholarshipsPage = () => {
       program: "All Programs",
       eligibility: "Religious minority students with valid minority certificate and supporting documents",
       amount: "25-50% Tuition Fee",
-      description: "Religious minority students ke liye government scholarship.",
+      description: "Government scholarship for religious minority students.",
       type: "minority",
       provider: "Government of Pakistan",
       deadline: "December 31, 2025"
@@ -187,7 +187,7 @@ const ScholarshipsPage = () => {
       program: "All Programs",
       eligibility: "Students with disabilities (40%+ disability) with valid medical certificate",
       amount: "50-100% Tuition Fee",
-      description: "Students with disabilities ke liye special scholarship.",
+      description: "A special scholarship for students with disabilities.",
       type: "disability",
       provider: "Aspire College",
       deadline: "January 15, 2025"
@@ -200,7 +200,7 @@ const ScholarshipsPage = () => {
       program: "All Programs",
       eligibility: "Orphan students with valid death certificate of both parents and income certificate",
       amount: "100% Tuition Fee + Stipend",
-      description: "Yateem students ke liye complete support.",
+      description: "Complete support for orphan students.",
       type: "orphan",
       provider: "Pakistan Bait-ul-Mal",
       deadline: "December 31, 2025",
@@ -212,9 +212,9 @@ const ScholarshipsPage = () => {
       id: 15,
       name: "Kinship Scholarship",
       program: "All Programs",
-      eligibility: "University employees ya alumni ke family members with valid relationship proof",
+      eligibility: "University employees or alumni family members with valid relationship proof",
       amount: "25% Tuition Fee",
-      description: "University employees ya alumni ke family members ke liye.",
+      description: "For family members of university employees or alumni.",
       type: "kinship",
       provider: "Aspire College",
       deadline: "January 15, 2025"
@@ -225,9 +225,9 @@ const ScholarshipsPage = () => {
       id: 16,
       name: "Alumni Children Scholarship",
       program: "All Programs",
-      eligibility: "Alumni ya alumni children with valid alumni registration and documents",
+      eligibility: "Alumni or alumni children with valid alumni registration and documents",
       amount: "20% Tuition Fee",
-      description: "Alumni ya alumni children ke liye special discount.",
+      description: "A special discount for alumni or alumni children.",
       type: "alumni",
       provider: "Aspire College",
       deadline: "January 15, 2025"
@@ -238,9 +238,9 @@ const ScholarshipsPage = () => {
       id: 17,
       name: "Sibling Discount Scholarship",
       program: "All Programs",
-      eligibility: "2 or more siblings enrolled in same college with valid relationship proof",
+      eligibility: "2 or more siblings enrolled in the same college with valid relationship proof",
       amount: "15-25% Tuition Fee",
-      description: "Ek hi university mein do ya zyada behan bhai ke liye.",
+      description: "For two or more siblings in the same university.",
       type: "sibling",
       provider: "Aspire College",
       deadline: "January 15, 2025"
@@ -253,7 +253,7 @@ const ScholarshipsPage = () => {
       program: "All Programs",
       eligibility: "University staff and their children with valid employee ID and documents",
       amount: "50% Tuition Fee",
-      description: "University staff ke liye special scholarship.",
+      description: "A special scholarship for university staff.",
       type: "employee",
       provider: "Aspire College",
       deadline: "January 15, 2025"
@@ -266,7 +266,7 @@ const ScholarshipsPage = () => {
       program: "MS, MPhil, PhD",
       eligibility: "Research proposal & academic record with strong publication potential and references",
       amount: "100% Tuition + Research Grant",
-      description: "MS, MPhil, PhD researchers ke liye HEC scholarship.",
+      description: "HEC scholarship for MS, MPhil, and PhD researchers.",
       type: "research",
       provider: "HEC Pakistan",
       deadline: "May 31, 2025",
@@ -280,7 +280,7 @@ const ScholarshipsPage = () => {
       program: "All Programs",
       eligibility: "Outstanding academic record & IELTS/TOEFL score with strong profile and recommendations",
       amount: "Full Tuition + Living Expenses",
-      description: "Overseas study ke liye international scholarship.",
+      description: "International scholarship for overseas study.",
       type: "international",
       provider: "HEC Pakistan",
       deadline: "February 28, 2025",
@@ -294,7 +294,7 @@ const ScholarshipsPage = () => {
       program: "All Programs",
       eligibility: "Academic excellence & language proficiency with strong intercultural skills",
       amount: "Tuition + Travel + Living",
-      description: "Student exchange programs ke liye scholarship.",
+      description: "Scholarship for student exchange programs.",
       type: "exchange",
       provider: "Aspire College",
       deadline: "April 30, 2025"
@@ -307,7 +307,7 @@ const ScholarshipsPage = () => {
       program: "All Programs",
       eligibility: "Academic excellence & financial need with complete documentation",
       amount: "Varies (50-100%)",
-      description: "Donors ya trusts ke funds se scholarship.",
+      description: "Scholarship funded by donors or trusts.",
       type: "endowment",
       provider: "Aspire College Endowment",
       deadline: "January 15, 2025"
@@ -318,9 +318,9 @@ const ScholarshipsPage = () => {
       id: 23,
       name: "Talent Scholarship",
       program: "All Programs",
-      eligibility: "Academic, arts ya leadership talent with proven achievements and recommendations",
+      eligibility: "Academic, arts or leadership talent with proven achievements and recommendations",
       amount: "50% Tuition Fee",
-      description: "Academic, arts ya leadership talent walay students ke liye.",
+      description: "For students with academic, arts, or leadership talent.",
       type: "talent",
       provider: "Aspire College",
       deadline: "January 15, 2025"
@@ -502,8 +502,8 @@ const ScholarshipsPage = () => {
   const TEAL_600 = '#0D9488';
 
   return (
-    <div className="min-h-screen bg-white transition-colors duration-300 pt-[85px] sm:pt-[95px]">
-      {/* Hero Section */}
+    <div className="min-h-screen bg-white transition-colors duration-300 pt-[40px] ">
+      {/* Hero Section - Overlay Removed */}
       <section ref={heroRef} className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
@@ -511,7 +511,6 @@ const ScholarshipsPage = () => {
             alt="Scholarships"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
@@ -522,7 +521,7 @@ const ScholarshipsPage = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <motion.h1 
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight text-white"
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight text-white drop-shadow-lg"
               initial={{ opacity: 0, x: -100 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
@@ -530,7 +529,7 @@ const ScholarshipsPage = () => {
               Scholarships & <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5EEAD4] to-[#0D9488]">Financial Aid</span>
             </motion.h1>
             <motion.p 
-              className="text-base sm:text-lg text-blue-100 max-w-3xl mx-auto leading-relaxed"
+              className="text-base sm:text-lg text-white drop-shadow-lg max-w-3xl mx-auto leading-relaxed"
               initial={{ opacity: 0, x: -80 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, ease: "easeOut", delay: 0.5 }}
@@ -544,26 +543,39 @@ const ScholarshipsPage = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1], delay: 0.7 }}
             >
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search scholarships by name, program, or provider..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full px-6 py-3.5 pr-12 rounded-full bg-white/95 backdrop-blur-sm text-[#1E293B] placeholder-[#64748B] border-0 focus:ring-2 focus:ring-[#0D9488] shadow-lg transition-all duration-300 cursor-pointer"
-                />
-                {searchTerm && (
-                  <button
-                    onClick={clearSearch}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-[#64748B] hover:text-[#1E293B] transition-colors"
-                  >
-                    ✕
-                  </button>
-                )}
+              <div className="flex gap-3">
+                <div className="relative flex-1">
+                  <input
+                    type="text"
+                    placeholder="Search scholarships by name, program, or provider..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && filterScholarships()}
+                    className="w-full px-6 py-3.5 pr-12 rounded-full bg-white/95 backdrop-blur-sm text-[#1E293B] placeholder-[#64748B] border-0 focus:ring-2 focus:ring-[#0D9488] shadow-lg transition-all duration-300 cursor-pointer"
+                  />
+                  {searchTerm && (
+                    <button
+                      onClick={clearSearch}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-[#64748B] hover:text-[#1E293B] transition-colors"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+                <button
+                  onClick={() => filterScholarships()}
+                  className="px-6 py-3.5 rounded-full text-white font-medium transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2 cursor-pointer flex-shrink-0"
+                  style={{ backgroundColor: TEAL_600 }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#0F766E'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = TEAL_600; }}
+                >
+                  <MagnifyingGlassIcon className="w-5 h-5" />
+                  Search
+                </button>
               </div>
               {searchTerm && (
                 <div className="text-left mt-2">
-                  <span className="text-sm text-gray-300">
+                  <span className="text-sm text-white drop-shadow-lg">
                     Found {filteredScholarships.length} scholarships
                   </span>
                 </div>

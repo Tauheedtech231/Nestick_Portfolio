@@ -39,24 +39,25 @@ export default function Navbar() {
 
   return (
     <nav 
-      className={`fixed top-0 left-0 right-0 z-50 flex justify-center px-2 sm:px-4`}
+      className={`fixed top-0 left-0 right-0 z-50 flex justify-center px-0`}
       style={{
-        paddingTop: '10px',
-        paddingBottom: '10px',
+        paddingTop: '0px',
+        paddingBottom: '0px',
         background: 'transparent',
       }}
     >
       <div 
-        className="w-full max-w-[1300px] h-[70px] sm:h-[80px] rounded-[16px] sm:rounded-[20px] flex items-center relative overflow-visible"
+        className="w-full h-[70px] sm:h-[80px] flex items-center relative overflow-visible"
         style={{
           background: navBgColor,
           boxShadow: isScrolled ? '0 6px 40px rgba(0,0,0,0.15)' : '0 6px 40px rgba(0,0,0,0.1)',
           fontFamily: "'Inter', sans-serif",
+          borderRadius: '0px',
         }}
       >
-        {/* ① LOGO BLOCK - BARA KAR DIYA */}
+        {/* ① LOGO BLOCK */}
         <div 
-          className="h-full rounded-l-[16px] sm:rounded-l-[20px] flex items-center gap-3 sm:gap-4 flex-shrink-0"
+          className="h-full flex items-center gap-3 sm:gap-4 flex-shrink-0"
           style={{
             background: 'transparent',
             padding: '0 16px 0 16px',
@@ -114,8 +115,8 @@ export default function Navbar() {
         </div>
 
         {/* ③ RIGHT CONTROLS */}
-        <div className="flex items-center gap-1 sm:gap-3 pr-2 sm:pr-4 flex-shrink-0 ml-auto">
-          {/* Apply Now Button - BARA KAR DIYA */}
+        <div className="flex items-center gap-1 sm:gap-3 pr-4 flex-shrink-0 ml-auto">
+          {/* Apply Now Button */}
           <Link
             href="/Admission"
             style={{
@@ -138,7 +139,7 @@ export default function Navbar() {
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden w-[34px] h-[34px] sm:w-[42px] sm:h-[42px] rounded-full border-2 flex items-center justify-center cursor-pointer"
+            className="md:hidden w-[34px] h-[34px] sm:w-[42px] sm:h-[42px] rounded-full border-2 flex items-center justify-center cursor-pointer mr-2"
             style={{
               borderColor: 'rgba(30, 64, 175, 0.3)',
               background: 'transparent',
@@ -155,14 +156,14 @@ export default function Navbar() {
 
         {/* ④ MOBILE MENU */}
         <div 
-          className={`md:hidden absolute top-[75px] sm:top-[90px] left-2 right-2 sm:left-4 sm:right-4 overflow-hidden transition-all duration-200 ${
+          className={`md:hidden absolute top-[70px] sm:top-[80px] left-0 right-0 overflow-hidden transition-all duration-200 ${
             isMobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[-10px] pointer-events-none'
           }`}
           style={{
             display: isMobileMenuOpen ? 'block' : 'none',
           }}
         >
-          <div className="rounded-xl shadow-2xl border overflow-hidden"
+          <div className="shadow-2xl border-t-0 overflow-hidden"
             style={{
               backgroundColor: menuBgColor,
               borderColor: 'rgba(30, 64, 175, 0.2)',

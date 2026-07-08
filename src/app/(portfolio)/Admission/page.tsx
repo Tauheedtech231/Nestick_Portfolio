@@ -53,7 +53,7 @@ export default function AdmissionsSection() {
   ];
 
   return (
-    <section className="min-h-screen bg-white transition-colors duration-300 relative pt-[85px] sm:pt-[93px]">
+    <section className="min-h-screen bg-white transition-colors duration-300 relative pt-[40px] ">
       
       {/* Scroll to Top Button */}
       <AnimatePresence>

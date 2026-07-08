@@ -39,67 +39,23 @@ const FIELDS: FieldConfig[] = [
   { id: "fmessage", label: "Message", type: "textarea", placeholder: "Tell us about your query...", required: true },
 ];
 
-type IconColor = "teal" | "blue" | "green" | "orange" | "tealLight" | "blueLight";
-
-const GRADIENTS: Record<IconColor, string> = {
-  teal: "from-[#0D9488] to-[#0F766E]",
-  blue: "from-[#2563EB] to-[#1D4ED8]",
-  green: "from-[#10B981] to-[#059669]",
-  orange: "from-[#F59E0B] to-[#D97706]",
-  tealLight: "from-[#14B8A6] to-[#0D9488]",
-  blueLight: "from-[#60A5FA] to-[#3B82F6]",
-};
-
-// Aspire College Apps
-const APPS: { key: string; label: string; emoji: string; color: IconColor }[] = [
-  { key: "admissions", label: "Admissions", emoji: "🎓", color: "teal" },
-  { key: "programs", label: "Programs", emoji: "📚", color: "blue" },
-  { key: "campus", label: "Campus", emoji: "🏛️", color: "green" },
-  { key: "faculty", label: "Faculty", emoji: "👨‍🏫", color: "orange" },
-  { key: "scholarship", label: "Scholarship", emoji: "🏆", color: "tealLight" },
-  { key: "contact", label: "Contact", emoji: "📬", color: "blueLight" },
-];
-
-const DOCK: { key: string; label: string; emoji: string; color: IconColor }[] = [
-  { key: "phone", label: "Call", emoji: "📞", color: "teal" },
-  { key: "email", label: "Email", emoji: "✉️", color: "blue" },
-  { key: "visit", label: "Visit", emoji: "📍", color: "green" },
-];
-
 /* ------------------------------------------------------------------ */
 /* Component                                                           */
 /* ------------------------------------------------------------------ */
 
 export default function ContactSection() {
   const [time, setTime] = useState("9:41");
-  const [dateStr, setDateStr] = useState("");
-  const [formOpen, setFormOpen] = useState(false);
   const [sendState, setSendState] = useState<"idle" | "sending" | "sent">("idle");
   const [values, setValues] = useState<Record<string, string>>({});
-  const [isMobile, setIsMobile] = useState(false);
-  const [sectionOffset, setSectionOffset] = useState(0);
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const inputRefs = useRef<Record<string, HTMLInputElement | HTMLTextAreaElement | null>>({});
   const sectionRef = useRef<HTMLElement | null>(null);
-  const phoneRef = useRef<HTMLDivElement | null>(null);
 
-  // ── Check mobile ─────────────────────────────────────────────────────────────
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // ─── Theme Colors - Aspire College Theme ────────────────────────────────────
+  // ─── Theme Colors - Solid Colors ────────────────────────────────────────────
   const TEAL_600 = '#0D9488';
-  const BLUE_600 = '#2563EB';
-  const DARK_BG = '#0a0e1a';
-  const LIGHT_BG = '#F8FAFC';
   
   const colors = {
-    sectionBg: '#F8FAFC',
+    sectionBg: '#FFFFFF',
     cardBg: '#FFFFFF',
     leftBg: '#F8FAFC',
     textPrimary: '#1E293B',
@@ -111,13 +67,12 @@ export default function ContactSection() {
     inputBg: '#FFFFFF',
     inputBorder: '#E2E8F0',
     shadow: '0 20px 50px rgba(0,0,0,0.06)',
-    phoneBg: '#0F172A',
-    overlay: 'rgba(0,0,0,0.3)',
+    laptopBg: '#0F172A',
     formBg: '#FFFFFF',
     inputFocus: TEAL_600,
     buttonBg: TEAL_600,
     buttonText: '#FFFFFF',
-    phoneBorder: TEAL_600,
+    laptopBorder: TEAL_600,
   };
 
   // ─── Live clock ──────────────────────────────────────────────────────────────
@@ -130,8 +85,6 @@ export default function ContactSection() {
       const ampm = hh >= 12 ? 'PM' : 'AM';
       hh = hh % 12 || 12;
       setTime(`${hh}:${mm} ${ampm}`);
-      
-      setDateStr(now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" }));
     };
     updateClock();
     const id = setInterval(updateClock, 30000);
@@ -151,50 +104,7 @@ export default function ContactSection() {
     }
   };
 
-  // ─── Smooth scroll and push up ──────────────────────────────────────────────
-  const scrollAndPushUp = () => {
-    return new Promise<void>((resolve) => {
-      if (sectionRef.current) {
-        const rect = sectionRef.current.getBoundingClientRect();
-        const scrollY = window.scrollY;
-        const targetY = scrollY + rect.top - 60;
-        
-        window.scrollTo({
-          top: targetY,
-          behavior: 'smooth',
-        });
-
-        const pushUpPx = isMobile ? -224 : -112;
-        setTimeout(() => {
-          setSectionOffset(pushUpPx);
-          resolve();
-        }, 700);
-      } else {
-        resolve();
-      }
-    });
-  };
-
-  // ─── Open form ───────────────────────────────────────────────────────────────
-  const openForm = async () => {
-    if (formOpen) return;
-    
-    await scrollAndPushUp();
-    
-    setTimeout(() => {
-      setFormOpen(true);
-      setSendState("idle");
-      setValues({});
-      
-      setTimeout(() => {
-        inputRefs.current["fname"]?.focus();
-      }, 400);
-    }, 300);
-  };
-
   const closeForm = () => {
-    setFormOpen(false);
-    setSectionOffset(0);
     clearTimer();
     setSendState("idle");
   };
@@ -212,13 +122,11 @@ export default function ContactSection() {
       setTimeout(() => {
         setSendState("idle");
         setValues({});
-        setTimeout(() => closeForm(), 400);
       }, 2000);
     }, 900);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (!formOpen) return;
     if (e.key === "Escape") closeForm();
   };
 
@@ -233,9 +141,7 @@ export default function ContactSection() {
         fontFamily: "var(--font-inter), sans-serif", 
         background: colors.sectionBg, 
         color: colors.textPrimary,
-        minHeight: isMobile ? 'auto' : '100vh',
-        transform: `translateY(${sectionOffset}px)`,
-        transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        minHeight: 'auto',
       }}
       onKeyDown={handleKeyDown}
     >
@@ -261,11 +167,11 @@ export default function ContactSection() {
             boxShadow: colors.shadow,
           }}
         >
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.15fr] items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] items-stretch">
             
             {/* ─── LEFT COLUMN ────────────────────────────────────────────────── */}
             <div 
-              className="relative p-[20px_16px_20px] sm:p-[24px_20px_24px] md:p-[30px_24px_24px] flex flex-col justify-center min-h-[300px] sm:min-h-[340px] overflow-hidden"
+              className="relative p-[20px_16px_20px] sm:p-[24px_20px_24px] lg:p-[30px_24px_24px] flex flex-col justify-center min-h-[300px] sm:min-h-[340px] overflow-hidden"
               style={{ background: colors.leftBg }}
             >
               {/* Decorative elements */}
@@ -306,7 +212,7 @@ export default function ContactSection() {
                   Have questions about admissions, programs, or campus life? Reach out to us and get a response within 24 hours.
                 </p>
 
-                <ul className="mt-4 sm:mt-6 md:mt-9 list-none">
+                <ul className="mt-4 sm:mt-6 lg:mt-9 list-none">
                   <li className="flex items-center gap-3 py-2 sm:py-3 border-t border-b" style={{ borderColor: colors.border }}>
                     <span className="w-[16px] h-[16px] sm:w-[18px] sm:h-[18px] shrink-0" style={{ color: colors.accent }}>
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -358,263 +264,166 @@ export default function ContactSection() {
               </div>
             </div>
 
-            {/* ─── RIGHT COLUMN - Phone ──────────────────────────────────────── */}
+            {/* ─── RIGHT COLUMN - Laptop Mockup with Form ──────────────────────── */}
             <div 
-              className="relative flex justify-center items-center p-[16px_20px] sm:p-[20px_24px] md:p-[24px_28px] min-h-[480px] sm:min-h-[560px] md:min-h-[500px]"
+              className="relative flex justify-center items-center p-[16px_20px] sm:p-[20px_24px] lg:p-[24px_28px] min-h-[400px] sm:min-h-[480px] lg:min-h-[500px]"
               style={{ 
                 background: colors.formBg,
                 borderLeft: '1px solid rgba(0, 0, 0, 0.04)',
               }}
             >
-              <div ref={phoneRef} className="relative flex justify-center items-center z-[2] w-full">
-                <div className="absolute bottom-[12px] sm:bottom-[18px] left-1/2 -translate-x-1/2 w-[200px] sm:w-[260px] md:w-[300px] h-8 sm:h-10 rounded-full opacity-10 blur-[24px] sm:blur-[28px]" style={{ background: colors.textPrimary }} />
-
-                <div className="relative z-[2]">
-                  {/* Phone container */}
-                  <div 
-                    className="relative w-[300px] sm:w-[290px] md:w-[280px] h-[500px] sm:h-[560px] md:h-[520px] rounded-[32px] sm:rounded-[40px] md:rounded-[48px] p-2.5 sm:p-3 overflow-hidden transition-colors duration-300"
-                    style={{
-                      background: colors.phoneBg,
-                      boxShadow: `0 40px 70px -20px rgba(0,0,0,0.3), 0 20px 30px -10px rgba(0,0,0,0.2)`,
-                      border: `2px solid ${colors.phoneBorder}`,
-                    }}
-                  >
-                    {/* side buttons */}
-                    <div className="absolute -left-[3px] top-[100px] sm:top-[130px] w-[3px] h-[40px] sm:h-[60px] rounded-l-[2px] z-10 max-[480px]:hidden" style={{ background: '#0F0C17' }} />
-                    <div className="absolute -right-[3px] top-[120px] sm:top-[160px] w-[3px] h-8 sm:h-10 rounded-r-[2px] z-10 max-[480px]:hidden" style={{ background: '#0F0C17' }} />
-
-                    <div className="relative w-full h-full rounded-[26px] sm:rounded-[30px] md:rounded-[36px] overflow-hidden flex flex-col">
-                      {/* Home screen background - Aspire College themed */}
-                      <div
-                        className="absolute inset-0 z-0 bg-cover bg-center"
-                        style={{
-                          backgroundImage:
-                            "url('https://images.unsplash.com/photo-1562774053-701939374585?w=600&h=1200&fit=crop&crop=center')",
-                        }}
-                      >
-                        <div className="absolute inset-0" style={{ background: colors.overlay, backdropFilter: 'blur(0.5px)' }} />
+              <div className="relative flex justify-center items-center z-[2] w-full">
+                {/* Laptop Mockup - No Bottom Shadow */}
+                <div 
+                  className="relative w-full max-w-[500px] rounded-t-2xl overflow-hidden transition-colors duration-300"
+                  style={{
+                    background: colors.laptopBg,
+                    boxShadow: `0 20px 50px -10px rgba(0,0,0,0.15)`,
+                    border: `2px solid ${colors.laptopBorder}`,
+                  }}
+                >
+                  {/* Laptop Screen - Form inside */}
+                  <div className="relative w-full bg-white p-4 sm:p-6 lg:p-8">
+                    {/* Screen Header */}
+                    <div className="flex items-center justify-between mb-4 pb-3 border-b" style={{ borderColor: colors.border }}>
+                      <div className="flex items-center gap-2">
+                        <div className="flex gap-1.5">
+                          <span className="w-3 h-3 rounded-full bg-red-500"></span>
+                          <span className="w-3 h-3 rounded-full bg-yellow-500"></span>
+                          <span className="w-3 h-3 rounded-full bg-green-500"></span>
+                        </div>
+                        <span className="text-xs font-medium ml-2" style={{ color: colors.textMuted }}>
+                          Aspire College - Contact Form
+                        </span>
                       </div>
-
-                      {/* Notch */}
-                      <div className="absolute top-2.5 sm:top-3.5 left-1/2 -translate-x-1/2 w-[70px] sm:w-[90px] md:w-[80px] h-[18px] sm:h-[22px] md:h-[20px] rounded-[16px] sm:rounded-[18px] md:rounded-[20px] z-[5]" style={{ background: '#17141F' }}>
-                        <div className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 w-1 h-1 sm:w-1.5 sm:h-1.5 md:w-1.5 md:h-1.5 rounded-full border" style={{ background: '#2D2A3A', borderColor: '#1A1825' }} />
-                      </div>
-
-                      {/* Status row */}
-                      <div
-                        className="px-4 sm:px-6 md:px-7 pt-[14px] sm:pt-[18px] md:pt-[18px] pb-0.5 flex justify-between text-[9px] sm:text-[10px] md:text-xs font-semibold text-white z-[2]"
-                        style={{ textShadow: "0 1px 10px rgba(0,0,0,0.3)" }}
-                      >
-                        <span>{time}</span>
-                        <span>●●●●</span>
-                      </div>
-
-                      {/* HOME SCREEN */}
-                      <div
-                        className="flex-1 flex flex-col px-3 sm:px-5 pt-1 pb-3 sm:pb-5 overflow-y-auto relative z-[2] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-                        onClick={(e) => {
-                          if (e.target === e.currentTarget) openForm();
-                        }}
-                      >
-                        <div className="text-center text-white mt-2 sm:mt-3" style={{ textShadow: "0 2px 30px rgba(0,0,0,0.6)" }}>
-                          <div
-                            className="text-[32px] sm:text-[40px] md:text-[38px] font-bold tracking-[-0.02em] cursor-pointer"
-                            style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                            onClick={openForm}
-                          >
-                            {time}
-                          </div>
-                          <div className="text-[10px] sm:text-[12px] md:text-[12px] text-white/70 mt-0.5">{dateStr}</div>
-                          <div className="text-[8px] sm:text-[10px] text-[#0D9488]/80 mt-1 font-medium">Aspire College</div>
-                        </div>
-
-                        {/* App grid - Aspire College themed */}
-                        <div className="grid grid-cols-3 gap-x-2 sm:gap-x-4 gap-y-3 sm:gap-y-5 mt-3 sm:mt-7">
-                          {APPS.map((app) => (
-                            <button
-                              key={app.key}
-                              type="button"
-                              onClick={openForm}
-                              className="flex flex-col items-center gap-0.5 sm:gap-1 cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-[0.92]"
-                            >
-                              <span
-                                className={`w-[40px] h-[40px] sm:w-[54px] sm:h-[54px] md:w-[50px] md:h-[50px] rounded-[10px] sm:rounded-[14px] flex items-center justify-center text-[16px] sm:text-[24px] md:text-[22px] text-white shadow-[0_4px_20px_rgba(0,0,0,0.4)] backdrop-blur-[4px] border border-white/10 bg-gradient-to-br ${GRADIENTS[app.color]}`}
-                              >
-                                {app.emoji}
-                              </span>
-                              <span
-                                className="text-[7px] sm:text-[9px] md:text-[9px] text-center font-medium text-white/85"
-                                style={{ textShadow: "0 1px 10px rgba(0,0,0,0.5)" }}
-                              >
-                                {app.label}
-                              </span>
-                            </button>
-                          ))}
-                        </div>
-
-                        {/* Dock */}
-                        <div className="flex justify-center gap-3 sm:gap-6 md:gap-5 mt-auto px-2 sm:px-4 md:px-4 py-1.5 sm:py-2.5 md:py-2 rounded-[16px] sm:rounded-[22px] md:rounded-[20px] bg-white/10 backdrop-blur-xl border border-white/5 mb-0.5 sm:mb-1">
-                          {DOCK.map((app) => (
-                            <button
-                              key={app.key}
-                              type="button"
-                              onClick={openForm}
-                              className="flex flex-col items-center gap-0.5 cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-[0.92]"
-                            >
-                              <span
-                                className={`w-7 h-7 sm:w-10 sm:h-10 md:w-9 md:h-9 rounded-[8px] sm:rounded-xl flex items-center justify-center text-[13px] sm:text-[18px] md:text-[16px] text-white backdrop-blur-[4px] border border-white/10 bg-gradient-to-br ${GRADIENTS[app.color]}`}
-                              >
-                                {app.emoji}
-                              </span>
-                              <span
-                                className="text-[6px] sm:text-[8px] md:text-[8px] font-medium text-white/70"
-                                style={{ textShadow: "0 1px 10px rgba(0,0,0,0.5)" }}
-                              >
-                                {app.label}
-                              </span>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* FORM SCREEN */}
-                      <div
-                        className={`absolute inset-0 rounded-[26px] sm:rounded-[30px] md:rounded-[36px] flex flex-col z-30 overflow-hidden transition-transform duration-700 ease-out ${
-                          formOpen ? "translate-y-0" : "translate-y-full"
-                        }`}
-                        style={{ 
-                          background: colors.formBg,
-                          transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
-                          borderRadius: 'inherit',
-                        }}
-                      >
-                        {/* Status bar */}
-                        <div
-                          className="px-4 sm:px-6 md:px-7 pt-[14px] sm:pt-[18px] md:pt-[18px] pb-0.5 flex justify-between text-[9px] sm:text-[10px] md:text-xs font-semibold flex-shrink-0"
-                          style={{ color: '#17141F' }}
-                        >
-                          <span>{time}</span>
-                          <span>●●●●</span>
-                        </div>
-
-                        {/* Form Header */}
-                        <div className="px-3 sm:px-[22px] pt-1 pb-2 flex items-center justify-between border-b flex-shrink-0" style={{ borderColor: colors.border }}>
-                          <span
-                            className="text-sm sm:text-lg"
-                            style={{ fontFamily: "var(--font-fraunces), serif", fontWeight: 500, color: colors.textPrimary }}
-                          >
-                            Send a{" "}
-                            <span style={{ color: colors.accent }}>message</span>
-                          </span>
-                          <button
-                            type="button"
-                            onClick={closeForm}
-                            className="bg-transparent border-none text-base sm:text-xl cursor-pointer px-2 py-1 rounded-lg transition-colors flex-shrink-0"
-                            style={{ color: colors.textMuted }}
-                            onMouseEnter={(e) => { e.currentTarget.style.background = '#F3F4F6'; }}
-                            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
-                          >
-                            ✕
-                          </button>
-                        </div>
-
-                        {/* Form Body */}
-                        <form
-                          onSubmit={handleSubmit}
-                          className="flex-1 px-3 sm:px-[22px] pt-2 sm:pt-3 pb-2 sm:pb-3 flex flex-col overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-                        >
-                          <div className="flex-1 space-y-1.5 sm:space-y-2">
-                            {FIELDS.map((field) => (
-                              <div key={field.id} className="flex flex-col gap-0.5 transition-all duration-300 opacity-100 translate-y-0">
-                                <label htmlFor={field.id} className="text-[8px] sm:text-[10px] font-semibold tracking-[0.05em] uppercase" style={{ color: colors.textMuted }}>
-                                  {field.label}
-                                </label>
-                                {field.type === "textarea" ? (
-                                  <textarea
-                                    id={field.id}
-                                    ref={(el) => {
-                                      inputRefs.current[field.id] = el;
-                                    }}
-                                    placeholder={field.placeholder}
-                                    required={field.required}
-                                    value={values[field.id] ?? ""}
-                                    onChange={(e) => handleChange(field.id, e.target.value)}
-                                    className="font-sans text-[11px] sm:text-[13px] rounded-xl px-2.5 sm:px-3 py-1.5 sm:py-2 outline-none resize-none min-h-[32px] sm:min-h-[42px] leading-[1.4] sm:leading-[1.5] transition-colors duration-300"
-                                    style={{
-                                      fontFamily: "var(--font-inter), sans-serif",
-                                      background: colors.inputBg,
-                                      border: `1.4px solid ${colors.inputBorder}`,
-                                      color: colors.textPrimary,
-                                    }}
-                                    onFocus={(e) => {
-                                      e.currentTarget.style.borderColor = colors.inputFocus;
-                                      e.currentTarget.style.background = '#F8FAFF';
-                                    }}
-                                    onBlur={(e) => {
-                                      e.currentTarget.style.borderColor = colors.inputBorder;
-                                      e.currentTarget.style.background = colors.inputBg;
-                                    }}
-                                  />
-                                ) : (
-                                  <input
-                                    id={field.id}
-                                    ref={(el) => {
-                                      inputRefs.current[field.id] = el;
-                                    }}
-                                    type={field.type}
-                                    placeholder={field.placeholder}
-                                    required={field.required}
-                                    value={values[field.id] ?? ""}
-                                    onChange={(e) => handleChange(field.id, e.target.value)}
-                                    className="font-sans text-[11px] sm:text-[13px] rounded-xl px-2.5 sm:px-3 py-1.5 sm:py-2 outline-none transition-colors duration-300"
-                                    style={{
-                                      fontFamily: "var(--font-inter), sans-serif",
-                                      background: colors.inputBg,
-                                      border: `1.4px solid ${colors.inputBorder}`,
-                                      color: colors.textPrimary,
-                                    }}
-                                    onFocus={(e) => {
-                                      e.currentTarget.style.borderColor = colors.inputFocus;
-                                      e.currentTarget.style.background = '#F8FAFF';
-                                    }}
-                                    onBlur={(e) => {
-                                      e.currentTarget.style.borderColor = colors.inputBorder;
-                                      e.currentTarget.style.background = colors.inputBg;
-                                    }}
-                                  />
-                                )}
-                              </div>
-                            ))}
-                          </div>
-
-                          {/* Submit Button */}
-                          <div className="flex-shrink-0 mt-1.5 sm:mt-2">
-                            <button
-                              type="submit"
-                              disabled={sendState !== "idle"}
-                              className={`w-full border-none rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 text-[10px] sm:text-xs md:text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer transition-all duration-400 text-white opacity-100 translate-y-0 ${
-                                sendState === "sent" ? "bg-[#1D9E6D]" : ""
-                              }`}
-                              style={{
-                                fontFamily: "var(--font-inter), sans-serif",
-                                background: sendState === "sent" ? '#1D9E6D' : colors.buttonBg,
-                                color: sendState === "sent" ? '#FFFFFF' : colors.buttonText,
-                              }}
-                            >
-                              <span>{sendLabel}</span>
-                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 sm:w-3.5 sm:h-3.5">
-                                <path d="M5 12h14" />
-                                <path d="M13 5l7 7-7 7" />
-                              </svg>
-                            </button>
-                          </div>
-                        </form>
-
-                        {/* Bottom home indicator */}
-                        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[80px] sm:w-[100px] md:w-[90px] h-0.5 sm:h-1 rounded-[2px] sm:rounded-[3px]" style={{ background: 'rgba(0,0,0,0.08)' }} />
+                      <div className="flex items-center gap-1">
+                        <span className="text-[10px]" style={{ color: colors.textMuted }}>{time}</span>
                       </div>
                     </div>
+
+                    {/* Form */}
+                    <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        {FIELDS.slice(0, 3).map((field) => (
+                          <div key={field.id} className={field.id === "fphone" ? "sm:col-span-2" : ""}>
+                            <label htmlFor={field.id} className="block text-[10px] sm:text-xs font-semibold tracking-[0.05em] uppercase mb-1" style={{ color: colors.textMuted }}>
+                              {field.label}
+                            </label>
+                            <input
+                              id={field.id}
+                              type={field.type}
+                              placeholder={field.placeholder}
+                              required={field.required}
+                              value={values[field.id] ?? ""}
+                              onChange={(e) => handleChange(field.id, e.target.value)}
+                              className="w-full font-sans text-[12px] sm:text-sm rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 outline-none transition-all duration-300"
+                              style={{
+                                fontFamily: "var(--font-inter), sans-serif",
+                                background: colors.inputBg,
+                                border: `1.4px solid ${colors.inputBorder}`,
+                                color: colors.textPrimary,
+                              }}
+                              onFocus={(e) => {
+                                e.currentTarget.style.borderColor = colors.inputFocus;
+                                e.currentTarget.style.background = '#F8FAFF';
+                                e.currentTarget.style.boxShadow = `0 0 0 3px ${colors.accentLight}`;
+                              }}
+                              onBlur={(e) => {
+                                e.currentTarget.style.borderColor = colors.inputBorder;
+                                e.currentTarget.style.background = colors.inputBg;
+                                e.currentTarget.style.boxShadow = 'none';
+                              }}
+                            />
+                          </div>
+                        ))}
+                      </div>
+
+                      <div>
+                        <label htmlFor="fsubject" className="block text-[10px] sm:text-xs font-semibold tracking-[0.05em] uppercase mb-1" style={{ color: colors.textMuted }}>
+                          Subject
+                        </label>
+                        <input
+                          id="fsubject"
+                          type="text"
+                          placeholder="Admission inquiry"
+                          required
+                          value={values["fsubject"] ?? ""}
+                          onChange={(e) => handleChange("fsubject", e.target.value)}
+                          className="w-full font-sans text-[12px] sm:text-sm rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 outline-none transition-all duration-300"
+                          style={{
+                            fontFamily: "var(--font-inter), sans-serif",
+                            background: colors.inputBg,
+                            border: `1.4px solid ${colors.inputBorder}`,
+                            color: colors.textPrimary,
+                          }}
+                          onFocus={(e) => {
+                            e.currentTarget.style.borderColor = colors.inputFocus;
+                            e.currentTarget.style.background = '#F8FAFF';
+                            e.currentTarget.style.boxShadow = `0 0 0 3px ${colors.accentLight}`;
+                          }}
+                          onBlur={(e) => {
+                            e.currentTarget.style.borderColor = colors.inputBorder;
+                            e.currentTarget.style.background = colors.inputBg;
+                            e.currentTarget.style.boxShadow = 'none';
+                          }}
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="fmessage" className="block text-[10px] sm:text-xs font-semibold tracking-[0.05em] uppercase mb-1" style={{ color: colors.textMuted }}>
+                          Message
+                        </label>
+                        <textarea
+                          id="fmessage"
+                          placeholder="Tell us about your query..."
+                          required
+                          rows={3}
+                          value={values["fmessage"] ?? ""}
+                          onChange={(e) => handleChange("fmessage", e.target.value)}
+                          className="w-full font-sans text-[12px] sm:text-sm rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 outline-none resize-none transition-all duration-300"
+                          style={{
+                            fontFamily: "var(--font-inter), sans-serif",
+                            background: colors.inputBg,
+                            border: `1.4px solid ${colors.inputBorder}`,
+                            color: colors.textPrimary,
+                          }}
+                          onFocus={(e) => {
+                            e.currentTarget.style.borderColor = colors.inputFocus;
+                            e.currentTarget.style.background = '#F8FAFF';
+                            e.currentTarget.style.boxShadow = `0 0 0 3px ${colors.accentLight}`;
+                          }}
+                          onBlur={(e) => {
+                            e.currentTarget.style.borderColor = colors.inputBorder;
+                            e.currentTarget.style.background = colors.inputBg;
+                            e.currentTarget.style.boxShadow = 'none';
+                          }}
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        disabled={sendState !== "idle"}
+                        className={`w-full border-none rounded-xl px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer transition-all duration-400 text-white ${
+                          sendState === "sent" ? "bg-[#1D9E6D]" : ""
+                        }`}
+                        style={{
+                          fontFamily: "var(--font-inter), sans-serif",
+                          background: sendState === "sent" ? '#1D9E6D' : colors.buttonBg,
+                          color: sendState === "sent" ? '#FFFFFF' : colors.buttonText,
+                        }}
+                      >
+                        <span>{sendLabel}</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+                          <path d="M5 12h14" />
+                          <path d="M13 5l7 7-7 7" />
+                        </svg>
+                      </button>
+                    </form>
                   </div>
+
+                  {/* Laptop Bottom Bar - Minimal Stand */}
+                  <div className="w-full h-0.5 bg-[#1a1a2e]"></div>
+                  <div className="w-12 h-0.5 mx-auto bg-[#2a2a3e] rounded-b-full"></div>
                 </div>
               </div>
             </div>

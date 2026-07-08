@@ -122,13 +122,81 @@ const nodes: NodeData[] = [
   },
 ];
 
+// Mobile responsive nodes - stacked vertically
+const mobileNodes: NodeData[] = [
+  {
+    id: "01",
+    title: "Register / Login",
+    subtitle: "Create your applicant account",
+    details: ["Secure account creation", "Email verification", "Profile management"],
+    color: colors.teal,
+    x: 50,
+    y: 10,
+    w: 300,
+  },
+  {
+    id: "02",
+    title: "Fill Application",
+    subtitle: "Complete admission form",
+    details: ["Personal information", "Academic history", "Program preferences"],
+    color: colors.blue,
+    x: 50,
+    y: 130,
+    w: 300,
+  },
+  {
+    id: "03",
+    title: "Upload Documents",
+    subtitle: "Submit certificates & photos",
+    details: ["Transcripts", "CNIC/B-Form", "Photographs"],
+    color: colors.tealLight,
+    x: 50,
+    y: 250,
+    w: 300,
+  },
+  {
+    id: "04",
+    title: "Pay Fee",
+    subtitle: "Submit processing fee",
+    details: ["Online payment", "Bank challan", "Secure transaction"],
+    color: colors.blueLight,
+    x: 50,
+    y: 370,
+    w: 300,
+  },
+  {
+    id: "05",
+    title: "Track Status",
+    subtitle: "Monitor application online",
+    details: ["Real-time updates", "Status notifications", "Review feedback"],
+    color: colors.tealDark,
+    x: 50,
+    y: 490,
+    w: 300,
+  },
+  {
+    id: "06",
+    title: "Admission Letter",
+    subtitle: "Receive official confirmation",
+    details: ["Official letter", "Next steps", "Welcome package"],
+    color: colors.blueDark,
+    x: 50,
+    y: 610,
+    w: 300,
+  },
+];
+
 function pct(value: number, total: number) {
   return `${(value / total) * 100}%`;
 }
 
 const GRID_W = 1200;
 const GRID_H = 620;
+const MOBILE_GRID_W = 400;
+const MOBILE_GRID_H = 730;
 const CARD_H = 100;
+const MOBILE_CARD_H = 100;
+const MOBILE_CARD_W = 300;
 
 function Card({
   node,
@@ -136,12 +204,14 @@ function Card({
   onHover,
   onLeave,
   index,
+  isMobile,
 }: {
   node: NodeData;
   isHovered: boolean;
   onHover: () => void;
   onLeave: () => void;
   index: number;
+  isMobile: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: false, amount: 0.2 });
@@ -173,6 +243,52 @@ function Card({
     }
   };
 
+  // Mobile: always expanded, no hover needed
+  if (isMobile) {
+    return (
+      <motion.div
+        ref={ref}
+        variants={cardVariants}
+        initial="hidden"
+        animate={controls}
+        className={`absolute rounded-[20px] border-2 bg-white shadow-lg ${node.color.border} ${node.color.glow}`}
+        style={{
+          left: pct(node.x, MOBILE_GRID_W),
+          top: pct(node.y, MOBILE_GRID_H),
+          width: pct(MOBILE_CARD_W, MOBILE_GRID_W),
+          zIndex: 10,
+        }}
+      >
+        <div className="flex items-center gap-4 px-4 py-3">
+          <div
+            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white shadow-md ${node.color.avatarBg}`}
+          >
+            {node.id}
+          </div>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-bold text-[#1E293B]">{node.title}</p>
+            <p className={`truncate text-xs font-medium ${node.color.text}`}>{node.subtitle}</p>
+          </div>
+        </div>
+
+        {/* Always expanded on mobile */}
+        <div className="px-4 pb-4">
+          <div className="mt-1 border-t border-[#E2E8F0] pt-3">
+            <ul className="space-y-1.5">
+              {node.details.map((item) => (
+                <li key={item} className="flex items-center gap-2 text-xs text-[#475569]">
+                  <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${node.color.avatarBg}`} />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // Desktop: hover to expand
   return (
     <motion.div
       ref={ref}
@@ -225,10 +341,94 @@ function Card({
   );
 }
 
+// Mobile connection lines (vertical arrows)
+function MobileConnections({ isInView }: { isInView: boolean }) {
+  const lineVariants: Variants = {
+    hidden: { pathLength: 0, opacity: 0 },
+    visible: {
+      pathLength: 1,
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        ease: [0.25, 0.1, 0.25, 1],
+        delay: 0.2,
+      }
+    }
+  };
+
+  // Vertical connections between cards on mobile
+  const connections = [
+    { from: 10, to: 130 },  // 01 -> 02
+    { from: 130, to: 250 }, // 02 -> 03
+    { from: 250, to: 370 }, // 03 -> 04
+    { from: 370, to: 490 }, // 04 -> 05
+    { from: 490, to: 610 }, // 05 -> 06
+  ];
+
+  return (
+    <svg
+      viewBox={`0 0 ${MOBILE_GRID_W} ${MOBILE_GRID_H}`}
+      className="absolute inset-0 h-full w-full pointer-events-none"
+      preserveAspectRatio="none"
+    >
+      <g stroke="#0D9488" strokeWidth={2.5} strokeOpacity={0.5} strokeLinecap="round">
+        {connections.map((conn, idx) => {
+          const y1 = conn.from + MOBILE_CARD_H;
+          const y2 = conn.to;
+          // For the last connection, adjust
+          const actualY2 = idx === connections.length - 1 ? conn.to : conn.to;
+          
+          return (
+            <motion.line
+              key={idx}
+              x1={185}
+              y1={y1}
+              x2={185}
+              y2={actualY2}
+              variants={lineVariants}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              strokeDasharray="4,4"
+            />
+          );
+        })}
+        {/* Arrow heads */}
+        {connections.map((conn, idx) => {
+          const y1 = conn.from + MOBILE_CARD_H;
+          const y2 = idx === connections.length - 1 ? conn.to : conn.to;
+          const midY = (y1 + y2) / 2;
+          
+          return (
+            <motion.polygon
+              key={`arrow-${idx}`}
+              points={`${185},${y2 - 8} ${180},${y2} ${190},${y2}`}
+              fill="#0D9488"
+              opacity={0.5}
+              variants={lineVariants}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+            />
+          );
+        })}
+      </g>
+    </svg>
+  );
+}
+
 export default function AdmissionProcess() {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const n01 = nodes[0];
   const n02 = nodes[1];
@@ -257,14 +457,21 @@ export default function AdmissionProcess() {
   // Check if any card is hovered
   const isAnyHovered = hoveredId !== null;
 
+  // Use mobile nodes when on mobile
+  const displayNodes = isMobile ? mobileNodes : nodes;
+  const gridWidth = isMobile ? MOBILE_GRID_W : GRID_W;
+  const gridHeight = isMobile ? MOBILE_GRID_H : GRID_H;
+
   return (
-    <div ref={sectionRef} className="relative w-full overflow-visible bg-white py-16">
-      {/* ambient glow */}
-      <div className="pointer-events-none absolute left-1/2 top-24 h-72 w-72 -translate-x-1/2 rounded-full bg-[#0D9488]/10 blur-[100px]" />
+    <div ref={sectionRef} className="relative w-full overflow-visible bg-white py-12 sm:py-16">
+      {/* ambient glow - hidden on mobile */}
+      {!isMobile && (
+        <div className="pointer-events-none absolute left-1/2 top-24 h-72 w-72 -translate-x-1/2 rounded-full bg-[#0D9488]/10 blur-[100px]" />
+      )}
 
       {/* heading */}
       <motion.h2 
-        className="relative z-10 mb-14 text-center text-3xl sm:text-4xl font-bold text-[#1E293B]"
+        className="relative z-10 mb-8 sm:mb-14 text-center text-2xl sm:text-3xl md:text-4xl font-bold text-[#1E293B] px-4"
         initial={{ opacity: 0, y: 30 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
@@ -278,115 +485,136 @@ export default function AdmissionProcess() {
       {/* chart */}
       <div
         className="relative mx-auto w-full max-w-[1200px] px-4"
-        style={{ aspectRatio: `${GRID_W} / ${GRID_H}` }}
+        style={{ 
+          aspectRatio: isMobile ? `${MOBILE_GRID_W} / ${MOBILE_GRID_H}` : `${GRID_W} / ${GRID_H}`,
+          minHeight: isMobile ? '750px' : 'auto',
+        }}
       >
-        {/* SVG Lines - with dynamic opacity */}
-        <div 
-          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-          style={{ 
-            opacity: isAnyHovered ? 0 : 1,
-            zIndex: 5,
-          }}
-        >
-          <svg
-            viewBox={`0 0 ${GRID_W} ${GRID_H}`}
-            className="h-full w-full"
-            preserveAspectRatio="none"
+        {/* SVG Lines - Desktop */}
+        {!isMobile && (
+          <div 
+            className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+            style={{ 
+              opacity: isAnyHovered ? 0 : 1,
+              zIndex: 5,
+            }}
           >
-            <g stroke="#0D9488" strokeWidth={2.5} strokeOpacity={0.5} strokeLinecap="round">
-              {/* tier0 -> bus1 */}
-              <motion.line
-                x1={n01.x} y1={n01.y + CARD_H} 
-                x2={n01.x} y2={bus1Y}
-                variants={lineVariants}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-              />
-              {/* bus1 horizontal */}
-              <motion.line
-                x1={n02.x} y1={bus1Y} 
-                x2={n03.x} y2={bus1Y}
-                variants={lineVariants}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-              />
-              {/* bus1 -> tier1 tops */}
-              <motion.line
-                x1={n02.x} y1={bus1Y} 
-                x2={n02.x} y2={n02.y}
-                variants={lineVariants}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-              />
-              <motion.line
-                x1={n03.x} y1={bus1Y} 
-                x2={n03.x} y2={n03.y}
-                variants={lineVariants}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-              />
+            <svg
+              viewBox={`0 0 ${GRID_W} ${GRID_H}`}
+              className="h-full w-full"
+              preserveAspectRatio="none"
+            >
+              <g stroke="#0D9488" strokeWidth={2.5} strokeOpacity={0.5} strokeLinecap="round">
+                {/* tier0 -> bus1 */}
+                <motion.line
+                  x1={n01.x} y1={n01.y + CARD_H} 
+                  x2={n01.x} y2={bus1Y}
+                  variants={lineVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                />
+                {/* bus1 horizontal */}
+                <motion.line
+                  x1={n02.x} y1={bus1Y} 
+                  x2={n03.x} y2={bus1Y}
+                  variants={lineVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                />
+                {/* bus1 -> tier1 tops */}
+                <motion.line
+                  x1={n02.x} y1={bus1Y} 
+                  x2={n02.x} y2={n02.y}
+                  variants={lineVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                />
+                <motion.line
+                  x1={n03.x} y1={bus1Y} 
+                  x2={n03.x} y2={n03.y}
+                  variants={lineVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                />
 
-              {/* tier1 -> bus2 */}
-              <motion.line
-                x1={n02.x} y1={n02.y + CARD_H} 
-                x2={n02.x} y2={bus2Y}
-                variants={lineVariants}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-              />
-              <motion.line
-                x1={n03.x} y1={n03.y + CARD_H} 
-                x2={n03.x} y2={bus2Y}
-                variants={lineVariants}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-              />
-              {/* bus2 horizontal */}
-              <motion.line
-                x1={n04.x} y1={bus2Y} 
-                x2={n06.x} y2={bus2Y}
-                variants={lineVariants}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-              />
-              {/* bus2 -> tier2 tops */}
-              <motion.line
-                x1={n04.x} y1={bus2Y} 
-                x2={n04.x} y2={n04.y}
-                variants={lineVariants}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-              />
-              <motion.line
-                x1={n05.x} y1={bus2Y} 
-                x2={n05.x} y2={n05.y}
-                variants={lineVariants}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-              />
-              <motion.line
-                x1={n06.x} y1={bus2Y} 
-                x2={n06.x} y2={n06.y}
-                variants={lineVariants}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-              />
-            </g>
-          </svg>
-        </div>
+                {/* tier1 -> bus2 */}
+                <motion.line
+                  x1={n02.x} y1={n02.y + CARD_H} 
+                  x2={n02.x} y2={bus2Y}
+                  variants={lineVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                />
+                <motion.line
+                  x1={n03.x} y1={n03.y + CARD_H} 
+                  x2={n03.x} y2={bus2Y}
+                  variants={lineVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                />
+                {/* bus2 horizontal */}
+                <motion.line
+                  x1={n04.x} y1={bus2Y} 
+                  x2={n06.x} y2={bus2Y}
+                  variants={lineVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                />
+                {/* bus2 -> tier2 tops */}
+                <motion.line
+                  x1={n04.x} y1={bus2Y} 
+                  x2={n04.x} y2={n04.y}
+                  variants={lineVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                />
+                <motion.line
+                  x1={n05.x} y1={bus2Y} 
+                  x2={n05.x} y2={n05.y}
+                  variants={lineVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                />
+                <motion.line
+                  x1={n06.x} y1={bus2Y} 
+                  x2={n06.x} y2={n06.y}
+                  variants={lineVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                />
+              </g>
+            </svg>
+          </div>
+        )}
+
+        {/* Mobile Connections */}
+        {isMobile && <MobileConnections isInView={isInView} />}
 
         {/* Cards */}
-        {nodes.map((node, index) => (
+        {displayNodes.map((node, index) => (
           <Card
             key={node.id}
             node={node}
             index={index}
-            isHovered={hoveredId === node.id}
-            onHover={() => setHoveredId(node.id)}
-            onLeave={() => setHoveredId(null)}
+            isHovered={!isMobile && hoveredId === node.id}
+            onHover={() => !isMobile && setHoveredId(node.id)}
+            onLeave={() => !isMobile && setHoveredId(null)}
+            isMobile={isMobile}
           />
         ))}
       </div>
+
+      {/* Mobile hint - show scroll indicator */}
+      {isMobile && (
+        <motion.p 
+          className="text-center text-xs text-[#64748B] mt-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          Scroll to see all steps →
+        </motion.p>
+      )}
     </div>
   );
 }
