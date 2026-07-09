@@ -66,10 +66,10 @@ export default function HistorySection() {
       >
         <motion.div variants={slideFromLeft} className="text-center">
           <h2 
-            className="text-[clamp(28px,3.5vw,35px)] font-bold mb-3 leading-tight"
+            className="text-[clamp(28px,3.5vw,35px)] font-extrabold mb-3 leading-tight"
             style={{
               fontFamily: "'Inter', sans-serif",
-              color: '#1E293B',
+              color: '#0a1240',
             }}
           >
             Our <span style={{ color: TEAL_600 }}>History</span> &amp;{' '}
@@ -81,7 +81,7 @@ export default function HistorySection() {
             style={{ background: TEAL_600 }}
           />
           <p 
-            className="text-[15px] sm:text-[17px] md:text-[19px] text-[#64748B] max-w-3xl mx-auto leading-relaxed"
+            className="text-[15px] sm:text-[15px] md:text-[15px] text-[#3d4566] max-w-3xl mx-auto leading-[1.8]"
             style={{
               fontFamily: "'Inter', sans-serif",
             }}
@@ -191,7 +191,7 @@ export default function HistorySection() {
                 className="leading-[1.08] mb-[4%]"
                 style={{
                   fontFamily: "'Inter', sans-serif",
-                  fontWeight: 700,
+                  fontWeight: 800,
                   fontSize: 'clamp(20px, 3.6vw, 52px)',
                   color: TEAL_600,
                 }}
@@ -202,9 +202,9 @@ export default function HistorySection() {
               {/* Description */}
               <motion.p 
                 variants={fadeInUp}
-                className="leading-[1.75] mb-[4%]"
+                className="leading-[1.8] mb-[4%]"
                 style={{
-                  fontSize: 'clamp(11px, 1vw, 14.5px)',
+                  fontSize: 'clamp(11px, 1vw, 15px)',
                   color: MUTED,
                   fontFamily: "'Inter', sans-serif",
                 }}
@@ -214,9 +214,9 @@ export default function HistorySection() {
 
               <motion.p 
                 variants={fadeInUp}
-                className="leading-[1.75] mb-[4%]"
+                className="leading-[1.8] mb-[4%]"
                 style={{
-                  fontSize: 'clamp(11px, 1vw, 14.5px)',
+                  fontSize: 'clamp(11px, 1vw, 15px)',
                   color: MUTED,
                   fontFamily: "'Inter', sans-serif",
                 }}
@@ -236,7 +236,7 @@ export default function HistorySection() {
                     background: `linear-gradient(135deg, ${TEAL_600}, ${BLUE_600})`,
                     color: '#FFFFFF',
                     fontWeight: 700,
-                    fontSize: 'clamp(11px, 1.05vw, 14.5px)',
+                    fontSize: 'clamp(11px, 1.05vw, 14px)',
                     borderRadius: '999px',
                     textDecoration: 'none',
                     fontFamily: "'Inter', sans-serif",
@@ -356,7 +356,7 @@ export default function HistorySection() {
                 className="leading-[1.08] mb-3"
                 style={{
                   fontFamily: "'Inter', sans-serif",
-                  fontWeight: 700,
+                  fontWeight: 800,
                   fontSize: 'clamp(28px, 6vw, 38px)',
                   color: TEAL_600,
                 }}
@@ -367,9 +367,9 @@ export default function HistorySection() {
               {/* Description */}
               <motion.p 
                 variants={fadeInUp}
-                className="leading-[1.75] mb-3"
+                className="leading-[1.8] mb-3"
                 style={{
-                  fontSize: 'clamp(14px, 2.5vw, 16px)',
+                  fontSize: 'clamp(14px, 2.5vw, 15px)',
                   color: MUTED,
                   fontFamily: "'Inter', sans-serif",
                 }}
@@ -379,9 +379,9 @@ export default function HistorySection() {
 
               <motion.p 
                 variants={fadeInUp}
-                className="leading-[1.75] mb-4"
+                className="leading-[1.8] mb-4"
                 style={{
-                  fontSize: 'clamp(14px, 2.5vw, 16px)',
+                  fontSize: 'clamp(14px, 2.5vw, 15px)',
                   color: MUTED,
                   fontFamily: "'Inter', sans-serif",
                 }}
@@ -401,7 +401,7 @@ export default function HistorySection() {
                     background: `linear-gradient(135deg, ${TEAL_600}, ${BLUE_600})`,
                     color: '#FFFFFF',
                     fontWeight: 700,
-                    fontSize: 'clamp(14px, 2.5vw, 16px)',
+                    fontSize: 'clamp(14px, 2.5vw, 14px)',
                     borderRadius: '999px',
                     textDecoration: 'none',
                     fontFamily: "'Inter', sans-serif",

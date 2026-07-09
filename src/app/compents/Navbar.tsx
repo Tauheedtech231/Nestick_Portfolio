@@ -30,12 +30,12 @@ export default function Navbar() {
   }, []);
 
   // Always White Theme
-  const accentColor = '#1E40AF'; // Dark Blue
+  const accentColor = '#2f56fb'; // Updated to match theme
   const navBgColor = '#FFFFFF';
-  const navTextColor = '#1E293B';
+  const navTextColor = '#0a1240';
   const navActiveColor = accentColor;
   const menuBgColor = '#FFFFFF';
-  const borderColor = 'rgba(30, 64, 175, 0.15)';
+  const borderColor = 'rgba(47, 86, 251, 0.15)';
 
   return (
     <nav 
@@ -85,7 +85,7 @@ export default function Navbar() {
               <button
                 key={item.name}
                 onClick={() => window.location.href = item.path}
-                className="relative h-full flex items-center whitespace-nowrap text-[11px] lg:text-[13px] font-medium tracking-[0.6px] px-2 lg:px-5 cursor-pointer"
+                className="relative h-full flex items-center whitespace-nowrap text-[13px] lg:text-[14px] font-medium tracking-[0.6px] px-2 lg:px-5 cursor-pointer"
                 style={{
                   color: isActive ? navActiveColor : navTextColor,
                   fontWeight: isActive ? '600' : '500',
@@ -119,21 +119,12 @@ export default function Navbar() {
           {/* Apply Now Button */}
           <Link
             href="/Admission"
-            style={{
-              background: accentColor,
-              color: '#FFFFFF',
-              fontFamily: "'Inter', sans-serif",
-              padding: '10px 22px',
-              borderRadius: '30px',
-              fontSize: '15px',
-              fontWeight: '600',
-              border: 'none',
-              cursor: 'pointer',
-              whiteSpace: 'nowrap',
-            }}
-            className="flex items-center gap-2 hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-[#2f56fb] to-[#1530b0] px-7 py-3 text-[14px] font-semibold text-white shadow-[0_12px_28px_-8px_rgba(47,86,251,0.5)] hover:shadow-[0_20px_40px_-12px_rgba(47,86,251,0.7)] hover:scale-[1.02] transition-all duration-300 cursor-pointer"
           >
-            <span>Apply Now</span>
+            Apply Now
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
           </Link>
 
           {/* Mobile Menu Toggle */}
@@ -141,7 +132,7 @@ export default function Navbar() {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="md:hidden w-[34px] h-[34px] sm:w-[42px] sm:h-[42px] rounded-full border-2 flex items-center justify-center cursor-pointer mr-2"
             style={{
-              borderColor: 'rgba(30, 64, 175, 0.3)',
+              borderColor: 'rgba(47, 86, 251, 0.3)',
               background: 'transparent',
               color: accentColor,
             }}
@@ -166,7 +157,7 @@ export default function Navbar() {
           <div className="shadow-2xl border-t-0 overflow-hidden"
             style={{
               backgroundColor: menuBgColor,
-              borderColor: 'rgba(30, 64, 175, 0.2)',
+              borderColor: 'rgba(47, 86, 251, 0.2)',
             }}
           >
             <div className="px-4 py-4 space-y-2">
@@ -181,8 +172,8 @@ export default function Navbar() {
                     }}
                     className={`block w-full text-left font-medium text-sm py-2.5 px-3 rounded-lg cursor-pointer ${
                       isActive 
-                        ? 'text-[#1E40AF] bg-[#1E40AF]/10'
-                        : 'text-gray-700 hover:bg-gray-100'
+                        ? 'text-[#2f56fb] bg-[#2f56fb]/10'
+                        : 'text-[#0a1240] hover:bg-gray-100'
                     }`}
                     style={{ fontFamily: "'Inter', sans-serif" }}
                   >

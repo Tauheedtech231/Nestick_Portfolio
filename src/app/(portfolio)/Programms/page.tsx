@@ -907,39 +907,44 @@ export default function ProgramsPage() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-2 mt-2">
-                    <Link href="/Admission" className="w-full">
-                      <button
-                        className="w-full py-2.5 text-white font-semibold rounded-full text-sm transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer"
-                        style={{ backgroundColor: BLUE_600 }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = '#1D4ED8';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = BLUE_600;
-                        }}
-                      >
-                        Apply Now
-                      </button>
-                    </Link>
-                    <button
-                      onClick={() => handleRequestInfo(program)}
-                      className="w-full py-2.5 font-semibold rounded-full text-sm transition-all duration-300 cursor-pointer"
-                      style={{ 
-                        border: `2px solid ${TEAL_600}`,
-                        color: TEAL_600,
-                        backgroundColor: 'transparent'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = '#E6F7F5';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'transparent';
-                      }}
-                    >
-                      More Info
-                    </button>
-                  </div>
+                 <div className="flex flex-col sm:flex-row gap-2 mt-2">
+  <Link href="/Admission" className="w-full">
+    <button
+      className="w-full py-2.5 text-white font-semibold rounded-full text-[14px] transition-all duration-300 shadow-[0_12px_28px_-8px_rgba(47,86,251,0.5)] hover:shadow-[0_20px_40px_-12px_rgba(47,86,251,0.7)] hover:scale-[1.02] cursor-pointer"
+      style={{ 
+        background: 'linear-gradient(135deg, #2f56fb, #1530b0)',
+        border: 'none'
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = 'linear-gradient(135deg, #2563EB, #1E3A8A)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = 'linear-gradient(135deg, #2f56fb, #1530b0)';
+      }}
+    >
+      Apply Now
+    </button>
+  </Link>
+  <button
+    onClick={() => handleRequestInfo(program)}
+    className="w-full py-2.5 font-semibold rounded-full text-[14px] transition-all duration-300 cursor-pointer"
+    style={{ 
+      border: `2px solid #2f56fb`,
+      color: '#2f56fb',
+      backgroundColor: 'transparent'
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.backgroundColor = '#dce3f5';
+      e.currentTarget.style.color = '#1530b0';
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.backgroundColor = 'transparent';
+      e.currentTarget.style.color = '#2f56fb';
+    }}
+  >
+    More Info
+  </button>
+</div>
                 </div>
               </motion.div>
             ))}

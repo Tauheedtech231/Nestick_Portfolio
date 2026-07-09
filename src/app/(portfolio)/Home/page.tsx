@@ -250,7 +250,7 @@ export default function Home() {
               {slides[currentSlide].desc}
             </div>
             
-            {/* Two Buttons */}
+            {/* Two Buttons - Admission + Contact Us */}
             <div
               className="flex flex-wrap gap-4 mt-6 transition-all duration-800 ease-out"
               style={{
@@ -260,7 +260,8 @@ export default function Home() {
                 justifyContent: isMobile ? 'center' : (isFullScreen ? 'center' : 'flex-start'),
               }}
             >
-              <Link href="https://nes-tick-wxih.vercel.app/">
+              {/* Admission Button - Redirects to /Admission */}
+              <Link href="/Admission">
                 <button 
                   className="px-6 md:px-8 py-2.5 md:py-3 rounded-full font-semibold text-sm md:text-base transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 cursor-pointer"
                   style={{
@@ -274,10 +275,11 @@ export default function Home() {
                     e.currentTarget.style.backgroundColor = accentColor;
                   }}
                 >
-                  Applicant Portal
+                  Admission
                 </button>
               </Link>
               
+              {/* Contact Us Button */}
               <Link href="/contact">
                 <button 
                   className="px-6 md:px-8 py-2.5 md:py-3 rounded-full font-semibold text-sm md:text-base transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 cursor-pointer"

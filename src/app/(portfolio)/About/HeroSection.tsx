@@ -64,14 +64,14 @@ export default function HeroSection({ onContactClick }: HeroSectionProps) {
         >
           <motion.h1 
             variants={fadeInUp}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 text-white"
+            className="text-3xl sm:text-4xl font-extrabold mb-3 text-white"
             style={{ textShadow: '0 2px 20px rgba(0,0,0,0.6)' }}
           >
             About Aspire College
           </motion.h1>
           <motion.p 
             variants={fadeInUp}
-            className="text-base sm:text-lg text-white max-w-3xl mx-auto leading-relaxed mb-6"
+            className="text-[15px] sm:text-[15px] text-white max-w-3xl mx-auto leading-[1.8] mb-6"
             style={{ textShadow: '0 2px 15px rgba(0,0,0,0.5)' }}
           >
             Shaping futures through excellence in education, innovation, and character building since 1985
@@ -85,7 +85,7 @@ export default function HeroSection({ onContactClick }: HeroSectionProps) {
           >
             <button
               onClick={scrollToContact}
-              className="px-8 py-3.5 rounded-full font-semibold text-base transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 cursor-pointer"
+              className="px-8 py-3.5 rounded-full font-semibold text-[14px] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 cursor-pointer"
               style={{
                 backgroundColor: TEAL_600,
                 color: '#FFFFFF',

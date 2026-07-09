@@ -58,9 +58,9 @@ export default function ContactSection() {
     sectionBg: '#FFFFFF',
     cardBg: '#FFFFFF',
     leftBg: '#F8FAFC',
-    textPrimary: '#1E293B',
-    textSecondary: '#1E293B',
-    textMuted: '#64748B',
+    textPrimary: '#0a1240',
+    textSecondary: '#0a1240',
+    textMuted: '#3d4566',
     border: 'rgba(13, 148, 136, 0.15)',
     accent: TEAL_600,
     accentLight: 'rgba(13, 148, 136, 0.08)',
@@ -147,7 +147,7 @@ export default function ContactSection() {
     >
       <div className="px-3 sm:px-8 md:px-16">
         {/* Eyebrow */}
-        <div className="flex items-center gap-3 text-[10px] sm:text-[13px] font-semibold tracking-[0.16em] uppercase mb-3 sm:mb-5 md:mb-7">
+        <div className="flex items-center gap-3 text-[10px] sm:text-[12px] font-semibold tracking-[0.16em] uppercase mb-3 sm:mb-5 md:mb-7">
           <span className="w-5 sm:w-6 h-px inline-block" style={{ background: colors.accent }} />
           <span style={{ color: colors.accent }}>Get in Touch</span>
         </div>
@@ -206,7 +206,7 @@ export default function ContactSection() {
                 </h1>
 
                 <p 
-                  className="mt-3 sm:mt-4 text-[13px] sm:text-[14px] md:text-[15px] leading-[1.6] sm:leading-[1.7] max-w-[380px] hidden sm:block"
+                  className="mt-3 sm:mt-4 text-[13px] sm:text-[14px] md:text-[15px] leading-[1.8] max-w-[380px] hidden sm:block"
                   style={{ color: colors.textMuted }}
                 >
                   Have questions about admissions, programs, or campus life? Reach out to us and get a response within 24 hours.
@@ -403,7 +403,7 @@ export default function ContactSection() {
                       <button
                         type="submit"
                         disabled={sendState !== "idle"}
-                        className={`w-full border-none rounded-xl px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer transition-all duration-400 text-white ${
+                        className={`w-full border-none rounded-xl px-4 sm:px-6 py-2.5 sm:py-3 text-[13px] sm:text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer transition-all duration-400 text-white ${
                           sendState === "sent" ? "bg-[#1D9E6D]" : ""
                         }`}
                         style={{
