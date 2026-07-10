@@ -154,7 +154,7 @@ export default function ProgramsSection() {
               <span className="text-[#2f56fb]">Programs</span>
             </h3>
             <div className="w-[18px] h-[2px] bg-[#2f56fb] opacity-40 mx-auto my-2" />
-            <p className="text-[12px] text-[#3d4566] leading-snug">
+            <p className="text-[12px] text-[#3d4566] leading-snug w-full text-left">
               Wide range of undergraduate and graduate programs.
             </p>
           </motion.div>
@@ -177,7 +177,7 @@ export default function ProgramsSection() {
               <span className="text-[#2f56fb]">Relevant</span>
             </h3>
             <div className="w-[18px] h-[2px] bg-[#2f56fb] opacity-40 mx-auto my-2" />
-            <p className="text-[12px] text-[#3d4566] leading-snug">
+            <p className="text-[12px] text-[#3d4566] leading-snug w-full text-left">
               Curriculum designed to meet real-world industry needs.
             </p>
           </motion.div>
@@ -220,7 +220,7 @@ export default function ProgramsSection() {
               <span className="text-[#2f56fb]">Faculty</span>
             </h3>
             <div className="w-[18px] h-[2px] bg-[#2f56fb] opacity-40 mx-auto my-2" />
-            <p className="text-[12px] text-[#3d4566] leading-snug">
+            <p className="text-[12px] text-[#3d4566] leading-snug w-full text-left">
               Learn from experienced educators and industry leaders.
             </p>
           </motion.div>
@@ -243,7 +243,7 @@ export default function ProgramsSection() {
               <span className="text-[#2f56fb]">Focused</span>
             </h3>
             <div className="w-[18px] h-[2px] bg-[#2f56fb] opacity-40 mx-auto my-2" />
-            <p className="text-[12px] text-[#3d4566] leading-snug">
+            <p className="text-[12px] text-[#3d4566] leading-snug w-full text-left">
               Build skills for a successful and impactful career.
             </p>
           </motion.div>

@@ -47,13 +47,14 @@ export default function ContactSection() {
     setIsFlipped(!isFlipped);
   };
 
-  // Aspire College Theme Colors
+  // About Theme Colors
   const TEAL_600 = '#0D9488';
-  const BLUE_600 = '#2563EB';
-  const LIGHT_BG = '#F8FAFC';
-  const DARK_TEXT = '#1E293B';
-  const MUTED_TEXT = '#64748B';
-  const BORDER = '#E2E8F0';
+  const BLUE_600 = '#2f56fb';
+  const BLUE_DARK = '#1530b0';
+  const LIGHT_BG = '#f8faff';
+  const DARK_TEXT = '#0a1240';
+  const MUTED_TEXT = '#3d4566';
+  const BORDER = '#e8edf8';
 
   return (
     <section id="contact" className="min-h-screen bg-white pt-[85px] sm:pt-[93px]">
@@ -72,7 +73,6 @@ export default function ContactSection() {
             <source src="/contact.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          {/* NO OVERLAY - Video completely clear */}
         </div>
 
         {/* Hero Content */}
@@ -95,11 +95,11 @@ export default function ContactSection() {
               }}
             >
               <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#5EEAD4' }} />
-              <span className="text-xs font-medium text-white">We're Here to Help</span>
+              <span className="text-[12px] font-semibold text-white">We're Here to Help</span>
             </motion.div>
 
             <motion.h1 
-              className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-4"
+              className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white mb-4"
               style={{ textShadow: '0 2px 30px rgba(0,0,0,0.5)' }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -112,7 +112,7 @@ export default function ContactSection() {
             </motion.h1>
 
             <motion.p 
-              className="text-base sm:text-lg text-white max-w-2xl mx-auto leading-relaxed"
+              className="text-[15px] sm:text-[15px] text-white max-w-2xl mx-auto leading-[1.8]"
               style={{ textShadow: '0 2px 20px rgba(0,0,0,0.4)' }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -130,11 +130,11 @@ export default function ContactSection() {
             >
               <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ backgroundColor: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(5px)' }}>
                 <span className="text-white/70 text-xs">📞</span>
-                <span className="text-white text-sm">+92 300 1234567</span>
+                <span className="text-white text-[15px]">+92 300 1234567</span>
               </div>
               <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ backgroundColor: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(5px)' }}>
                 <span className="text-white/70 text-xs">✉️</span>
-                <span className="text-white text-sm">info@aspirecollege.edu.pk</span>
+                <span className="text-white text-[15px]">info@aspirecollege.edu.pk</span>
               </div>
             </motion.div>
           </motion.div>
@@ -148,7 +148,7 @@ export default function ContactSection() {
           transition={{ delay: 1 }}
         >
           <div className="flex flex-col items-center gap-2">
-            <span className="text-white/60 text-xs tracking-widest uppercase" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>Scroll</span>
+            <span className="text-white/60 text-[11px] tracking-widest uppercase" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>Scroll</span>
             <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
               <motion.div
                 animate={{ y: [0, 12, 0] }}
@@ -175,15 +175,15 @@ export default function ContactSection() {
             >
               <div>
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="w-8 h-px" style={{ backgroundColor: TEAL_600 }} />
-                  <span className="text-xs font-semibold tracking-[0.16em] uppercase" style={{ color: TEAL_600 }}>
+                  <span className="w-8 h-px" style={{ backgroundColor: BLUE_600 }} />
+                  <span className="text-[12px] font-semibold tracking-[0.16em] uppercase" style={{ color: BLUE_600 }}>
                     Contact Info
                   </span>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold" style={{ color: DARK_TEXT }}>
+                <h3 className="text-xl sm:text-2xl font-extrabold" style={{ color: DARK_TEXT }}>
                   Let's Connect
                 </h3>
-                <p className="text-sm sm:text-base mt-2" style={{ color: MUTED_TEXT }}>
+                <p className="text-[15px] mt-2 leading-[1.8]" style={{ color: MUTED_TEXT }}>
                   Reach out to us through any of the following channels.
                 </p>
               </div>
@@ -191,52 +191,52 @@ export default function ContactSection() {
               {/* Contact Info with Dots */}
               <div className="space-y-3">
                 <div className="flex items-start gap-3 p-4 rounded-xl transition-all duration-300 hover:shadow-md" style={{ backgroundColor: LIGHT_BG }}>
-                  <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: TEAL_600 }} />
+                  <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: BLUE_600 }} />
                   <div>
-                    <h4 className="text-sm font-semibold" style={{ color: DARK_TEXT }}>Address</h4>
-                    <p className="text-xs sm:text-sm" style={{ color: MUTED_TEXT }}>123 Education Street, Lahore, Pakistan</p>
+                    <h4 className="text-[14px] font-bold" style={{ color: DARK_TEXT }}>Address</h4>
+                    <p className="text-[15px]" style={{ color: MUTED_TEXT }}>123 Education Street, Lahore, Pakistan</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3 p-4 rounded-xl transition-all duration-300 hover:shadow-md" style={{ backgroundColor: LIGHT_BG }}>
-                  <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: TEAL_600 }} />
+                  <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: BLUE_600 }} />
                   <div>
-                    <h4 className="text-sm font-semibold" style={{ color: DARK_TEXT }}>Phone</h4>
-                    <p className="text-xs sm:text-sm" style={{ color: MUTED_TEXT }}>+92 300 1234567</p>
+                    <h4 className="text-[14px] font-bold" style={{ color: DARK_TEXT }}>Phone</h4>
+                    <p className="text-[15px]" style={{ color: MUTED_TEXT }}>+92 300 1234567</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3 p-4 rounded-xl transition-all duration-300 hover:shadow-md" style={{ backgroundColor: LIGHT_BG }}>
-                  <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: TEAL_600 }} />
+                  <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: BLUE_600 }} />
                   <div>
-                    <h4 className="text-sm font-semibold" style={{ color: DARK_TEXT }}>Email</h4>
-                    <p className="text-xs sm:text-sm" style={{ color: MUTED_TEXT }}>info@aspirecollege.edu.pk</p>
+                    <h4 className="text-[14px] font-bold" style={{ color: DARK_TEXT }}>Email</h4>
+                    <p className="text-[15px]" style={{ color: MUTED_TEXT }}>info@aspirecollege.edu.pk</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3 p-4 rounded-xl transition-all duration-300 hover:shadow-md" style={{ backgroundColor: LIGHT_BG }}>
-                  <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: TEAL_600 }} />
+                  <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: BLUE_600 }} />
                   <div>
-                    <h4 className="text-sm font-semibold" style={{ color: DARK_TEXT }}>Admissions</h4>
-                    <p className="text-xs sm:text-sm" style={{ color: MUTED_TEXT }}>admissions@aspirecollege.edu.pk</p>
+                    <h4 className="text-[14px] font-bold" style={{ color: DARK_TEXT }}>Admissions</h4>
+                    <p className="text-[15px]" style={{ color: MUTED_TEXT }}>admissions@aspirecollege.edu.pk</p>
                   </div>
                 </div>
               </div>
 
               {/* Office Hours */}
               <div className="rounded-xl p-5 sm:p-6" style={{ backgroundColor: LIGHT_BG, border: `1px solid ${BORDER}` }}>
-                <h4 className="text-sm font-semibold mb-2" style={{ color: DARK_TEXT }}>Office Hours</h4>
+                <h4 className="text-[14px] font-bold mb-2" style={{ color: DARK_TEXT }}>Office Hours</h4>
                 <ul className="space-y-1">
-                  <li className="flex items-center gap-2 text-xs sm:text-sm" style={{ color: MUTED_TEXT }}>
-                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: TEAL_600 }} />
+                  <li className="flex items-center gap-2 text-[15px]" style={{ color: MUTED_TEXT }}>
+                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: BLUE_600 }} />
                     Monday - Friday: 8:00 AM - 6:00 PM
                   </li>
-                  <li className="flex items-center gap-2 text-xs sm:text-sm" style={{ color: MUTED_TEXT }}>
-                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: TEAL_600 }} />
+                  <li className="flex items-center gap-2 text-[15px]" style={{ color: MUTED_TEXT }}>
+                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: BLUE_600 }} />
                     Saturday: 9:00 AM - 2:00 PM
                   </li>
-                  <li className="flex items-center gap-2 text-xs sm:text-sm" style={{ color: MUTED_TEXT }}>
-                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: TEAL_600 }} />
+                  <li className="flex items-center gap-2 text-[15px]" style={{ color: MUTED_TEXT }}>
+                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: BLUE_600 }} />
                     Sunday: Closed
                   </li>
                 </ul>
@@ -275,29 +275,29 @@ export default function ContactSection() {
                   <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 border" style={{ borderColor: BORDER }}>
                     {submitted ? (
                       <div className="text-center py-12">
-                        <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: TEAL_600 + '20' }}>
-                          <svg className="w-8 h-8" style={{ color: TEAL_600 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: BLUE_600 + '20' }}>
+                          <svg className="w-8 h-8" style={{ color: BLUE_600 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
-                        <h3 className="text-xl font-bold" style={{ color: DARK_TEXT }}>Thank You!</h3>
-                        <p className="text-sm mt-2" style={{ color: MUTED_TEXT }}>Your message has been sent successfully.</p>
+                        <h3 className="text-xl font-extrabold" style={{ color: DARK_TEXT }}>Thank You!</h3>
+                        <p className="text-[15px] mt-2 leading-[1.8]" style={{ color: MUTED_TEXT }}>Your message has been sent successfully.</p>
                       </div>
                     ) : (
                       <>
                         <div className="flex justify-between items-center mb-6">
-                          <h3 className="text-xl font-bold" style={{ color: DARK_TEXT }}>Send a Message</h3>
+                          <h3 className="text-xl font-extrabold" style={{ color: DARK_TEXT }}>Send a Message</h3>
                           <button
                             onClick={handleFlip}
-                            className="text-xs font-medium px-3 py-1.5 rounded-full transition-all duration-300 hover:shadow-md"
-                            style={{ backgroundColor: LIGHT_BG, color: TEAL_600 }}
+                            className="text-[12px] font-semibold px-3 py-1.5 rounded-full transition-all duration-300 hover:shadow-md cursor-pointer"
+                            style={{ backgroundColor: LIGHT_BG, color: BLUE_600 }}
                           >
                             📍 View Map
                           </button>
                         </div>
                         <form onSubmit={handleSubmit} className="space-y-5">
                           <div>
-                            <label htmlFor="name" className="block text-xs sm:text-sm font-medium mb-1.5" style={{ color: DARK_TEXT }}>
+                            <label htmlFor="name" className="block text-[13px] font-semibold mb-1.5" style={{ color: DARK_TEXT }}>
                               Full Name <span className="text-red-500">*</span>
                             </label>
                             <input
@@ -307,14 +307,14 @@ export default function ContactSection() {
                               required
                               value={formData.name}
                               onChange={handleInputChange}
-                              className="w-full px-4 py-2.5 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0D9488] focus:border-transparent transition-all duration-200 text-sm sm:text-base"
+                              className="w-full px-4 py-2.5 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2f56fb] focus:border-transparent transition-all duration-200 text-[15px]"
                               style={{ borderColor: BORDER, backgroundColor: '#FFFFFF', color: DARK_TEXT }}
                               placeholder="Enter your full name"
                             />
                           </div>
 
                           <div>
-                            <label htmlFor="email" className="block text-xs sm:text-sm font-medium mb-1.5" style={{ color: DARK_TEXT }}>
+                            <label htmlFor="email" className="block text-[13px] font-semibold mb-1.5" style={{ color: DARK_TEXT }}>
                               Email Address <span className="text-red-500">*</span>
                             </label>
                             <input
@@ -324,7 +324,7 @@ export default function ContactSection() {
                               required
                               value={formData.email}
                               onChange={handleInputChange}
-                              className="w-full px-4 py-2.5 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0D9488] focus:border-transparent transition-all duration-200 text-sm sm:text-base"
+                              className="w-full px-4 py-2.5 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2f56fb] focus:border-transparent transition-all duration-200 text-[15px]"
                               style={{ borderColor: BORDER, backgroundColor: '#FFFFFF', color: DARK_TEXT }}
                               placeholder="Enter your email"
                             />
@@ -332,7 +332,7 @@ export default function ContactSection() {
 
                           <div className="grid sm:grid-cols-2 gap-4">
                             <div>
-                              <label htmlFor="phone" className="block text-xs sm:text-sm font-medium mb-1.5" style={{ color: DARK_TEXT }}>
+                              <label htmlFor="phone" className="block text-[13px] font-semibold mb-1.5" style={{ color: DARK_TEXT }}>
                                 Phone Number
                               </label>
                               <input
@@ -341,13 +341,13 @@ export default function ContactSection() {
                                 name="phone"
                                 value={formData.phone}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2.5 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0D9488] focus:border-transparent transition-all duration-200 text-sm sm:text-base"
+                                className="w-full px-4 py-2.5 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2f56fb] focus:border-transparent transition-all duration-200 text-[15px]"
                                 style={{ borderColor: BORDER, backgroundColor: '#FFFFFF', color: DARK_TEXT }}
                                 placeholder="+92 300 1234567"
                               />
                             </div>
                             <div>
-                              <label htmlFor="subject" className="block text-xs sm:text-sm font-medium mb-1.5" style={{ color: DARK_TEXT }}>
+                              <label htmlFor="subject" className="block text-[13px] font-semibold mb-1.5" style={{ color: DARK_TEXT }}>
                                 Subject <span className="text-red-500">*</span>
                               </label>
                               <select
@@ -356,7 +356,7 @@ export default function ContactSection() {
                                 required
                                 value={formData.subject}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2.5 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0D9488] focus:border-transparent transition-all duration-200 text-sm sm:text-base cursor-pointer"
+                                className="w-full px-4 py-2.5 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2f56fb] focus:border-transparent transition-all duration-200 text-[15px] cursor-pointer"
                                 style={{ borderColor: BORDER, backgroundColor: '#FFFFFF', color: DARK_TEXT }}
                               >
                                 <option value="">Select a subject</option>
@@ -370,7 +370,7 @@ export default function ContactSection() {
                           </div>
 
                           <div>
-                            <label htmlFor="message" className="block text-xs sm:text-sm font-medium mb-1.5" style={{ color: DARK_TEXT }}>
+                            <label htmlFor="message" className="block text-[13px] font-semibold mb-1.5" style={{ color: DARK_TEXT }}>
                               Message <span className="text-red-500">*</span>
                             </label>
                             <textarea
@@ -380,7 +380,7 @@ export default function ContactSection() {
                               required
                               value={formData.message}
                               onChange={handleInputChange}
-                              className="w-full px-4 py-2.5 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0D9488] focus:border-transparent transition-all duration-200 resize-none text-sm sm:text-base"
+                              className="w-full px-4 py-2.5 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2f56fb] focus:border-transparent transition-all duration-200 resize-none text-[15px]"
                               style={{ borderColor: BORDER, backgroundColor: '#FFFFFF', color: DARK_TEXT }}
                               placeholder="Tell us how we can help you..."
                             />
@@ -388,9 +388,9 @@ export default function ContactSection() {
 
                           <button
                             type="submit"
-                            className="w-full py-3 sm:py-3.5 text-white font-semibold rounded-full text-sm sm:text-base transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer"
-                            style={{ background: `linear-gradient(135deg, ${TEAL_600} 0%, ${BLUE_600} 100%)` }}
-                            onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.9'; }}
+                            className="w-full py-3 sm:py-3.5 text-white font-semibold rounded-full text-[14px] transition-all duration-300 shadow-[0_12px_28px_-8px_rgba(47,86,251,0.5)] hover:shadow-[0_20px_40px_-12px_rgba(47,86,251,0.7)] transform hover:-translate-y-0.5 cursor-pointer"
+                            style={{ background: `linear-gradient(135deg, ${BLUE_600} 0%, ${BLUE_DARK} 100%)` }}
+                            onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.95'; }}
                             onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
                           >
                             Send Message
@@ -408,11 +408,11 @@ export default function ContactSection() {
                 >
                   <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 border h-full flex flex-col" style={{ borderColor: BORDER }}>
                     <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-xl font-bold" style={{ color: DARK_TEXT }}>Our Location</h3>
+                      <h3 className="text-xl font-extrabold" style={{ color: DARK_TEXT }}>Our Location</h3>
                       <button
                         onClick={handleFlip}
-                        className="text-xs font-medium px-3 py-1.5 rounded-full transition-all duration-300 hover:shadow-md"
-                        style={{ backgroundColor: LIGHT_BG, color: TEAL_600 }}
+                        className="text-[12px] font-semibold px-3 py-1.5 rounded-full transition-all duration-300 hover:shadow-md cursor-pointer"
+                        style={{ backgroundColor: LIGHT_BG, color: BLUE_600 }}
                       >
                         ✕ Close
                       </button>
@@ -431,7 +431,7 @@ export default function ContactSection() {
                       />
                     </div>
                     <div className="mt-3 text-center">
-                      <p className="text-xs sm:text-sm" style={{ color: MUTED_TEXT }}>
+                      <p className="text-[15px]" style={{ color: MUTED_TEXT }}>
                         📍 123 Education Street, Lahore, Pakistan
                       </p>
                     </div>

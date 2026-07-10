@@ -1,174 +1,180 @@
 'use client';
 
-import { motion, Variants } from 'framer-motion';
-
-const BLUE_600 = '#2563EB';
-const TEAL_600 = '#0D9488';
-
-// Animation variants
-const walkInLeft: Variants = {
-  hidden: { opacity: 0, x: -50 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.7,
-      ease: [0.25, 0.46, 0.45, 0.94],
-      type: "spring",
-      stiffness: 100,
-      damping: 15
-    }
-  }
-};
-
-const walkInRight: Variants = {
-  hidden: { opacity: 0, x: 50 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.7,
-      ease: [0.25, 0.46, 0.45, 0.94],
-      type: "spring",
-      stiffness: 100,
-      damping: 15
-    }
-  }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15
-    }
-  }
-};
+import { motion } from 'framer-motion';
 
 export default function VisionMissionSection() {
   return (
-    <section className="relative w-full bg-white py-5 px-4 overflow-hidden">
-      <div className="relative max-w-5xl mx-auto text-center z-10">
-        <motion.h2 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-3xl sm:text-4xl font-extrabold text-[#0a1240] mb-3"
-        >
-          Our Guiding Principles
-        </motion.h2>
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="text-[15px] text-[#3d4566] leading-[1.8] mb-12 max-w-2xl mx-auto"
-        >
-          Driving excellence through visionary leadership and purposeful mission. Our principles guide every decision we make and every step we take toward shaping the future of education.
-        </motion.p>
+    <section className="relative overflow-hidden bg-white px-5 py-3 text-center">
+      <style>{`
+        @media (max-width: 900px) {
+          .vm-stage { flex-direction: column; gap: 30px; }
+          .vm-blob-left, .vm-blob-right { margin: 0 !important; }
+          .vm-connectors { display: none; }
+        }
+        @media (max-width: 600px) {
+          .vm-blob-left, .vm-blob-right { width: 100% !important; max-width: 340px; }
+          .vm-blob-left svg, .vm-blob-right svg { height: 400px; }
+          .vm-center { width: 160px !important; height: 160px !important; }
+        }
+      `}</style>
 
-        <motion.div 
-          className="flex flex-col sm:flex-row gap-30 justify-center items-stretch"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={staggerContainer}
+      {/* Heading - Unique & Less Words */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mb-6"
+      >
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0a1240] cursor-pointer hover:text-[#2f56fb] transition-colors duration-300">
+          Vision &amp; <span className="text-[#2f56fb]">Mission</span>
+        </h1>
+        <p className="mx-auto mt-3 max-w-2xl text-[15px] leading-[1.8] text-[#3d4566]">
+          Driving excellence through visionary leadership and purposeful mission. Our principles
+          guide every decision we make and every step we take toward shaping the future of
+          education.
+        </p>
+      </motion.div>
+
+      <div className="vm-stage relative mx-auto flex max-w-[1120px] items-center justify-center">
+        {/* Connectors removed */}
+
+        {/* Vision blob */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="vm-blob-left relative z-[1] w-[380px] flex-shrink-0 -mr-10 cursor-pointer hover:scale-[1.02] transition-transform duration-300"
         >
-          {/* Vision Card - Walks from Left */}
-          <motion.div
-            variants={walkInLeft}
-            className="relative w-full sm:w-[320px] min-h-[340px] bg-[#f0fdf4] rounded-2xl cursor-pointer hover:scale-[1.02] transition-all duration-300"
-            style={{
-              clipPath:
-                'path("M0,0 L280,80 Q320,95 320,140 L320,440 Q320,480 290,480 L30,480 Q0,480 0,440 Z")',
-            }}
+          <svg
+            className="block w-full h-[480px]"
+            viewBox="0 0 480 620"
+            preserveAspectRatio="none"
           >
-            <div className="px-8 pt-16 pb-10 text-center">
-              <div
-                className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5"
-                style={{ backgroundColor: TEAL_600 }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-7 h-7 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
+            <defs>
+              <linearGradient id="gGreen" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#0d9488" />
+                <stop offset="100%" stopColor="#059669" />
+              </linearGradient>
+            </defs>
+            <path
+              fill="url(#gGreen)"
+              d="M90,55
+                 C50,55 38,90 38,130
+                 L38,480
+                 C38,555 75,575 130,575
+                 L255,575
+                 C298,575 328,558 358,522
+                 L432,300
+                 L358,90
+                 C328,55 298,58 255,58
+                 Z"
+            />
+          </svg>
+
+          <div className="absolute inset-0 flex -translate-x-3 flex-col items-center pt-14 text-white">
+            <div className="mb-3.5 flex h-[76px] w-[76px] items-center justify-center rounded-full border-2 border-white/40 bg-white/15">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white">
+                <svg className="h-[26px] w-[26px] text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+                  <circle cx="12" cy="12" r="3" />
                 </svg>
               </div>
-              <h3
-                className="text-[20px] font-bold mb-4"
-                style={{ color: TEAL_600 }}
-              >
-                Our Vision
-              </h3>
-              <p className="text-[14px] text-[#3d4566] leading-relaxed max-w-[280px] mx-auto">
-                To be a globally recognized institution that empowers
-                students to become innovative leaders, critical thinkers,
-                and responsible citizens who drive positive change in an
-                interconnected world.
-              </p>
             </div>
-          </motion.div>
+            <h2 className="mb-3 text-[22px] font-extrabold">Our Vision</h2>
+            <p className="max-w-[230px] px-8 text-[13px] leading-[1.75] text-white/90">
+              To be a globally recognized institution that empowers students to become
+              innovative leaders, critical thinkers, and responsible citizens who drive
+              positive change in an interconnected world.
+            </p>
+          </div>
 
-          {/* Mission Card - Walks from Right */}
-          <motion.div
-            variants={walkInRight}
-            className="relative w-full sm:w-[320px] min-h-[340px] bg-[#eff6ff] rounded-2xl cursor-pointer hover:scale-[1.02] transition-all duration-300"
-            style={{
-              clipPath:
-                'path("M320,0 L40,80 Q0,95 0,140 L0,440 Q0,480 30,480 L290,480 Q320,480 320,440 Z")',
-            }}
+          <div className="absolute bottom-10 left-[30px] right-[70px] grid grid-cols-10 gap-1.5 opacity-35">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <span key={i} className="h-[3px] w-[3px] justify-self-center rounded-full bg-white" />
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Center circle */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="relative z-[3] h-[200px] w-[200px] flex-shrink-0 cursor-pointer hover:scale-[1.03] transition-transform duration-300"
+        >
+          <div className="absolute inset-0 rounded-full border border-[#2f56fb]/25" />
+          <div className="absolute inset-3.5 rounded-full border-[1.5px] border-dashed border-[#2f56fb]/35" />
+          <div
+            className="absolute inset-7 flex flex-col items-center justify-center rounded-full bg-white"
+            style={{ boxShadow: "0 20px 45px rgba(20,40,90,0.08)" }}
           >
-            <div className="px-8 pt-16 pb-10 text-center">
-              <div
-                className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5"
-                style={{ backgroundColor: BLUE_600 }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-7 h-7 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 3.75H6.912a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661V18a2.25 2.25 0 002.25 2.25h15a2.25 2.25 0 002.25-2.25v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H15M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.012 1.244h3.22a2.25 2.25 0 002.012-1.244l.256-.512a2.25 2.25 0 012.012-1.244h3.86M12 3v8.25m0 0l-3-3m3 3l3-3"
-                  />
+            <svg className="mb-2 h-[28px] w-[28px] text-[#2f56fb]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path d="M4 21h16M5 21V10M19 21V10M3 10l9-6 9 6M7 10v4M12 10v4M17 10v4" />
+            </svg>
+            <div className="text-[15px] font-extrabold text-[#0a1240]">Our Guiding</div>
+            <div className="text-[15px] font-extrabold text-[#2f56fb]">Principles</div>
+          </div>
+        </motion.div>
+
+        {/* Mission blob */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="vm-blob-right relative z-[1] w-[380px] flex-shrink-0 -ml-10 cursor-pointer hover:scale-[1.02] transition-transform duration-300"
+        >
+          <svg
+            className="block w-full h-[480px] scale-x-[-1]"
+            viewBox="0 0 480 620"
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <linearGradient id="gBlue" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#1e3fd6" />
+                <stop offset="100%" stopColor="#0a1e78" />
+              </linearGradient>
+            </defs>
+            <path
+              fill="url(#gBlue)"
+              d="M90,55
+                 C50,55 38,90 38,130
+                 L38,480
+                 C38,555 75,575 130,575
+                 L255,575
+                 C298,575 328,558 358,522
+                 L432,300
+                 L358,90
+                 C328,55 298,58 255,58
+                 Z"
+            />
+          </svg>
+
+          <div className="absolute inset-0 flex translate-x-3 flex-col items-center pt-14 text-white">
+            <div className="mb-3.5 flex h-[76px] w-[76px] items-center justify-center rounded-full border-2 border-white/40 bg-white/15">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white">
+                <svg className="h-[26px] w-[26px] text-[#2f56fb]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M5 21V4a1 1 0 0 1 1-1h9l-1.5 4L16 11H6" />
                 </svg>
               </div>
-              <h3
-                className="text-[20px] font-bold mb-4"
-                style={{ color: BLUE_600 }}
-              >
-                Our Mission
-              </h3>
-              <p className="text-[14px] text-[#3d4566] leading-relaxed max-w-[280px] mx-auto">
-                To provide transformative education through innovative
-                curricula, world-class faculty, and state-of-the-art
-                facilities that foster intellectual growth, ethical
-                values, and lifelong learning skills essential for
-                success in the 21st century.
-              </p>
             </div>
-          </motion.div>
+            <h2 className="mb-3 text-[22px] font-extrabold">Our Mission</h2>
+            <p className="max-w-[230px] px-8 text-[13px] leading-[1.75] text-white/90">
+              To provide transformative education through innovative curricula, world-class
+              faculty, and state-of-the-art facilities that foster intellectual growth,
+              ethical values, and lifelong learning skills essential for success in the 21st
+              century.
+            </p>
+          </div>
+
+          <div className="absolute bottom-10 left-[70px] right-[30px] grid grid-cols-10 gap-1.5 opacity-35">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <span key={i} className="h-[3px] w-[3px] justify-self-center rounded-full bg-white" />
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>

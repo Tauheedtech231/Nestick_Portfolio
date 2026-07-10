@@ -1,26 +1,915 @@
-<div style="padding: 8px 4px 16px; text-align: center;">
-  <h2 style="margin: 0 0 8px;">Our guiding principles</h2>
-  <p style="font-size: 14px; color: var(--text-secondary); margin: 0 0 24px; line-height: 1.6;">Driving excellence through visionary leadership and purposeful mission</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our Educational Programs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1b2540;
+    --sub:#8993a8;
+    --line:#e7eaf1;
+    --bg:#f7f8fb;
+    --card:#ffffff;
 
-  <div style="display: flex; gap: 12px; justify-content: center;">
-    <div style="width: 170px; min-height: 260px; background: #000000; clip-path: path('M0,0 L150,45 Q170,53 170,77 L170,240 Q170,260 154,260 L16,260 Q0,260 0,240 Z');">
-      <div style="padding: 32px 14px 18px; text-align: center;">
-        <div style="width: 44px; height: 44px; border-radius: 50%; background: #0F6E56; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">
-          <i class="ti ti-eye" style="font-size: 20px; color: #fff;" aria-hidden="true"></i>
-        </div>
-        <div style="font-size: 15px; font-weight: 500; color: #5DCAA5; margin-bottom: 8px;">Our vision</div>
-        <div style="font-size: 12px; color: #cccccc; line-height: 1.55;">To be a globally recognized institution that empowers students to become innovative leaders and responsible citizens.</div>
-      </div>
-    </div>
+    --blue:#2f6fed;   --blue-bg:#eaf1ff;
+    --green:#1fa971;  --green-bg:#e9f9f1;
+    --purple:#7c4fe0; --purple-bg:#f1ebfd;
+    --orange:#f4841f; --orange-bg:#fff1e4;
+    --teal:#12a3a3;   --teal-bg:#e6f8f8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    padding:36px 20px 60px;
+  }
+  .header{
+    text-align:center;
+    margin-bottom:34px;
+  }
+  .header h1{
+    font-family:'Poppins',sans-serif;
+    font-weight:800;
+    font-size:30px;
+    color:#141b33;
+    margin:0 0 8px;
+    letter-spacing:.2px;
+  }
+  .header p{
+    margin:0;
+    color:var(--sub);
+    font-size:13.5px;
+  }
+  .dots{
+    display:flex;
+    justify-content:center;
+    gap:6px;
+    margin-top:10px;
+  }
+  .dots span{width:5px;height:5px;border-radius:50%;background:#c7cee0;display:inline-block;}
+  .dots span:nth-child(1){background:var(--blue);}
+  .dots span:nth-child(2){background:var(--green);}
+  .dots span:nth-child(3){background:var(--purple);}
+  .dots span:nth-child(4){background:var(--orange);}
+  .dots span:nth-child(5){background:var(--teal);}
 
-    <div style="width: 170px; min-height: 260px; background: #000000; clip-path: path('M170,0 L20,45 Q0,53 0,77 L0,240 Q0,260 16,260 L154,260 Q170,260 170,240 Z');">
-      <div style="padding: 32px 14px 18px; text-align: center;">
-        <div style="width: 44px; height: 44px; border-radius: 50%; background: #0F6E56; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">
-          <i class="ti ti-target-arrow" style="font-size: 20px; color: #fff;" aria-hidden="true"></i>
-        </div>
-        <div style="font-size: 15px; font-weight: 500; color: #5DCAA5; margin-bottom: 8px;">Our mission</div>
-        <div style="font-size: 12px; color: #cccccc; line-height: 1.55;">To provide transformative education through innovative curricula and world-class faculty for lifelong learning.</div>
-      </div>
+  .canvas{
+    position:relative;
+    max-width:1180px;
+    margin:0 auto;
+  }
+  svg.connectors{
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    pointer-events:none;
+  }
+
+  .root-node{
+    position:absolute;
+    left:0;
+    top:50%;
+    transform:translateY(-50%);
+    width:132px;height:132px;
+    z-index:3;
+  }
+  .root-ring{
+    position:absolute;
+    top:0;left:0;
+    width:132px;height:132px;
+    animation:spin 26s linear infinite;
+  }
+  @keyframes rowIn{
+    from{opacity:0; transform:translateY(6px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  @keyframes spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+  }
+  .root-inner{
+    position:absolute;
+    top:8px;left:8px;
+    width:116px;height:116px;
+    border-radius:50%;
+    background:#fff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    box-shadow:0 8px 24px rgba(124,79,224,.14), inset 0 0 0 1px #f1edfc;
+    animation:breathe 3.6s ease-in-out infinite;
+  }
+  @keyframes breathe{
+    0%,100%{box-shadow:0 8px 24px rgba(124,79,224,.14), inset 0 0 0 1px #f1edfc;}
+    50%{box-shadow:0 10px 30px rgba(124,79,224,.24), inset 0 0 0 1px #e7defb;}
+  }
+  .root-node .cap{
+    font-size:26px;
+    margin-bottom:4px;
+  }
+  .root-node .label{
+    font-size:11.5px;
+    color:var(--sub);
+    font-weight:600;
+  }
+  .root-node .count{
+    font-family:'Poppins',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    color:#141b33;
+  }
+
+  .rows{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-left:210px;
+  }
+  .row{
+    display:flex;
+    align-items:flex-start;
+    gap:22px;
+    position:relative;
+    transition:gap .35s ease;
+  }
+
+  .cat-node{
+    position:relative;
+    z-index:3;
+    flex:0 0 190px;
+    background:#fff;
+    border-radius:999px;
+    padding:8px 20px 8px 8px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    box-shadow:0 6px 18px rgba(20,27,51,.06);
+    border:1.5px solid var(--line);
+    cursor:pointer;
+    user-select:none;
+    transition:transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease, border-color .3s ease, background .3s ease;
+  }
+  .cat-node:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 22px rgba(20,27,51,.1);
+  }
+  .cat-node .icon{
+    width:38px;height:38px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:16px;
+    flex-shrink:0;
+    transition:transform .3s ease;
+    box-shadow:0 4px 10px rgba(20,27,51,.14);
+  }
+  .cat-node .txt{flex:1;min-width:0;}
+  .cat-node .txt strong{
+    display:block;
+    font-family:'Poppins',sans-serif;
+    font-size:12.5px;
+    font-weight:700;
+  }
+  .cat-node .txt span{
+    font-size:10.5px;
+    color:var(--sub);
+    font-weight:500;
+  }
+  .cat-node .chevron{
+    font-size:11px;
+    color:var(--sub);
+    transition:transform .35s cubic-bezier(.2,.8,.2,1), color .3s ease;
+    flex-shrink:0;
+  }
+  .cat-node.blue .icon{background:var(--blue);}
+  .cat-node.green .icon{background:var(--green);}
+  .cat-node.purple .icon{background:var(--purple);}
+  .cat-node.orange .icon{background:var(--orange);}
+  .cat-node.teal .icon{background:var(--teal);}
+  .cat-node.blue .txt strong{color:var(--blue);}
+  .cat-node.green .txt strong{color:var(--green);}
+  .cat-node.purple .txt strong{color:var(--purple);}
+  .cat-node.orange .txt strong{color:var(--orange);}
+  .cat-node.teal .txt strong{color:var(--teal);}
+
+  .cat-node.active{
+    transform:translateY(-2px) scale(1.05);
+  }
+  .cat-node.active .icon{transform:scale(1.08);}
+  .cat-node.active.blue{border-color:var(--blue); background:linear-gradient(180deg,#fff, var(--blue-bg) 220%); box-shadow:0 10px 26px rgba(47,111,237,.22);}
+  .cat-node.active.green{border-color:var(--green); background:linear-gradient(180deg,#fff, var(--green-bg) 220%); box-shadow:0 10px 26px rgba(31,169,113,.22);}
+  .cat-node.active.purple{border-color:var(--purple); background:linear-gradient(180deg,#fff, var(--purple-bg) 220%); box-shadow:0 10px 26px rgba(124,79,224,.22);}
+  .cat-node.active.orange{border-color:var(--orange); background:linear-gradient(180deg,#fff, var(--orange-bg) 220%); box-shadow:0 10px 26px rgba(244,132,31,.22);}
+  .cat-node.active.teal{border-color:var(--teal); background:linear-gradient(180deg,#fff, var(--teal-bg) 220%); box-shadow:0 10px 26px rgba(18,163,163,.22);}
+  .cat-node.active .chevron{transform:rotate(90deg);}
+  .cat-node.active.blue .chevron{color:var(--blue);}
+  .cat-node.active.green .chevron{color:var(--green);}
+  .cat-node.active.purple .chevron{color:var(--purple);}
+  .cat-node.active.orange .chevron{color:var(--orange);}
+  .cat-node.active.teal .chevron{color:var(--teal);}
+
+  .dot-marker{
+    position:absolute;
+    left:-9px; top:50%;
+    transform:translateY(-50%);
+    width:8px;height:8px;
+    border-radius:50%;
+    background:#fff;
+    border:2.5px solid;
+    z-index:4;
+    transition:box-shadow .3s ease, background .3s ease;
+  }
+  .blue .dot-marker{border-color:var(--blue);}
+  .green .dot-marker{border-color:var(--green);}
+  .purple .dot-marker{border-color:var(--purple);}
+  .orange .dot-marker{border-color:var(--orange);}
+  .teal .dot-marker{border-color:var(--teal);}
+  .cat-node.active .dot-marker{background:currentColor;}
+  .cat-node.active.blue .dot-marker{background:var(--blue); box-shadow:0 0 0 4px var(--blue-bg);}
+  .cat-node.active.green .dot-marker{background:var(--green); box-shadow:0 0 0 4px var(--green-bg);}
+  .cat-node.active.purple .dot-marker{background:var(--purple); box-shadow:0 0 0 4px var(--purple-bg);}
+  .cat-node.active.orange .dot-marker{background:var(--orange); box-shadow:0 0 0 4px var(--orange-bg);}
+  .cat-node.active.teal .dot-marker{background:var(--teal); box-shadow:0 0 0 4px var(--teal-bg);}
+
+  .table-wrap{
+    flex:1;
+    display:grid;
+    grid-template-rows:0fr;
+    opacity:0;
+    transition:grid-template-rows .45s cubic-bezier(.2,.8,.2,1), opacity .35s ease .05s, margin .45s ease;
+    min-width:0;
+  }
+  .table-wrap.open{
+    grid-template-rows:1fr;
+    opacity:1;
+  }
+  .table-wrap-inner{
+    overflow:hidden;
+    min-height:0;
+  }
+  .table-card{
+    flex:1;
+    background:var(--card);
+    border-radius:14px;
+    border:1px solid var(--line);
+    box-shadow:0 4px 14px rgba(20,27,51,.05);
+    overflow:hidden;
+    transform:translateY(-6px);
+    transition:transform .45s cubic-bezier(.2,.8,.2,1);
+  }
+  .table-wrap.open .table-card{
+    transform:translateY(0);
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+  }
+  thead tr{
+    background:#fff;
+  }
+  th{
+    text-align:left;
+    font-size:11px;
+    font-weight:700;
+    padding:10px 16px;
+    color:#141b33;
+    border-bottom:1px solid var(--line);
+  }
+  td{
+    font-size:12px;
+    padding:8px 16px;
+    border-bottom:1px solid #f0f1f5;
+    color:#3a4258;
+    white-space:nowrap;
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  td.name{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:600;
+    color:#1b2540;
+  }
+  td.name::before{
+    content:'';
+    width:6px;height:6px;
+    border-radius:50%;
+    flex-shrink:0;
+  }
+  .blue td.name::before{background:var(--blue);}
+  .green td.name::before{background:var(--green);}
+  .purple td.name::before{background:var(--purple);}
+  .orange td.name::before{background:var(--orange);}
+  .teal td.name::before{background:var(--teal);}
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-size:10.5px;
+    font-weight:600;
+    padding:5px 10px;
+    border-radius:20px;
+    white-space:nowrap;
+    cursor:pointer;
+    border:none;
+    font-family:'Inter',sans-serif;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn:active{transform:translateY(0);}
+  .blue .btn{background:var(--blue-bg);color:var(--blue);}
+  .green .btn{background:var(--green-bg);color:var(--green);}
+  .purple .btn{background:var(--purple-bg);color:var(--purple);}
+  .orange .btn{background:var(--orange-bg);color:var(--orange);}
+  .teal .btn{background:var(--teal-bg);color:var(--teal);}
+
+  th:nth-child(1){width:26%;}
+  th:nth-child(2){width:34%;}
+  th:nth-child(3){width:16%;}
+  th:nth-child(4){width:24%;}
+
+  /* ---- nested "generator" detail panel ---- */
+  .detail-row td{
+    padding:0;
+    border-bottom:1px solid #f0f1f5;
+  }
+  tr.detail-row:last-child td{border-bottom:none;}
+  .detail-collapse{
+    display:grid;
+    grid-template-rows:0fr;
+    opacity:0;
+    transition:grid-template-rows .5s cubic-bezier(.22,.9,.32,1), opacity .35s ease;
+  }
+  .detail-collapse.open{
+    grid-template-rows:1fr;
+    opacity:1;
+    transition:grid-template-rows .5s cubic-bezier(.22,.9,.32,1), opacity .4s ease .05s;
+  }
+  .detail-collapse-inner{overflow:hidden; min-height:0;}
+
+  .detail-card{
+    position:relative;
+    margin:12px 16px 16px;
+    padding:18px 20px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:
+      radial-gradient(120% 160% at 0% 0%, var(--dbg,#eef1fb) 0%, #fff 55%);
+  }
+  .detail-card::before{
+    content:'';
+    position:absolute;
+    top:-40%; right:-15%;
+    width:220px; height:220px;
+    border-radius:50%;
+    background:radial-gradient(circle, var(--dc,#2f6fed) 0%, transparent 70%);
+    opacity:.08;
+    animation:driftSpin 12s linear infinite;
+    pointer-events:none;
+  }
+  @keyframes driftSpin{
+    0%{transform:rotate(0deg) scale(1);}
+    50%{transform:rotate(180deg) scale(1.15);}
+    100%{transform:rotate(360deg) scale(1);}
+  }
+
+  .detail-badge{
+    position:relative;
+    width:78px; height:78px;
+    flex-shrink:0;
+  }
+  .detail-badge .ring{
+    position:absolute; inset:0;
+    animation:spin 16s linear infinite;
+  }
+  .detail-badge .core{
+    position:absolute; inset:7px;
+    border-radius:50%;
+    background:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-size:24px;
+    animation:breathe 3.2s ease-in-out infinite;
+    box-shadow:0 6px 16px rgba(20,27,51,.12), inset 0 0 0 1px #f1f2f6;
+  }
+  .detail-badge .pulse{
+    position:absolute; inset:-6px;
+    border-radius:50%;
+    border:1.5px solid var(--dc,#2f6fed);
+    opacity:0;
+    animation:pulseOut 2.4s ease-out infinite;
+  }
+  @keyframes pulseOut{
+    0%{transform:scale(.85); opacity:.5;}
+    100%{transform:scale(1.25); opacity:0;}
+  }
+
+  .detail-info{
+    flex:1;
+    min-width:0;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
+    gap:12px 20px;
+  }
+  .detail-info .item{
+    opacity:0;
+    animation:rowIn .45s ease forwards;
+  }
+  .detail-info .item label{
+    display:block;
+    font-size:9px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    color:var(--sub);
+    font-weight:700;
+    margin-bottom:3px;
+  }
+  .detail-info .item strong{
+    font-family:'Poppins',sans-serif;
+    font-size:13px;
+    font-weight:700;
+    color:#1b2540;
+  }
+  .detail-info .desc{
+    grid-column:1/-1;
+    font-size:11.5px;
+    line-height:1.6;
+    color:#5a6377;
+    font-weight:500;
+    padding-top:2px;
+    border-top:1px dashed var(--line);
+  }
+  .btn.is-open{box-shadow:0 0 0 2px rgba(0,0,0,.05) inset;}
+
+  @media (max-width:700px){
+    .detail-card{flex-direction:column; align-items:flex-start;}
+    .detail-info{grid-template-columns:1fr 1fr;}
+  }
+
+  @media (max-width:900px){
+    .rows{margin-left:0;margin-top:170px;}
+    .root-node{position:static;transform:none;margin:0 auto 20px;}
+    .row{flex-direction:column;align-items:stretch;}
+    .cat-node{flex:none;}
+    .cat-node.active{transform:scale(1.01);}
+    .cat-node:hover{transform:none;}
+    .table-wrap{margin-top:0;}
+    .table-wrap.open{margin-top:12px;}
+    svg.connectors{display:none;}
+    td, th{white-space:normal;}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Our Educational Programs</h1>
+  <p>Explore a wide range of programs structured by levels</p>
+  <div class="dots"><span></span><span></span><span></span><span></span><span></span></div>
+</div>
+
+<div class="canvas" id="canvas">
+  <svg class="connectors" id="svgLines"></svg>
+
+  <div class="root-node">
+    <svg class="root-ring" viewBox="0 0 132 132">
+      <circle cx="66" cy="66" r="63" fill="none" stroke="#2f6fed" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="68 328" stroke-dashoffset="0"/>
+      <circle cx="66" cy="66" r="63" fill="none" stroke="#1fa971" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="68 328" stroke-dashoffset="-79.2"/>
+      <circle cx="66" cy="66" r="63" fill="none" stroke="#7c4fe0" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="68 328" stroke-dashoffset="-158.4"/>
+      <circle cx="66" cy="66" r="63" fill="none" stroke="#f4841f" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="68 328" stroke-dashoffset="-237.6"/>
+      <circle cx="66" cy="66" r="63" fill="none" stroke="#12a3a3" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="68 328" stroke-dashoffset="-316.8"/>
+    </svg>
+    <div class="root-inner">
+      <div class="cap">🎓</div>
+      <div class="label">All Programs</div>
+      <div class="count">40+</div>
     </div>
   </div>
+
+  <div class="rows">
+
+    <div class="row">
+      <div class="cat-node blue active" id="node-school" onclick="toggleLevel('school')">
+        <div class="dot-marker"></div>
+        <div class="icon">🏫</div>
+        <div class="txt"><strong>School Level</strong><span>06 Programs</span></div>
+        <div class="chevron">&#10148;</div>
+      </div>
+      <div class="table-wrap open" id="wrap-school">
+        <div class="table-wrap-inner">
+          <div class="table-card blue">
+        <table>
+          <thead><tr><th>Program Name</th><th>Full Name</th><th>Duration</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td class="name">Primary School</td><td>Primary Education (Grade 1–5)</td><td>5 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Middle School</td><td>Middle School Education (Grade 6–8)</td><td>3 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Matriculation</td><td>Matric (Science Group)</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Matriculation (Arts)</td><td>Matric (Arts Group)</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Matriculation (Commerce)</td><td>Matric (Commerce Group)</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Islamic Studies (Foundation)</td><td>Dars-e-Nizami / Islamic Foundation Course</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+          </tbody>
+        </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cat-node green" id="node-olevel" onclick="toggleLevel('olevel')">
+        <div class="dot-marker"></div>
+        <div class="icon">🅾️</div>
+        <div class="txt"><strong>O-Level</strong><span>08 Programs</span></div>
+        <div class="chevron">&#10148;</div>
+      </div>
+      <div class="table-wrap" id="wrap-olevel">
+        <div class="table-wrap-inner">
+          <div class="table-card green">
+        <table>
+          <thead><tr><th>Program Name</th><th>Full Name</th><th>Duration</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td class="name">English Language</td><td>Cambridge O-Level English</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Mathematics</td><td>Cambridge O-Level Mathematics</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Physics</td><td>Cambridge O-Level Physics</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Chemistry</td><td>Cambridge O-Level Chemistry</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Biology</td><td>Cambridge O-Level Biology</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Accounting</td><td>Cambridge O-Level Accounting</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Business Studies</td><td>Cambridge O-Level Business Studies</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Computer Science</td><td>Cambridge O-Level Computer Science</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+          </tbody>
+        </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cat-node purple" id="node-alevel" onclick="toggleLevel('alevel')">
+        <div class="dot-marker"></div>
+        <div class="icon">🅰️</div>
+        <div class="txt"><strong>A-Level</strong><span>07 Programs</span></div>
+        <div class="chevron">&#10148;</div>
+      </div>
+      <div class="table-wrap" id="wrap-alevel">
+        <div class="table-wrap-inner">
+          <div class="table-card purple">
+        <table>
+          <thead><tr><th>Program Name</th><th>Full Name</th><th>Duration</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td class="name">Physics</td><td>Cambridge A-Level Physics</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Chemistry</td><td>Cambridge A-Level Chemistry</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Biology</td><td>Cambridge A-Level Biology</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Mathematics</td><td>Cambridge A-Level Mathematics</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Economics</td><td>Cambridge A-Level Economics</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Computer Science</td><td>Cambridge A-Level Computer Science</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Business Studies</td><td>Cambridge A-Level Business Studies</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+          </tbody>
+        </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cat-node orange" id="node-college" onclick="toggleLevel('college')">
+        <div class="dot-marker"></div>
+        <div class="icon">🏛️</div>
+        <div class="txt"><strong>College Level</strong><span>10 Programs</span></div>
+        <div class="chevron">&#10148;</div>
+      </div>
+      <div class="table-wrap" id="wrap-college">
+        <div class="table-wrap-inner">
+          <div class="table-card orange">
+        <table>
+          <thead><tr><th>Program Name</th><th>Full Name</th><th>Duration</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td class="name">BA</td><td>Bachelor of Arts</td><td>4 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">B.Sc</td><td>Bachelor of Science</td><td>4 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">B.Com</td><td>Bachelor of Commerce</td><td>4 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">BS (CS)</td><td>Bachelor of Science in Computer Science</td><td>4 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">BS (IT)</td><td>Bachelor of Science in Information Technology</td><td>4 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">BBA</td><td>Bachelor of Business Administration</td><td>4 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">B.Ed</td><td>Bachelor of Education</td><td>4 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">LLB</td><td>Bachelor of Laws</td><td>5 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">DPT</td><td>Doctor of Physical Therapy</td><td>5 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">ADP</td><td>Associate Degree Program</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+          </tbody>
+        </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="cat-node teal" id="node-tech" onclick="toggleLevel('tech')">
+        <div class="dot-marker"></div>
+        <div class="icon">⚙️</div>
+        <div class="txt"><strong>Technical Level</strong><span>09 Programs</span></div>
+        <div class="chevron">&#10148;</div>
+      </div>
+      <div class="table-wrap" id="wrap-tech">
+        <div class="table-wrap-inner">
+          <div class="table-card teal">
+        <table>
+          <thead><tr><th>Program Name</th><th>Full Name</th><th>Duration</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td class="name">Diploma in IT</td><td>Diploma in Information Technology</td><td>2 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Diploma in Civil</td><td>Diploma in Civil Engineering</td><td>3 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Diploma in Electrical</td><td>Diploma in Electrical Engineering</td><td>3 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Diploma in Mechanical</td><td>Diploma in Mechanical Engineering</td><td>3 Years</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Graphic Design</td><td>Diploma in Graphic Design</td><td>1 Year</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Web Development</td><td>Diploma in Web Development</td><td>1 Year</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">AutoCAD</td><td>Diploma in AutoCAD</td><td>6 Months</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Spoken English</td><td>Spoken English Certification</td><td>6 Months</td><td><span class="btn">View Details ›</span></td></tr>
+            <tr><td class="name">Short Courses</td><td>Various Short Technical Courses</td><td>3–6 Months</td><td><span class="btn">View Details ›</span></td></tr>
+          </tbody>
+        </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
+
+<script>
+function drawLines(){
+  const canvas = document.getElementById('canvas');
+  const svg = document.getElementById('svgLines');
+  const cRect = canvas.getBoundingClientRect();
+  svg.setAttribute('width', cRect.width);
+  svg.setAttribute('height', cRect.height);
+  svg.innerHTML = '';
+
+  const root = canvas.querySelector('.root-node');
+  const rootRect = root.getBoundingClientRect();
+  const rootX = rootRect.right - cRect.left;
+  const rootY = rootRect.top + rootRect.height/2 - cRect.top;
+
+  const colors = {
+    'node-school':'#2f6fed',
+    'node-olevel':'#1fa971',
+    'node-alevel':'#7c4fe0',
+    'node-college':'#f4841f',
+    'node-tech':'#12a3a3'
+  };
+  const ids = Object.keys(colors);
+
+  // spine sits a fixed distance to the right of the root
+  const spineX = rootX + 34;
+
+  const points = ids.map(id=>{
+    const el = document.getElementById(id);
+    const r = el.getBoundingClientRect();
+    return {
+      id,
+      active: el.classList.contains('active'),
+      color: colors[id],
+      x: r.left - cRect.left,
+      y: r.top + r.height/2 - cRect.top
+    };
+  });
+
+  const topY = points[0].y;
+  const bottomY = points[points.length-1].y;
+
+  // gradient definition, one color stop per node, positioned by its relative y
+  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  const grad = document.createElementNS('http://www.w3.org/2000/svg','linearGradient');
+  grad.setAttribute('id','spineGrad');
+  grad.setAttribute('x1','0'); grad.setAttribute('y1', topY);
+  grad.setAttribute('x2','0'); grad.setAttribute('y2', bottomY);
+  grad.setAttribute('gradientUnits','userSpaceOnUse');
+  points.forEach(p=>{
+    const off = ((p.y - topY) / (bottomY - topY)) * 100;
+    const stop = document.createElementNS('http://www.w3.org/2000/svg','stop');
+    stop.setAttribute('offset', off + '%');
+    stop.setAttribute('stop-color', p.color);
+    grad.appendChild(stop);
+  });
+  defs.appendChild(grad);
+  svg.appendChild(defs);
+
+  // the continuous vertical spine, from the topmost node to the bottommost node
+  const spine = document.createElementNS('http://www.w3.org/2000/svg','line');
+  spine.setAttribute('x1', spineX); spine.setAttribute('y1', topY);
+  spine.setAttribute('x2', spineX); spine.setAttribute('y2', bottomY);
+  spine.setAttribute('stroke','url(#spineGrad)');
+  spine.setAttribute('stroke-width','2');
+  spine.setAttribute('stroke-linecap','round');
+  spine.setAttribute('opacity','0.55');
+  svg.appendChild(spine);
+
+  // root connector: a smooth curve from the root out to the spine, at the root's own height
+  const rootPath = document.createElementNS('http://www.w3.org/2000/svg','path');
+  const rMidX = (rootX + spineX)/2;
+  rootPath.setAttribute('d', `M ${rootX} ${rootY} C ${rMidX} ${rootY}, ${rMidX} ${rootY}, ${spineX} ${rootY}`);
+  rootPath.setAttribute('fill','none');
+  rootPath.setAttribute('stroke','#a98cf0');
+  rootPath.setAttribute('stroke-width','2');
+  rootPath.setAttribute('opacity','0.5');
+  svg.appendChild(rootPath);
+
+  // short elbow stub from the spine to each node, and a dot where it meets the spine
+  points.forEach(p=>{
+    const midX = (spineX + p.x)/2;
+    const stub = document.createElementNS('http://www.w3.org/2000/svg','path');
+    const d = `M ${spineX} ${p.y} C ${midX} ${p.y}, ${midX} ${p.y}, ${p.x} ${p.y}`;
+    stub.setAttribute('d', d);
+    stub.setAttribute('fill','none');
+    stub.setAttribute('stroke', p.color);
+    stub.setAttribute('stroke-width', p.active ? '2.5' : '1.5');
+    stub.setAttribute('stroke-linecap','round');
+    stub.setAttribute('opacity', p.active ? '0.9' : '0.35');
+    stub.style.transition = 'opacity .3s ease, stroke-width .3s ease';
+    svg.appendChild(stub);
+
+    const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    dot.setAttribute('cx', spineX);
+    dot.setAttribute('cy', p.y);
+    dot.setAttribute('r', p.active ? '4' : '3');
+    dot.setAttribute('fill', p.color);
+    dot.setAttribute('opacity', p.active ? '1' : '0.6');
+    dot.style.transition = 'r .3s ease, opacity .3s ease';
+    svg.appendChild(dot);
+  });
+}
+window.addEventListener('load', drawLines);
+window.addEventListener('resize', drawLines);
+
+const LEVELS = ['school','olevel','alevel','college','tech'];
+
+function toggleLevel(target){
+  const wasOpen = document.getElementById('wrap-'+target).classList.contains('open');
+
+  LEVELS.forEach(lv=>{
+    const wrap = document.getElementById('wrap-'+lv);
+    const node = document.getElementById('node-'+lv);
+    if(lv === target && !wasOpen){
+      wrap.classList.add('open');
+      node.classList.add('active');
+    } else {
+      wrap.classList.remove('open');
+      node.classList.remove('active');
+    }
+  });
+
+  // staggered fade-in for the newly revealed table rows
+  if(!wasOpen){
+    const rows = document.querySelectorAll('#wrap-'+target+' tbody tr');
+    rows.forEach((row, i)=>{
+      row.style.animation = 'none';
+      void row.offsetWidth;
+      row.style.animation = `rowIn .4s ease ${i * 0.035}s both`;
+    });
+  }
+
+  // redraw connector lines repeatedly during the accordion animation
+  let frames = 0;
+  const anim = setInterval(()=>{
+    drawLines();
+    frames++;
+    if(frames > 34) clearInterval(anim);
+  }, 16);
+}
+
+/* ---------------------------------------------------------------
+   Nested "generator" detail panel — built on the fly per program,
+   styled after the root All-Programs badge (spinning ring + breathing core)
+---------------------------------------------------------------- */
+const CAT_META = {
+  blue:   {icon:'🏫', color:'#2f6fed', bg:'#eaf1ff'},
+  green:  {icon:'🅾️', color:'#1fa971', bg:'#e9f9f1'},
+  purple: {icon:'🅰️', color:'#7c4fe0', bg:'#f1ebfd'},
+  orange: {icon:'🏛️', color:'#f4841f', bg:'#fff1e4'},
+  teal:   {icon:'⚙️', color:'#12a3a3', bg:'#e6f8f8'}
+};
+const ELIGIBILITY = [
+  'Open to all applicants meeting minimum academic requirement',
+  'Requires prior qualification in a related discipline',
+  'Entry test and interview based admission',
+  'Merit-based admission on previous academic result',
+  'Open enrollment, no entry test required'
+];
+const HIGHLIGHTS = [
+  'hands-on practical sessions',
+  'industry-aligned curriculum',
+  'experienced faculty mentorship',
+  'small batch sizes for focused learning',
+  'modern lab and resource access',
+  'career counselling and placement support'
+];
+
+function hashStr(s){
+  let h = 0;
+  for(let i=0;i<s.length;i++){ h = (h*31 + s.charCodeAt(i)) | 0; }
+  return Math.abs(h);
+}
+
+function buildDetailContent(name, full, duration, colorClass){
+  const meta = CAT_META[colorClass] || CAT_META.blue;
+  const seed = hashStr(name + full);
+
+  const fee = 6000 + (seed % 45) * 500;
+  const seats = 20 + (seed % 35);
+  const eligibility = ELIGIBILITY[seed % ELIGIBILITY.length];
+  const h1 = HIGHLIGHTS[seed % HIGHLIGHTS.length];
+  const h2 = HIGHLIGHTS[(seed + 3) % HIGHLIGHTS.length];
+
+  return `
+    <div class="detail-card" style="--dc:${meta.color}; --dbg:${meta.bg};">
+      <div class="detail-badge">
+        <div class="pulse"></div>
+        <svg class="ring" viewBox="0 0 78 78">
+          <circle cx="39" cy="39" r="35" fill="none" stroke="${meta.color}" stroke-width="2.5"
+            stroke-linecap="round" stroke-dasharray="120 100" opacity=".9"/>
+        </svg>
+        <div class="core">${meta.icon}</div>
+      </div>
+      <div class="detail-info">
+        <div class="item" style="animation-delay:.03s"><label>Full Name</label><strong>${full}</strong></div>
+        <div class="item" style="animation-delay:.07s"><label>Duration</label><strong>${duration}</strong></div>
+        <div class="item" style="animation-delay:.11s"><label>Monthly Fee</label><strong>PKR ${fee.toLocaleString()}</strong></div>
+        <div class="item" style="animation-delay:.15s"><label>Seats Available</label><strong>${seats}</strong></div>
+        <div class="item desc" style="animation-delay:.2s">
+          <strong style="font-size:11.5px;">${name}</strong> is designed around ${h1} and ${h2}.
+          ${eligibility}.
+        </div>
+      </div>
+    </div>`;
+}
+
+function enhanceProgramTables(){
+  document.querySelectorAll('.table-card').forEach(card=>{
+    const colorClass = ['blue','green','purple','orange','teal'].find(c=>card.classList.contains(c));
+    card.querySelectorAll('tbody > tr').forEach(row=>{
+      const tds = row.querySelectorAll('td');
+      if(tds.length < 4) return;
+      const name = tds[0].textContent.trim();
+      const full = tds[1].textContent.trim();
+      const duration = tds[2].textContent.trim();
+
+      const detailRow = document.createElement('tr');
+      detailRow.className = 'detail-row';
+      detailRow.innerHTML = `
+        <td colspan="4">
+          <div class="detail-collapse">
+            <div class="detail-collapse-inner">
+              ${buildDetailContent(name, full, duration, colorClass)}
+            </div>
+          </div>
+        </td>`;
+      row.insertAdjacentElement('afterend', detailRow);
+
+      const btn = row.querySelector('.btn');
+      if(btn){
+        btn.addEventListener('click', (e)=>{
+          e.stopPropagation();
+          toggleDetail(row, btn);
+        });
+      }
+    });
+  });
+}
+
+function toggleDetail(row, btn){
+  const detailRow = row.nextElementSibling;
+  const collapse = detailRow.querySelector('.detail-collapse');
+  const isOpen = collapse.classList.contains('open');
+
+  collapse.classList.toggle('open', !isOpen);
+  btn.classList.toggle('is-open', !isOpen);
+  btn.innerHTML = !isOpen ? 'Hide Details ˅' : 'View Details ›';
+
+  if(!isOpen){
+    const items = detailRow.querySelectorAll('.detail-info .item');
+    items.forEach(it=>{
+      it.style.animation = 'none';
+      void it.offsetWidth;
+      it.style.animation = null;
+    });
+  }
+
+  // the table's outer accordion height needs to catch up with the new content
+  let frames = 0;
+  const anim = setInterval(()=>{
+    drawLines();
+    frames++;
+    if(frames > 40) clearInterval(anim);
+  }, 16);
+}
+
+window.addEventListener('load', enhanceProgramTables);
+</script>
+
+</body>
+</html>

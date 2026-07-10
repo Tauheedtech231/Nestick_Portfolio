@@ -222,8 +222,9 @@ export default function AdmissionsSection() {
         <AdmissionProcess />
 
         {/* FAQ Section - Fully Independent Component */}
+         <MyApplicationsPage/>
         <FAQSection />
-        <MyApplicationsPage/>
+       
       </div>
 
     </section>

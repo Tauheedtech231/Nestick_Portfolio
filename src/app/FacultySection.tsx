@@ -167,10 +167,10 @@ export default function FacultySection() {
           {/* Photo Frame */}
           <motion.div 
             variants={fadeInScale}
-            className="relative w-[92%] h-full rounded-[190px_60px_190px_60px] overflow-hidden shadow-[0_24px_50px_-15px_rgba(37,99,235,0.25)] z-10"
+            className="relative w-[100%] h-full rounded-[190px_60px_190px_60px] overflow-hidden shadow-[0_24px_50px_-15px_rgba(37,99,235,0.25)] z-10"
           >
             <img
-              src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=700&q=80"
+              src="https://plus.unsplash.com/premium_photo-1661756423422-4486e27eb6dd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Professor teaching a class"
               className="w-full h-full object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-300"
             />

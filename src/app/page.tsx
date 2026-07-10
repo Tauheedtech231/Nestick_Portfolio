@@ -6,7 +6,7 @@ import AboutSection from "./AboutSection";
 import ProgramsSection from "./ProgramsSection";
 
 import FacultySection from "./FacultySection";
-import GallerySection from "./GallerySection";
+import ScholarshipSection from "./ScholarshipSection";
 import { motion, Variants } from "framer-motion";
 
 const sectionVariants:Variants = {
@@ -36,7 +36,8 @@ export default function Page() {
       <ProgramsSection />
       
       <FacultySection />
-      <GallerySection />
+      <ScholarshipSection />
+      
     </div>
   );
 }

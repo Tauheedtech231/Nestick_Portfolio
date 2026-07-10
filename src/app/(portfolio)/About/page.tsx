@@ -7,6 +7,7 @@ import VisionMissionSection from './VisionMissionSection';
 import ContactSection from './ContactSection';
 import HistorySection from './HistorySection';
 import HeroSection from './HeroSection';
+import AffiliationsSection from './AffiliationsSection';
 
 export default function AboutUs() {
   // Refs for sections
@@ -64,6 +65,7 @@ export default function AboutUs() {
 
       {/* Vision & Mission Section - Independent Component */}
       <VisionMissionSection />
+      <AffiliationsSection/>
 
       {/* Contact Section - Independent Component */}
       <div id="contact-section">

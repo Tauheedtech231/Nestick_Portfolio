@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import ContactSection from './ContactSection';
 
 interface Scholarship {
   id: number;
@@ -502,6 +503,7 @@ const ScholarshipsPage = () => {
   const TEAL_600 = '#0D9488';
 
   return (
+   <>
     <div className="min-h-screen bg-white transition-colors duration-300 pt-[40px] ">
       {/* Hero Section - Overlay Removed */}
       <section ref={heroRef} className="relative py-20 overflow-hidden">
@@ -773,6 +775,8 @@ const ScholarshipsPage = () => {
         </div>
       )}
     </div>
+    <ContactSection/>
+   </>
   );
 };
 
