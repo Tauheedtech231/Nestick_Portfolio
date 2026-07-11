@@ -53,6 +53,19 @@ const cardHover: Variants = {
   }
 };
 
+// Mobile card variant (no rotateY on mobile)
+const cardHoverMobile: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    }
+  }
+};
+
 function Sheen() {
   return (
     <div
@@ -123,12 +136,10 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
 
   // Process stats to extract target and suffix
   const processedStats = displayStats.map((stat) => {
-    // If target is provided, use it
     if (stat.target !== undefined) {
       return stat;
     }
     
-    // Otherwise parse from value string
     const valueStr = stat.value.toString();
     const match = valueStr.match(/^(\d+)(\+|%|K|\+K)?$/);
     if (match) {
@@ -144,13 +155,12 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
       ref={sectionRef}
       className="relative flex min-h-screen flex-col items-center overflow-hidden"
     >
-      {/* Heading Section - With Depth Shadow Like About */}
-      <div className="relative z-10 w-full py-16 px-5 overflow-hidden" style={{ background: 'linear-gradient(135deg, #f0f4ff 0%, #ffffff 40%, #e8edf8 70%, #dce3f5 100%)' }}>
-        {/* Deep shadow decorative elements - Same as About */}
+      {/* Heading Section */}
+      <div className="relative z-10 w-full py-12 sm:py-16 px-4 sm:px-5 overflow-hidden" style={{ background: 'linear-gradient(135deg, #f0f4ff 0%, #ffffff 40%, #e8edf8 70%, #dce3f5 100%)' }}>
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl" />
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-200/25 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-100/10 rounded-full blur-3xl" />
+          <div className="absolute -top-40 -right-40 w-64 sm:w-96 h-64 sm:h-96 bg-blue-200/30 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 -left-40 w-64 sm:w-96 h-64 sm:h-96 bg-indigo-200/25 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[800px] h-[400px] sm:h-[800px] bg-blue-100/10 rounded-full blur-3xl" />
         </div>
 
         <div className="relative max-w-7xl mx-auto">
@@ -162,9 +172,9 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
           >
             <motion.div 
               variants={fadeInUp}
-              className="inline-flex items-center gap-2 rounded-full bg-[#dce3f5] px-4 py-1.5 text-[12px] font-semibold text-[#1c3fe0] shadow-sm mb-3"
+              className="inline-flex items-center gap-2 rounded-full bg-[#dce3f5] px-3 sm:px-4 py-1.5 text-[10px] sm:text-[12px] font-semibold text-[#1c3fe0] shadow-sm mb-2 sm:mb-3"
             >
-              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <svg className="h-3 w-3 sm:h-3.5 sm:w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                 <path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6" />
               </svg>
               Our Achievements
@@ -172,7 +182,7 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
             
             <motion.h2 
               variants={fadeInUp}
-              className="text-3xl sm:text-4xl font-extrabold text-[#0a1240]"
+              className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0a1240]"
             >
               Why Choose{" "}
               <span className="text-[#2f56fb]">Aspire College?</span>
@@ -180,7 +190,7 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
             
             <motion.p 
               variants={fadeInUp}
-              className="mt-2 text-[15px] text-[#3d4566]"
+              className="mt-1 sm:mt-2 text-[13px] sm:text-[15px] text-[#3d4566] px-2"
             >
               {displaySubtitle}
             </motion.p>
@@ -189,8 +199,8 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
       </div>
 
       {/* Stats Section - With Background Image */}
-      <div className="relative w-full flex-1 flex items-center justify-center overflow-hidden px-5 py-16">
-        {/* Background Image - stats.jpg from public folder */}
+      <div className="relative w-full flex-1 flex items-center justify-center overflow-hidden px-3 sm:px-5 py-8 sm:py-16">
+        {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
             src="/stats.jpg"
@@ -203,13 +213,13 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
 
         {/* Deep shadow decorative elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-[1]">
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#2f56fb]/20 rounded-full blur-3xl" />
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#2f56fb]/15 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#2f56fb]/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-20 w-64 h-64 bg-[#1530b0]/10 rounded-full blur-3xl" />
+          <div className="absolute -top-40 -right-40 w-64 sm:w-96 h-64 sm:h-96 bg-[#2f56fb]/20 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 -left-40 w-64 sm:w-96 h-64 sm:h-96 bg-[#2f56fb]/15 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[800px] h-[400px] sm:h-[800px] bg-[#2f56fb]/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 sm:bottom-20 right-10 sm:right-20 w-40 sm:w-64 h-40 sm:h-64 bg-[#1530b0]/10 rounded-full blur-3xl" />
         </div>
 
-        {/* Stats Cards - z-[2] to be above background */}
+        {/* Stats Cards */}
         <div className="relative z-[2] w-full max-w-7xl mx-auto">
           <motion.div 
             className="[perspective:2200px] [perspective-origin:20%_50%]"
@@ -217,15 +227,15 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
             animate={isInView ? "visible" : "hidden"}
             variants={staggerContainer}
           >
-            <div className="flex items-center justify-center flex-wrap gap-4 lg:gap-0">
-              {/* Card 1 - Hero with Background Image */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-0">
+              {/* Card 1 - ASPIRE COLLEGE */}
               <motion.div
                 variants={cardHover}
                 whileHover={{ 
                   scale: 1.02,
                   transition: { duration: 0.3 }
                 }}
-                className="group relative z-[6] flex h-[380px] w-[200px] flex-col items-center justify-center overflow-hidden rounded-[34px] border-2 border-white/30 text-center text-white shadow-[0_0_30px_rgba(0,0,0,0.3)] cursor-pointer"
+                className="group relative z-[6] flex h-[280px] sm:h-[380px] w-[180px] sm:w-[200px] flex-col items-center justify-center overflow-hidden rounded-[28px] sm:rounded-[34px] border-2 border-white/30 text-center text-white shadow-[0_0_30px_rgba(0,0,0,0.3)] cursor-pointer"
                 style={{
                   background:
                     "linear-gradient(150deg, rgba(47,86,251,0.9) 0%, rgba(30,64,175,0.85) 45%, rgba(21,48,176,0.9) 100%)",
@@ -233,12 +243,12 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
                 }}
               >
                 <Sheen />
-                <div className="relative z-[2] px-4 text-[20px] font-extrabold leading-snug tracking-wide">
+                <div className="relative z-[2] px-3 sm:px-4 text-[16px] sm:text-[20px] font-extrabold leading-snug tracking-wide">
                   ASPIRE
                   <br />
                   COLLEGE
                 </div>
-                <div className="relative z-[2] mt-2.5 text-xs leading-relaxed text-white/80">
+                <div className="relative z-[2] mt-2 text-[10px] sm:text-xs leading-relaxed text-white/80 px-2">
                   Shaping Futures,
                   <br />
                   Inspiring Excellence
@@ -246,42 +256,50 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
               </motion.div>
 
               {/* Cards 2-5 - With Dynamic Counter */}
-              {processedStats.map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  variants={cardHover}
-                  whileHover={{ 
-                    scale: 1.02,
-                    transition: { duration: 0.3 }
-                  }}
-                  className="group relative -ml-[55px] flex h-[380px] w-[200px] flex-col items-center justify-center overflow-hidden rounded-[34px] border-2 text-center shadow-[0_0_30px_rgba(0,0,0,0.2)] cursor-pointer"
-                  style={{
-                    zIndex: 5 - i,
-                    background:
-                      "linear-gradient(150deg, rgba(255,255,255,0.92) 0%, rgba(234,246,245,0.9) 40%, rgba(220,238,253,0.9) 100%)",
-                    borderColor:
-                      i % 2 === 0
-                        ? "rgba(47,86,251,0.4)"
-                        : "rgba(47,86,251,0.3)",
-                    backdropFilter: 'blur(10px)',
-                  }}
-                >
-                  <Sheen />
-                  <div className="z-[2] mb-3 text-[13px] font-medium text-slate-500">
-                    {stat.label.split(" ").slice(0, -1).join(" ") || stat.label}
-                  </div>
-                  <div className="z-[2] mb-3 bg-gradient-to-r from-[#2f56fb] to-[#1530b0] bg-clip-text text-[32px] font-extrabold tracking-wide text-transparent">
-                    {stat.target ? (
-                      <Counter target={stat.target} suffix={stat.suffix || ''} duration={2000} />
-                    ) : (
-                      stat.value
-                    )}
-                  </div>
-                  <div className="z-[2] text-[13px] font-medium text-slate-500">
-                    {stat.label}
-                  </div>
-                </motion.div>
-              ))}
+              {processedStats.map((stat, i) => {
+                // Use different variants for mobile vs desktop
+                const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+                const cardVariants = isMobile ? cardHoverMobile : cardHover;
+                
+                return (
+                  <motion.div
+                    key={stat.label}
+                    variants={cardVariants}
+                    whileHover={{ 
+                      scale: 1.02,
+                      transition: { duration: 0.3 }
+                    }}
+                    className={`group relative flex h-[280px] sm:h-[380px] w-[180px] sm:w-[200px] flex-col items-center justify-center overflow-hidden rounded-[28px] sm:rounded-[34px] border-2 text-center shadow-[0_0_30px_rgba(0,0,0,0.2)] cursor-pointer ${
+                      i > 0 ? 'sm:-ml-[55px]' : ''
+                    }`}
+                    style={{
+                      zIndex: 5 - i,
+                      background:
+                        "linear-gradient(150deg, rgba(255,255,255,0.92) 0%, rgba(234,246,245,0.9) 40%, rgba(220,238,253,0.9) 100%)",
+                      borderColor:
+                        i % 2 === 0
+                          ? "rgba(47,86,251,0.4)"
+                          : "rgba(47,86,251,0.3)",
+                      backdropFilter: 'blur(10px)',
+                    }}
+                  >
+                    <Sheen />
+                    <div className="z-[2] mb-2 sm:mb-3 text-[11px] sm:text-[13px] font-medium text-slate-500 px-2">
+                      {stat.label.split(" ").slice(0, -1).join(" ") || stat.label}
+                    </div>
+                    <div className="z-[2] mb-2 sm:mb-3 bg-gradient-to-r from-[#2f56fb] to-[#1530b0] bg-clip-text text-[28px] sm:text-[32px] font-extrabold tracking-wide text-transparent">
+                      {stat.target ? (
+                        <Counter target={stat.target} suffix={stat.suffix || ''} duration={2000} />
+                      ) : (
+                        stat.value
+                      )}
+                    </div>
+                    <div className="z-[2] text-[11px] sm:text-[13px] font-medium text-slate-500 px-2 text-center">
+                      {stat.label}
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
         </div>

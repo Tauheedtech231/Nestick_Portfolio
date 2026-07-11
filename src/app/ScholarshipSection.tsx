@@ -151,7 +151,7 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
           </motion.p>
         </motion.div>
 
-        {/* Cards - Smooth rounded top, Heart/drop bottom */}
+        {/* Cards - Location Pin Shape */}
         <motion.div 
           className="relative flex flex-wrap justify-center items-center gap-8 lg:gap-10 mb-10 lg:mb-12"
           initial="hidden"
@@ -163,13 +163,13 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
               key={card.id}
               variants={walkInRight}
               whileHover={{ scale: 1.03, transition: { duration: 0.3 } }}
-              className="relative w-[320px] h-[280px] bg-white shadow-[0_18px_40px_rgba(47,86,251,0.12)] cursor-pointer transition-all duration-300 flex flex-col items-center justify-center text-center"
+              className="relative w-[320px] h-[340px] bg-white shadow-[0_18px_40px_rgba(47,86,251,0.12)] cursor-pointer transition-all duration-300 flex flex-col items-center justify-center text-center"
               style={{
-                // 👇 BILKUL SMOOTH TOP - No notch, pure rounded dome
-                clipPath: "path('M160,280 C80,211, 0,136, 20,80 C30,35, 80,12, 160,12 C240,12, 290,35, 300,80 C320,136, 240,211, 160,280 Z')",
+                // Location Pin Shape - Perfect drop/pin shape without middle circle
+                clipPath: "path('M160,340 C80,280 0,210 20,150 C30,105 80,70 160,70 C240,70 290,105 300,150 C320,210 240,280 160,340 Z M160,340 L160,340')",
                 border: '1px solid rgba(255,255,255,0.5)',
                 boxShadow: '0 18px 40px rgba(47,86,251,0.12), 0 8px 20px rgba(47,86,251,0.06)',
-                padding: '32px 28px',
+                padding: '40px 28px 50px',
               }}
             >
               {/* Number Watermark */}
@@ -183,10 +183,6 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
               {/* Title */}
               <div 
                 className="relative z-10 font-extrabold text-[16px] text-[#0a1240] leading-tight mb-2 max-w-[240px]"
-                style={{
-                  paddingLeft: index === 0 ? '12px' : (index === 1 ? '22px' : '18px'),
-                  paddingRight: index === 0 ? '12px' : (index === 1 ? '22px' : '18px'),
-                }}
               >
                 {card.title}
               </div>
@@ -194,13 +190,20 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
               {/* Description */}
               <div 
                 className="relative z-10 text-[13px] text-[#3d4566] leading-relaxed max-w-[240px]"
-                style={{
-                  paddingLeft: index === 1 ? '30px' : (index === 0 ? '12px' : '18px'),
-                  paddingRight: index === 1 ? '30px' : (index === 0 ? '12px' : '18px'),
-                }}
               >
                 {card.description}
               </div>
+
+              {/* Pin tip at bottom - the sharp point of location pin */}
+              <div 
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[1px] w-0 h-0"
+                style={{
+                  borderLeft: '12px solid transparent',
+                  borderRight: '12px solid transparent',
+                  borderTop: '20px solid white',
+                  filter: 'drop-shadow(0 4px 8px rgba(47,86,251,0.08))'
+                }}
+              />
             </motion.div>
           ))}
         </motion.div>
@@ -227,6 +230,24 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
           </Link>
         </motion.div>
       </div>
+
+      {/* Mobile responsive styles */}
+      <style>{`
+        @media (max-width: 768px) {
+          .scholarship-card {
+            width: 280px !important;
+            height: 300px !important;
+            padding: 32px 20px 40px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .scholarship-card {
+            width: 260px !important;
+            height: 280px !important;
+            padding: 28px 16px 36px !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }
