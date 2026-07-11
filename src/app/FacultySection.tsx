@@ -155,7 +155,7 @@ export default function FacultySection() {
 
         {/* RIGHT COLUMN - Walking from right */}
         <motion.div 
-          className="relative h-[460px] lg:h-[520px] flex items-center justify-center order-1 lg:order-2"
+          className="relative h-[300px] sm:h-[360px] md:h-[420px] lg:h-[520px] flex items-center justify-center order-1 lg:order-2 w-full"
           variants={walkInRight}
         >
           {/* Arch Outline */}
@@ -167,19 +167,26 @@ export default function FacultySection() {
           {/* Photo Frame */}
           <motion.div 
             variants={fadeInScale}
-            className="relative w-[100%] h-full rounded-[190px_60px_190px_60px] overflow-hidden shadow-[0_24px_50px_-15px_rgba(37,99,235,0.25)] z-10"
+            className="relative w-full h-full rounded-[190px_60px_190px_60px] lg:rounded-[190px_60px_190px_60px] overflow-hidden shadow-[0_24px_50px_-15px_rgba(37,99,235,0.25)] z-10"
           >
+            {/* Desktop Image - Hidden on mobile */}
             <img
               src="https://plus.unsplash.com/premium_photo-1661756423422-4486e27eb6dd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Professor teaching a class"
-              className="w-full h-full object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-300"
+              className="w-full h-full object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-300 hidden lg:block"
+            />
+            {/* Mobile Image - Hidden on desktop */}
+            <img
+              src="https://images.unsplash.com/photo-1758685734555-a0e7f15ea33f?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Professor teaching a class"
+              className="w-full h-full object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-300 lg:hidden"
             />
           </motion.div>
 
-          {/* Floating Cards with staggered animation */}
+          {/* Floating Cards - 3 badges on desktop */}
           <motion.div 
             variants={fadeInUp}
-            className="absolute top-6 left-[-8px] bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-3 flex items-center gap-3 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50"
+            className="absolute top-6 left-[-8px] bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-3 flex items-center gap-3 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 hidden lg:flex"
             transition={{ delay: 0.3 }}
           >
             <div className="w-9 h-9 rounded-lg bg-[#2f56fb]/10 flex items-center justify-center">
@@ -192,7 +199,7 @@ export default function FacultySection() {
 
           <motion.div 
             variants={fadeInUp}
-            className="absolute top-[38%] right-[-32px] bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-3 flex items-center gap-3 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50"
+            className="absolute top-[38%] right-[-32px] bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-3 flex items-center gap-3 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 hidden lg:flex"
             transition={{ delay: 0.4 }}
           >
             <div className="w-9 h-9 rounded-lg bg-[#dce3f5] flex items-center justify-center">
@@ -205,7 +212,7 @@ export default function FacultySection() {
 
           <motion.div 
             variants={fadeInUp}
-            className="absolute bottom-8 left-[-12px] bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-3 flex items-center gap-3 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50"
+            className="absolute bottom-8 left-[-12px] bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-3 flex items-center gap-3 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 hidden lg:flex"
             transition={{ delay: 0.5 }}
           >
             <div className="w-9 h-9 rounded-lg bg-[#dce3f5] flex items-center justify-center">
@@ -215,6 +222,34 @@ export default function FacultySection() {
               Excellence<br />That Inspires
             </strong>
           </motion.div>
+
+          {/* Mobile Badges - 2 badges (left and right) */}
+          <motion.div 
+            variants={fadeInUp}
+            className="absolute top-4 left-2 bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-2.5 flex items-center gap-2 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 lg:hidden"
+            transition={{ delay: 0.3 }}
+          >
+            <div className="w-7 h-7 rounded-lg bg-[#2f56fb]/10 flex items-center justify-center flex-shrink-0">
+              <Users className="h-3.5 w-3.5 text-[#2f56fb]" strokeWidth={2} />
+            </div>
+            <strong className="text-[11px] font-bold text-[#0a1240] leading-tight">
+              Mentorship
+            </strong>
+          </motion.div>
+
+          <motion.div 
+            variants={fadeInUp}
+            className="absolute bottom-4 right-2 bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-2.5 flex items-center gap-2 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 lg:hidden"
+            transition={{ delay: 0.4 }}
+          >
+            <div className="w-7 h-7 rounded-lg bg-[#dce3f5] flex items-center justify-center flex-shrink-0">
+              <Award className="h-3.5 w-3.5 text-[#2f56fb]" strokeWidth={2} />
+            </div>
+            <strong className="text-[11px] font-bold text-[#0a1240] leading-tight">
+              Excellence
+            </strong>
+          </motion.div>
+
         </motion.div>
 
       </motion.div>
