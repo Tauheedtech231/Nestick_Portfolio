@@ -151,7 +151,7 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
           </motion.p>
         </motion.div>
 
-        {/* Heart Shape Cards */}
+        {/* Cards - Smooth rounded top, Heart/drop bottom */}
         <motion.div 
           className="relative flex flex-wrap justify-center items-center gap-8 lg:gap-10 mb-10 lg:mb-12"
           initial="hidden"
@@ -165,7 +165,8 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
               whileHover={{ scale: 1.03, transition: { duration: 0.3 } }}
               className="relative w-[320px] h-[280px] bg-white shadow-[0_18px_40px_rgba(47,86,251,0.12)] cursor-pointer transition-all duration-300 flex flex-col items-center justify-center text-center"
               style={{
-                clipPath: "path('M160,280 C80,211, 0,136, 52,61 C92,0, 160,30, 160,90 C160,30, 228,0, 268,61 C320,136, 240,211, 160,280 Z')",
+                // 👇 BILKUL SMOOTH TOP - No notch, pure rounded dome
+                clipPath: "path('M160,280 C80,211, 0,136, 20,80 C30,35, 80,12, 160,12 C240,12, 290,35, 300,80 C320,136, 240,211, 160,280 Z')",
                 border: '1px solid rgba(255,255,255,0.5)',
                 boxShadow: '0 18px 40px rgba(47,86,251,0.12), 0 8px 20px rgba(47,86,251,0.06)',
                 padding: '32px 28px',
@@ -190,7 +191,7 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
                 {card.title}
               </div>
 
-              {/* Description - Extra padding only for second card */}
+              {/* Description */}
               <div 
                 className="relative z-10 text-[13px] text-[#3d4566] leading-relaxed max-w-[240px]"
                 style={{
