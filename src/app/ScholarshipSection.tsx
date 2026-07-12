@@ -66,7 +66,7 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
     {
       id: "card1",
       num: "01",
-      title: "Merit-Based Scholarships",
+      title: "Merit Scholarships",
       description: "Recognizing excellence and academic achievements.",
       color: "#2f56fb",
       className: "card1",
@@ -74,7 +74,7 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
     {
       id: "card2",
       num: "02",
-      title: "Need-Based Financial Aid",
+      title: "Need-Based Aid",
       description: "Supporting students who need it the most.",
       color: "#2f56fb",
       className: "card2",
@@ -82,7 +82,7 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
     {
       id: "card3",
       num: "03",
-      title: "Affordable Education For All",
+      title: "Affordable Education",
       description: "Making quality education accessible for all.",
       color: "#2f56fb",
       className: "card3",
@@ -93,6 +93,16 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
   const displayTitle = title || 'Scholarships &';
   const displaySubtitle = subtitle || 'We believe that financial constraints should never be a barrier to quality education. Aspire College offers a range of merit-based and need-based scholarships to help talented students achieve their academic dreams.';
   const displayBadge = badgeText || 'SCHOLARSHIPS';
+
+  // Function to wrap text with 3 words per line with proper spacing
+  const formatDescription = (text: string) => {
+    const words = text.split(' ');
+    const lines = [];
+    for (let i = 0; i < words.length; i += 3) {
+      lines.push(words.slice(i, i + 3).join(' '));
+    }
+    return lines.join(' ');
+  };
 
   return (
     <section 
@@ -111,17 +121,17 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
         <div className="absolute bottom-20 right-20 w-64 h-64 bg-indigo-300/20 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 py-12 lg:py-16">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 py-6 lg:py-8">
         {/* Heading - Top Center */}
         <motion.div 
-          className="text-center mb-10 lg:mb-12"
+          className="text-center mb-5 lg:mb-6"
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
           variants={staggerContainer}
         >
           <motion.div 
             variants={fadeInUp}
-            className="inline-flex items-center gap-2 rounded-full bg-[#dce3f5] px-4 py-1.5 text-[12px] font-semibold text-[#1c3fe0] shadow-sm mb-3"
+            className="inline-flex items-center gap-2 rounded-full bg-[#dce3f5] px-4 py-1.5 text-[12px] font-semibold text-[#1c3fe0] shadow-sm mb-2"
           >
             <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6" />
@@ -137,7 +147,7 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
           </motion.h1>
           <motion.div 
             variants={fadeInUp}
-            className="flex items-center justify-center gap-1.5 mt-3"
+            className="flex items-center justify-center gap-1.5 mt-2"
           >
             <div className="h-1 w-[34px] rounded-full bg-[#2f56fb]" />
             <div className="h-[4px] w-[4px] rounded-full bg-[#2f56fb] opacity-55" />
@@ -145,7 +155,7 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
           </motion.div>
           <motion.p 
             variants={fadeInUp}
-            className="mt-4 text-[15px] text-[#3d4566] leading-[1.8] max-w-2xl mx-auto"
+            className="mt-2 text-[14px] text-[#3d4566] leading-[1.6] max-w-2xl mx-auto"
           >
             {displaySubtitle}
           </motion.p>
@@ -153,7 +163,7 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
 
         {/* Cards - Location Pin Shape */}
         <motion.div 
-          className="relative flex flex-wrap justify-center items-center gap-8 lg:gap-10 mb-10 lg:mb-12"
+          className="relative flex flex-wrap justify-center items-center gap-6 lg:gap-8 mb-8 lg:mb-10"
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
           variants={staggerContainer}
@@ -163,44 +173,48 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
               key={card.id}
               variants={walkInRight}
               whileHover={{ scale: 1.03, transition: { duration: 0.3 } }}
-              className="relative w-[320px] h-[340px] bg-white shadow-[0_18px_40px_rgba(47,86,251,0.12)] cursor-pointer transition-all duration-300 flex flex-col items-center justify-center text-center"
+              className="relative w-[260px] h-[340px] bg-white shadow-[0_18px_40px_rgba(47,86,251,0.12)] cursor-pointer transition-all duration-300 flex flex-col items-center justify-center text-center"
               style={{
-                // Location Pin Shape - Perfect drop/pin shape without middle circle
-                clipPath: "path('M160,340 C80,280 0,210 20,150 C30,105 80,70 160,70 C240,70 290,105 300,150 C320,210 240,280 160,340 Z M160,340 L160,340')",
+                // Location Pin Shape - More prominent pin shape with less padding
+                clipPath: "path('M130,340 C60,280 -5,210 15,150 C25,105 65,65 130,65 C195,65 235,105 245,150 C265,210 200,280 130,340 Z M130,340 L130,340')",
                 border: '1px solid rgba(255,255,255,0.5)',
                 boxShadow: '0 18px 40px rgba(47,86,251,0.12), 0 8px 20px rgba(47,86,251,0.06)',
-                padding: '40px 28px 50px',
+                padding: '20px 18px 30px',
               }}
             >
               {/* Number Watermark */}
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[90px] font-black leading-none opacity-[0.04] z-0" style={{ color: card.color }}>
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[70px] font-black leading-none opacity-[0.04] z-0" style={{ color: card.color }}>
                 {card.num}
               </div>
 
               {/* Number */}
-              <div className="relative z-10 font-extrabold text-[16px] mb-1.5" style={{ color: card.color }}>{card.num}</div>
+              <div className="relative z-10 font-extrabold text-[14px] mb-1" style={{ color: card.color }}>{card.num}</div>
 
               {/* Title */}
               <div 
-                className="relative z-10 font-extrabold text-[16px] text-[#0a1240] leading-tight mb-2 max-w-[240px]"
+                className="relative z-10 font-extrabold text-[14px] text-[#0a1240] leading-tight mb-1.5 max-w-[160px]"
               >
                 {card.title}
               </div>
 
-              {/* Description */}
+              {/* Description - 3 words per line with proper spacing */}
               <div 
-                className="relative z-10 text-[13px] text-[#3d4566] leading-relaxed max-w-[240px]"
+                className="relative z-10 text-[11.5px] text-[#3d4566] leading-[1.8] max-w-[140px]"
+                style={{ 
+                  wordBreak: 'break-word',
+                  display: 'inline-block'
+                }}
               >
-                {card.description}
+                {formatDescription(card.description)}
               </div>
 
               {/* Pin tip at bottom - the sharp point of location pin */}
               <div 
                 className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[1px] w-0 h-0"
                 style={{
-                  borderLeft: '12px solid transparent',
-                  borderRight: '12px solid transparent',
-                  borderTop: '20px solid white',
+                  borderLeft: '10px solid transparent',
+                  borderRight: '10px solid transparent',
+                  borderTop: '18px solid white',
                   filter: 'drop-shadow(0 4px 8px rgba(47,86,251,0.08))'
                 }}
               />
@@ -235,16 +249,16 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
       <style>{`
         @media (max-width: 768px) {
           .scholarship-card {
-            width: 280px !important;
+            width: 230px !important;
             height: 300px !important;
-            padding: 32px 20px 40px !important;
+            padding: 16px 14px 25px !important;
           }
         }
         @media (max-width: 480px) {
           .scholarship-card {
-            width: 260px !important;
+            width: 200px !important;
             height: 280px !important;
-            padding: 28px 16px 36px !important;
+            padding: 14px 12px 22px !important;
           }
         }
       `}</style>

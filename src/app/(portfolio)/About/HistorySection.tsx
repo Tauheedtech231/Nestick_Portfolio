@@ -320,12 +320,12 @@ export default function HistorySection() {
             </motion.div>
           </div>
 
-          {/* Mobile Layout - Content on top, image below */}
-          <div className="block md:hidden">
+          {/* Mobile Layout - Content on top, image below, single unified card */}
+          <div className="block md:hidden" style={{ background: NAVY_DEEP }}>
             {/* Content Section - Top */}
-            <div className="px-6 py-8" style={{ background: NAVY_DEEP }}>
-              {/* Eyebrow */}
-              <motion.div 
+            <div className="px-6 pt-8 pb-2" style={{ background: NAVY_DEEP }}>
+              {/* Eyebrow - Hidden on mobile */}
+              {/* <motion.div 
                 variants={fadeInUp}
                 className="inline-flex items-center gap-2 w-fit px-2 py-2 pr-4 rounded-full mb-4"
                 style={{
@@ -348,7 +348,7 @@ export default function HistorySection() {
                 >
                   OUR HERITAGE
                 </span>
-              </motion.div>
+              </motion.div> */}
 
               {/* Heading */}
               <motion.h1 
@@ -423,25 +423,61 @@ export default function HistorySection() {
               </motion.div>
             </div>
 
-            {/* Image Section - Bottom */}
-            <div className="relative w-full" style={{ aspectRatio: '16/9', background: NAVY_DEEP }}>
-              <img 
-                src="https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80"
-                alt="Aspire College Campus"
-                className="w-full h-full object-cover"
-                style={{ opacity: 0.9 }}
-              />
-              
-              {/* Gradient Overlay for better text visibility */}
-              <div 
-                className="absolute inset-0"
+            {/* Image Section - Bottom, inset within same card so it doesn't feel separated */}
+            <div className=" pb-14 pt-2" style={{ background: NAVY_DEEP }}>
+              <div
+                className="relative w-full overflow-hidden rounded-[18px]"
                 style={{
-                  background: 'linear-gradient(to bottom, rgba(14,27,48,0.3) 0%, rgba(14,27,48,0.1) 100%)'
+                  aspectRatio: '16/18',
+                  background: NAVY_DEEP,
+                  border: '1px solid rgba(255,255,255,0.06)',
                 }}
-              />
+              >
+                <img
+                  src="https://plus.unsplash.com/premium_photo-1691962725086-d1590e379139?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGNvbGxlZ2V8ZW58MHx8MHx8fDA%3D"
+                  alt="Aspire College Campus"
+                  loading="lazy"
+                  className="w-full h-full object-cover"
+                  style={{ opacity: 0.9 }}
+                />
 
-              {/* Mobile Overlay Card */}
-              <motion.div
+                {/* Gradient Overlay for better text visibility */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background: 'linear-gradient(to bottom, rgba(14,27,48,0.3) 0%, rgba(14,27,48,0.1) 100%)'
+                  }}
+                />
+
+                {/* Small Badge - "Established 1985" at right top corner */}
+                <motion.div
+                  initial={{ opacity: 0, x: 15 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 15 }}
+                  transition={{ delay: 0.5 }}
+                  className="absolute top-3 right-3 z-10"
+                >
+                  <div
+                    className="px-3 py-1.5 rounded-full"
+                    style={{
+                      background: 'rgba(13,148,136,0.9)',
+                      border: '1px solid rgba(255,255,255,0.15)',
+                      backdropFilter: 'blur(8px)',
+                    }}
+                  >
+                    <span
+                      className="text-[10px] font-bold tracking-[0.5px] uppercase whitespace-nowrap"
+                      style={{
+                        color: '#FFFFFF',
+                        fontFamily: "'Inter', sans-serif",
+                      }}
+                    >
+                      Est. 1985
+                    </span>
+                  </div>
+                </motion.div>
+
+                {/* Mobile Overlay Card - Hidden */}
+                {/* <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
                 transition={{ delay: 0.4 }}
@@ -495,7 +531,8 @@ export default function HistorySection() {
                     <path d="M5 12h14M13 6l6 6-6 6"/>
                   </svg>
                 </div>
-              </motion.div>
+              </motion.div> */}
+              </div>
             </div>
           </div>
         </motion.div>

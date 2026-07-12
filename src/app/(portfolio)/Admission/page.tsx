@@ -12,8 +12,6 @@ import MyApplicationsPage from './ApplicationForm';
 
 export default function AdmissionsSection() {
   const [showScrollTop, setShowScrollTop] = useState(false);
-  
-  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   // Scroll handler for scroll to top button
   useEffect(() => {
@@ -23,15 +21,6 @@ export default function AdmissionsSection() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Autoplay video on mount
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(error => {
-        console.log('Autoplay prevented:', error);
-      });
-    }
   }, []);
 
   const scrollToTop = () => {
@@ -53,7 +42,7 @@ export default function AdmissionsSection() {
   ];
 
   return (
-    <section className="min-h-screen bg-white transition-colors duration-300 relative pt-[40px] ">
+    <section className="min-h-screen bg-white transition-colors duration-300 relative pt-[40px] sm:pt-[80px]"> 
       
       {/* Scroll to Top Button */}
       <AnimatePresence>
@@ -76,27 +65,20 @@ export default function AdmissionsSection() {
         )}
       </AnimatePresence>
 
-      {/* Hero Section with Video - Full Width */}
+      {/* Hero Section with Image - Full Width */}
       <div className="relative w-full overflow-hidden">
-        {/* Video Background - Full Width */}
+        {/* Image Background - Full Width */}
         <div className="relative w-full h-[340px] sm:h-[420px] lg:h-[500px] overflow-hidden">
-          <video
-            ref={videoRef}
+          <img 
+            src="https://plus.unsplash.com/premium_photo-1733317282227-19fa01b5c964?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Admission Guidance"
             className="w-full h-full object-cover"
-            loop
-            muted
-            playsInline
-            autoPlay
-            poster="/ad-poster.jpg"
-          >
-            <source src="/ad.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          />
           
           {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/70"></div>
           
-          {/* Hero Content - Overlay on Video */}
+          {/* Hero Content - Overlay on Image */}
           <motion.div 
             className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center mt-30 sm:mt-0"
             initial={{ opacity: 0, y: 30 }}

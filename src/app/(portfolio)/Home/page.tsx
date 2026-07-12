@@ -54,7 +54,8 @@ export default function Home() {
       desc: "Leading educational institution in Pakistan. We offer innovative learning, cutting-edge research, and a commitment to global impact.",
       cta: "Get Started",
       ctaLink: "/admission",
-      image: "https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80"
+      image: "https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80",
+      mobileImage: "https://plus.unsplash.com/premium_photo-1713296255442-e9338f42aad8?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D"
     },
     {
       eyebrow: "Our Programs",
@@ -62,7 +63,8 @@ export default function Home() {
       desc: "Explore our diverse range of academic programs designed to nurture future leaders and innovators.",
       cta: "View Programs",
       ctaLink: "/programs",
-      image: "https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80"
+      image: "https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80",
+      mobileImage: "https://plus.unsplash.com/premium_photo-1691962725086-d1590e379139?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGNvbGxlZ2V8ZW58MHx8MHx8fDA%3D"
     },
     {
       eyebrow: "Campus Life",
@@ -70,9 +72,17 @@ export default function Home() {
       desc: "Experience vibrant campus life with state-of-the-art facilities, clubs, and extracurricular activities.",
       cta: "Explore Campus",
       ctaLink: "/student-life",
-      image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80"
+      image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80",
+      mobileImage: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzR8fGNvbGxlZ2V8ZW58MHx8MHx8fDA%3D"
     }
   ];
+
+  // Split description into sentences
+  const splitIntoSentences = (text: string) => {
+    // Split by period, question mark, or exclamation followed by space
+    const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+    return sentences.map(s => s.trim());
+  };
 
   const handlePrev = () => {
     if (isTransitioning) return;
@@ -113,17 +123,44 @@ export default function Home() {
     }
   };
 
+  // Get sentences for current slide
+  const sentences = splitIntoSentences(slides[currentSlide].desc);
+
   return (
-    <div className={`min-h-screen flex flex-col pt-[30px]`}
+    <div className={`min-h-screen flex flex-col pt-[40px] sm:pt-[80px]`}
       style={{ backgroundColor: bgColor }}
     >
       {/* Hero Section */}
       <section className="relative w-full h-[calc(100vh-85px)] sm:h-[calc(100vh-95px)] min-h-[450px] overflow-hidden"
         style={{ backgroundColor: '#101820' }}
       >
-        {/* Background Image - Full Screen Mode */}
+        {/* Mobile Background Image - Only visible on mobile */}
         <div
-          className="absolute inset-0 transition-all duration-800 ease-in-out z-0"
+          className="absolute inset-0 transition-all duration-800 ease-in-out z-0 md:hidden"
+          style={{
+            opacity: isMobile ? 1 : 0,
+            transform: 'scale(1)',
+          }}
+        >
+          <Image
+            src={slides[currentSlide].mobileImage}
+            alt={slides[currentSlide].title}
+            fill
+            className="object-cover"
+            priority
+          />
+          {/* Overlay for text readability on mobile */}
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%)'
+            }}
+          />
+        </div>
+
+        {/* Desktop Background Image - Only visible on desktop */}
+        <div
+          className="absolute inset-0 transition-all duration-800 ease-in-out z-0 hidden md:block"
           style={{
             opacity: isFullScreen ? 1 : 0,
             transform: isFullScreen ? 'scale(1)' : 'scale(1.1)',
@@ -136,7 +173,7 @@ export default function Home() {
             className="object-cover"
             priority
           />
-          {/* Light overlay for text readability in full screen */}
+          {/* Light overlay for text readability on desktop */}
           <div 
             className="absolute inset-0"
             style={{
@@ -145,10 +182,10 @@ export default function Home() {
           />
         </div>
 
-        {/* Right side image panel - Split View Mode */}
+        {/* Right side image panel - Split View Mode (desktop only) */}
         {!isMobile && (
           <div 
-            className="absolute top-0 right-0 h-full w-[60%] overflow-hidden transition-all duration-800 ease-in-out z-10"
+            className="absolute top-0 right-0 h-full w-[60%] overflow-hidden transition-all duration-800 ease-in-out z-10 hidden md:block"
             style={{
               clipPath: isFullScreen ? 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' : 'polygon(28% 0, 100% 0, 100% 100%, 0% 100%)',
               opacity: isFullScreen ? 0 : 1,
@@ -172,23 +209,13 @@ export default function Home() {
           </div>
         )}
 
-        {/* Left side dark background - only in split view */}
+        {/* Left side dark background - only in split view (desktop only) */}
         {!isMobile && (
           <div 
-            className="absolute inset-0 z-0 transition-all duration-800 ease-in-out"
+            className="absolute inset-0 z-0 transition-all duration-800 ease-in-out hidden md:block"
             style={{
               opacity: isFullScreen ? 0 : 1,
               background: 'linear-gradient(to right, #101820 0%, #101820 40%, transparent 100%)',
-            }}
-          />
-        )}
-
-        {/* Mobile background overlay */}
-        {isMobile && (
-          <div 
-            className="absolute inset-0 z-0"
-            style={{
-              background: 'linear-gradient(to bottom, rgba(16,24,32,0.3) 0%, rgba(16,24,32,0.7) 100%)',
             }}
           />
         )}
@@ -230,24 +257,36 @@ export default function Home() {
                 transform: isTransitioning ? 'translateX(-120px) scale(0.9)' : 'translateX(0) scale(1)',
                 opacity: isTransitioning ? 0 : 1,
                 transitionDelay: '100ms',
-                color: isMobile ? '#FFFFFF' : (isFullScreen ? '#FFFFFF' : '#FFFFFF'),
+                color: '#FFFFFF',
                 textShadow: isMobile ? '0 2px 20px rgba(0,0,0,0.7)' : (isFullScreen ? '0 2px 30px rgba(0,0,0,0.7)' : 'none'),
               }}
             >
               {slides[currentSlide].title}
             </div>
+            
+            {/* Description - Each sentence on a new line */}
             <div 
-              className="text-[0.9rem] md:text-[0.95rem] leading-[1.6] max-w-[480px] transition-all duration-800 ease-out"
+              className="transition-all duration-800 ease-out space-y-1"
               style={{
                 transform: isTransitioning ? 'translateX(-140px) scale(0.9)' : 'translateX(0) scale(1)',
                 opacity: isTransitioning ? 0 : 1,
                 transitionDelay: '200ms',
                 margin: isMobile ? '0 auto' : (isFullScreen ? '0 auto' : '0'),
-                textShadow: isMobile ? '0 1px 15px rgba(0,0,0,0.7)' : (isFullScreen ? '0 1px 15px rgba(0,0,0,0.5)' : 'none'),
-                color: isMobile ? '#d7dce2' : (isFullScreen ? '#FFFFFF' : '#d7dce2'),
+                maxWidth: '480px',
               }}
             >
-              {slides[currentSlide].desc}
+              {sentences.map((sentence, index) => (
+                <div 
+                  key={index}
+                  className="text-[0.9rem] md:text-[0.95rem] leading-[1.6]"
+                  style={{
+                    textShadow: isMobile ? '0 1px 15px rgba(0,0,0,0.7)' : (isFullScreen ? '0 1px 15px rgba(0,0,0,0.5)' : 'none'),
+                    color: isMobile ? '#d7dce2' : (isFullScreen ? '#FFFFFF' : '#d7dce2'),
+                  }}
+                >
+                  {sentence}
+                </div>
+              ))}
             </div>
             
             {/* Two Buttons - Admission + Contact Us */}
@@ -304,21 +343,44 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Navigation Arrows */}
-        <button
-          onClick={handlePrev}
-          className="absolute top-1/2 -translate-y-1/2 z-30 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white text-xl md:text-2xl p-2 md:p-3 rounded-full transition-all duration-300 cursor-pointer left-[2%] hover:scale-110"
-          disabled={isTransitioning}
-        >
-          &#10094;
-        </button>
-        <button
-          onClick={handleNext}
-          className="absolute top-1/2 -translate-y-1/2 z-30 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white text-xl md:text-2xl p-2 md:p-3 rounded-full transition-all duration-300 cursor-pointer right-[2%] hover:scale-110"
-          disabled={isTransitioning}
-        >
-          &#10095;
-        </button>
+        {/* Navigation Arrows - Bottom on mobile, sides on desktop */}
+        {isMobile ? (
+          // Mobile: Bottom arrows with increased gap
+          <div className="absolute bottom-20 left-0 right-0 z-30 flex justify-center gap-18">
+            <button
+              onClick={handlePrev}
+              className="bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white text-xl p-2 px-4 rounded-full transition-all duration-300 cursor-pointer hover:scale-110"
+              disabled={isTransitioning}
+            >
+              &#10094;
+            </button>
+            <button
+              onClick={handleNext}
+              className="bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white text-xl p-2 px-4 rounded-full transition-all duration-300 cursor-pointer hover:scale-110"
+              disabled={isTransitioning}
+            >
+              &#10095;
+            </button>
+          </div>
+        ) : (
+          // Desktop: Side arrows
+          <>
+            <button
+              onClick={handlePrev}
+              className="absolute top-1/2 -translate-y-1/2 z-30 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white text-xl md:text-2xl p-2 md:p-3 rounded-full transition-all duration-300 cursor-pointer left-[2%] hover:scale-110"
+              disabled={isTransitioning}
+            >
+              &#10094;
+            </button>
+            <button
+              onClick={handleNext}
+              className="absolute top-1/2 -translate-y-1/2 z-30 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white text-xl md:text-2xl p-2 md:p-3 rounded-full transition-all duration-300 cursor-pointer right-[2%] hover:scale-110"
+              disabled={isTransitioning}
+            >
+              &#10095;
+            </button>
+          </>
+        )}
       </section>
 
       {/* Stats Component */}

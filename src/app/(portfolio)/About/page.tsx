@@ -56,7 +56,7 @@ export default function AboutUs() {
   };
 
   return (
-    <div id="about" className="min-h-screen bg-white transition-colors duration-300 overflow-hidden pt-[40px] ">
+    <div id="about" className="min-h-screen bg-white transition-colors duration-300 overflow-hidden pt-[40px] sm:pt-[80px] ">
       {/* Hero Section - Independent Component */}
       <HeroSection />
 

@@ -504,12 +504,12 @@ const ScholarshipsPage = () => {
 
   return (
    <>
-    <div className="min-h-screen bg-white transition-colors duration-300 pt-[40px] ">
+    <div className="min-h-screen bg-white transition-colors duration-300 pt-[40px] sm:pt-[80px] ">
       {/* Hero Section - Overlay Removed */}
       <section ref={heroRef} className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80"
+            src="https://plus.unsplash.com/premium_photo-1691962725028-e825955a7c1e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Scholarships"
             className="w-full h-full object-cover"
           />

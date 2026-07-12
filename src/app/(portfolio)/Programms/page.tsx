@@ -3,6 +3,7 @@
 
 import { motion, Variants } from 'framer-motion';
 import ProgramsList from './ProgramsList';
+import Affiliations from '../About/AffiliationsSection';
 
 // Animation variants
 const headingVariants: Variants = {
@@ -33,12 +34,12 @@ const subHeadingVariants: Variants = {
 
 export default function ProgramsPage() {
   return (
-    <div className="min-h-screen bg-white transition-colors duration-300 pt-[40px]">
+    <div className="min-h-screen bg-white transition-colors duration-300 pt-[40px] sm:pt-[80px]">
       {/* Hero Section */}
       <section className="relative py-20 sm:py-28 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src="https://plus.unsplash.com/premium_photo-1691962725001-8e9157a933cd?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Programs Hero"
             className="w-full h-full object-cover"
           />
@@ -70,6 +71,7 @@ export default function ProgramsPage() {
 
       {/* Programs List Component */}
       <ProgramsList />
+      <Affiliations/>
     </div>
   );
 }

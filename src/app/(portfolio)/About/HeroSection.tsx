@@ -2,6 +2,7 @@
 'use client';
 
 import { motion, Variants } from 'framer-motion';
+import { useState, useEffect } from "react";
 
 interface HeroSectionProps {
   onContactClick?: () => void;
@@ -10,6 +11,17 @@ interface HeroSectionProps {
 export default function HeroSection({ onContactClick }: HeroSectionProps) {
   // Colors - Blue + Teal Theme
   const TEAL_600 = '#0D9488';
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Animation variants
   const fadeInUp: Variants = {
@@ -44,12 +56,19 @@ export default function HeroSection({ onContactClick }: HeroSectionProps) {
     }
   };
 
+  // Get the appropriate image based on device
+  const getImageUrl = () => {
+    return isMobile 
+      ? "https://plus.unsplash.com/premium_photo-1691962725086-d1590e379139?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGNvbGxlZ2V8ZW58MHx8MHx8fDA%3D"
+      : "https://images.unsplash.com/photo-1641160616553-a9d21a846e49?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  };
+
   return (
     <section className="relative h-[55vh] min-h-[400px] flex items-center justify-center overflow-hidden">
       {/* Background Image - No Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=2064&q=80"
+          src={getImageUrl()}
           alt="Aspire College Campus"
           className="w-full h-full object-cover"
         />

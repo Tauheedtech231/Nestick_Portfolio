@@ -7,113 +7,111 @@ export default function VisionMissionSection() {
     <section className="relative overflow-hidden bg-white px-5 py-3 text-center">
       <style>{`
         @media (max-width: 900px) {
-          .vm-stage { flex-direction: column; gap: 20px; }
-          .vm-blob-left, .vm-blob-right { margin: 0 !important; }
-          .vm-connectors { display: none; }
-          .vm-center { 
-            width: 160px !important; 
-            height: 160px !important; 
-            margin: 5px 0 !important;
-            position: relative !important;
-            z-index: 10 !important;
-          }
-          .vm-center .center-inner {
-            inset: 5px !important;
-          }
-          .vm-center svg {
-            width: 20px !important;
-            height: 20px !important;
-          }
-          .vm-center .center-text {
-            font-size: 12px !important;
-          }
-          .vm-blob-left, .vm-blob-right {
-            position: relative !important;
-            z-index: 1 !important;
-          }
-          /* Hide icons on mobile */
-          .vm-blob-left .icon-wrapper, 
-          .vm-blob-right .icon-wrapper {
-            display: none !important;
-          }
-          .vm-blob-left .content, 
-          .vm-blob-right .content {
-            padding-top: 40px !important;
-          }
-          .vm-blob-left .title, 
-          .vm-blob-right .title {
-            margin-top: 10px !important;
-          }
-        }
-        @media (max-width: 600px) {
-          .vm-blob-left, .vm-blob-right { 
-            width: 100% !important; 
-            max-width: 340px; 
-          }
-          .vm-blob-left svg, .vm-blob-right svg { 
-            height: 400px; 
-          }
-          .vm-center { 
-            width: 140px !important; 
-            height: 140px !important;
-            margin: 0 !important;
-            position: relative !important;
-            top: -5px !important;
-            z-index: 10 !important;
-          }
-          .vm-center .center-inner {
-            inset: 4px !important;
-          }
-          /* Hide icons on mobile - smaller screens */
-          .vm-blob-left .icon-wrapper, 
-          .vm-blob-right .icon-wrapper {
-            display: none !important;
-          }
-          .vm-blob-left .content, 
-          .vm-blob-right .content {
-            padding-top: 45px !important;
-          }
-          .vm-blob-left .title, 
-          .vm-blob-right .title {
-            font-size: 18px !important;
-            margin-top: 15px !important;
-            margin-bottom: 6px !important;
-          }
-          .vm-blob-left .description, 
-          .vm-blob-right .description {
-            font-size: 12px !important;
-            padding: 0 20px !important;
-            max-width: 200px !important;
-            line-height: 1.6 !important;
-          }
-          .vm-blob-left .dots, 
+          .vm-stage { flex-direction: column; gap: 0; }
+
+          /* Hide the desktop SVG blob + its text, we show a CSS blob instead */
+          .blob-svg-desktop,
+          .blob-content-desktop,
+          .vm-blob-left .dots,
           .vm-blob-right .dots {
-            bottom: 15px !important;
+            display: none !important;
+          }
+
+          .vm-blob-left, .vm-blob-right {
+            width: 100% !important;
+            max-width: 300px !important;
+            height: auto !important;
+            margin: 0 auto !important;
+          }
+
+          .blob-shape-mobile {
+            display: flex !important;
+          }
+
+          .vm-blob-left {
+            margin-bottom: -34px !important;
+            z-index: 1;
+          }
+          .vm-blob-right {
+            margin-top: -34px !important;
+            z-index: 1;
+          }
+
+          .vm-center {
+            width: 160px !important;
+            height: 160px !important;
+            margin: 0 auto !important;
+            position: relative !important;
+            z-index: 10 !important;
+          }
+          .vm-center .center-inner { inset: 5px !important; }
+          .vm-center svg { width: 22px !important; height: 22px !important; }
+          .vm-center .center-text { font-size: 12px !important; }
+        }
+
+        .blob-shape-mobile {
+          display: none;
+          flex-direction: column;
+          align-items: center;
+          color: white;
+          position: relative;
+          padding: 58px 26px 78px;
+        }
+        .vm-blob-left .blob-shape-mobile {
+          background: linear-gradient(160deg, #0d9488 0%, #059669 100%);
+          border-radius: 140px 140px 32px 32px / 170px 170px 40px 40px;
+        }
+        .vm-blob-right .blob-shape-mobile {
+          background: linear-gradient(160deg, #1e3fd6 0%, #0a1e78 100%);
+          padding: 78px 26px 58px;
+          border-radius: 32px 32px 140px 140px / 40px 40px 170px 170px;
+        }
+        .mobile-icon-wrapper {
+          margin-bottom: 12px;
+          display: flex;
+          height: 66px;
+          width: 66px;
+          align-items: center;
+          justify-content: center;
+          border-radius: 9999px;
+          border: 2px solid rgba(255,255,255,0.4);
+          background: rgba(255,255,255,0.15);
+        }
+        .mobile-title {
+          margin-bottom: 8px;
+          font-size: 19px;
+          font-weight: 800;
+        }
+        .mobile-desc {
+          max-width: 220px;
+          font-size: 13px;
+          line-height: 1.7;
+          color: rgba(255,255,255,0.9);
+        }
+
+        @media (max-width: 600px) {
+          .vm-blob-left, .vm-blob-right { max-width: 270px !important; }
+          .blob-shape-mobile { padding: 48px 22px 64px; }
+          .vm-blob-right .blob-shape-mobile { padding: 64px 22px 48px; }
+          .mobile-icon-wrapper { height: 56px; width: 56px; margin-bottom: 10px; }
+          .mobile-title { font-size: 17px; margin-top: 4px; }
+          .mobile-desc { font-size: 12px; max-width: 190px; }
+          .vm-center {
+            width: 140px !important;
+            height: 140px !important;
           }
         }
+
         @media (max-width: 400px) {
-          .vm-blob-left svg, .vm-blob-right svg { 
-            height: 370px; 
-          }
-          .vm-center { 
-            width: 120px !important; 
+          .vm-blob-left, .vm-blob-right { max-width: 240px !important; }
+          .blob-shape-mobile { padding: 40px 18px 56px; }
+          .vm-blob-right .blob-shape-mobile { padding: 56px 18px 40px; }
+          .mobile-icon-wrapper { height: 50px; width: 50px; }
+          .mobile-title { font-size: 15px; }
+          .mobile-desc { font-size: 11px; max-width: 170px; line-height: 1.6; }
+          .vm-center {
+            width: 120px !important;
             height: 120px !important;
-            top: -5px !important;
-          }
-          .vm-blob-left .content, 
-          .vm-blob-right .content {
-            padding-top: 40px !important;
-          }
-          .vm-blob-left .title, 
-          .vm-blob-right .title {
-            font-size: 16px !important;
-            margin-top: 10px !important;
-          }
-          .vm-blob-left .description, 
-          .vm-blob-right .description {
-            font-size: 11px !important;
-            padding: 0 15px !important;
-            max-width: 170px !important;
           }
         }
       `}</style>
@@ -145,8 +143,9 @@ export default function VisionMissionSection() {
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="vm-blob-left relative z-[1] w-[380px] flex-shrink-0 -mr-10 cursor-pointer hover:scale-[1.02] transition-transform duration-300"
         >
+          {/* Desktop SVG shape */}
           <svg
-            className="block w-full h-[480px]"
+            className="blob-svg-desktop block w-full h-[480px]"
             viewBox="0 0 480 620"
             preserveAspectRatio="none"
           >
@@ -171,7 +170,7 @@ export default function VisionMissionSection() {
             />
           </svg>
 
-          <div className="content absolute inset-0 flex -translate-x-3 flex-col items-center pt-14 text-white">
+          <div className="content blob-content-desktop absolute inset-0 flex -translate-x-3 flex-col items-center pt-14 text-white">
             <div className="icon-wrapper mb-3.5 flex h-[76px] w-[76px] items-center justify-center rounded-full border-2 border-white/40 bg-white/15">
               <div className="icon-inner flex h-14 w-14 items-center justify-center rounded-full bg-white">
                 <svg className="h-[26px] w-[26px] text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -192,6 +191,23 @@ export default function VisionMissionSection() {
             {Array.from({ length: 20 }).map((_, i) => (
               <span key={i} className="h-[3px] w-[3px] justify-self-center rounded-full bg-white" />
             ))}
+          </div>
+
+          {/* Mobile CSS blob shape (top card, tapers down towards center) */}
+          <div className="blob-shape-mobile">
+            <div className="mobile-icon-wrapper">
+              <div className="flex h-[46px] w-[46px] items-center justify-center rounded-full bg-white">
+                <svg className="h-[20px] w-[20px] text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </div>
+            </div>
+            <h2 className="mobile-title">Our Vision</h2>
+            <p className="mobile-desc">
+              To be a globally recognized institution that empowers students to become
+              innovative leaders, critical thinkers, and responsible citizens.
+            </p>
           </div>
         </motion.div>
 
@@ -226,7 +242,7 @@ export default function VisionMissionSection() {
           className="vm-blob-right relative z-[1] w-[380px] flex-shrink-0 -ml-10 cursor-pointer hover:scale-[1.02] transition-transform duration-300"
         >
           <svg
-            className="block w-full h-[480px] scale-x-[-1]"
+            className="blob-svg-desktop block w-full h-[480px] scale-x-[-1]"
             viewBox="0 0 480 620"
             preserveAspectRatio="none"
           >
@@ -251,7 +267,7 @@ export default function VisionMissionSection() {
             />
           </svg>
 
-          <div className="content absolute inset-0 flex translate-x-3 flex-col items-center pt-14 text-white">
+          <div className="content blob-content-desktop absolute inset-0 flex translate-x-3 flex-col items-center pt-14 text-white">
             <div className="icon-wrapper mb-3.5 flex h-[76px] w-[76px] items-center justify-center rounded-full border-2 border-white/40 bg-white/15">
               <div className="icon-inner flex h-14 w-14 items-center justify-center rounded-full bg-white">
                 <svg className="h-[26px] w-[26px] text-[#2f56fb]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -272,6 +288,22 @@ export default function VisionMissionSection() {
             {Array.from({ length: 20 }).map((_, i) => (
               <span key={i} className="h-[3px] w-[3px] justify-self-center rounded-full bg-white" />
             ))}
+          </div>
+
+          {/* Mobile CSS blob shape (bottom card, tapers up towards center) */}
+          <div className="blob-shape-mobile">
+            <h2 className="mobile-title">Our Mission</h2>
+            <p className="mobile-desc mb-3">
+              To provide transformative education through innovative curricula, world-class
+              faculty, and state-of-the-art facilities.
+            </p>
+            <div className="mobile-icon-wrapper" style={{ marginBottom: 0, marginTop: 4 }}>
+              <div className="flex h-[46px] w-[46px] items-center justify-center rounded-full bg-white">
+                <svg className="h-[20px] w-[20px] text-[#2f56fb]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M5 21V4a1 1 0 0 1 1-1h9l-1.5 4L16 11H6" />
+                </svg>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>

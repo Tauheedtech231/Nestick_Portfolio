@@ -177,7 +177,7 @@ export default function FacultySection() {
             />
             {/* Mobile Image - Hidden on desktop */}
             <img
-              src="https://images.unsplash.com/photo-1758685734555-a0e7f15ea33f?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src="https://images.unsplash.com/photo-1577141262638-5548257565d6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZmFjdWx0eXxlbnwwfHwwfHx8MA%3D%3D"
               alt="Professor teaching a class"
               className="w-full h-full object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-300 lg:hidden"
             />

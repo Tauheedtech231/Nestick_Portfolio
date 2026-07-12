@@ -538,14 +538,7 @@ export default function ProgramList() {
         </div>
       </div>
 
-      {/* CTA Button - Bottom */}
-      <div className="cta-wrapper">
-        <Link href="/Admission">
-          <button className="cta-btn">
-            Apply Now →
-          </button>
-        </Link>
-      </div>
+ 
     </div>
   );
 }
