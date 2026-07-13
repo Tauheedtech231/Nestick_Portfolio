@@ -505,8 +505,11 @@ const ScholarshipsPage = () => {
   return (
    <>
     <div className="min-h-screen bg-white transition-colors duration-300 pt-[40px] sm:pt-[80px] ">
-      {/* Hero Section - Overlay Removed */}
-      <section ref={heroRef} className="relative py-20 overflow-hidden">
+      {/* Hero Section - Same height as About page: h-[60vh] min-h-[500px] */}
+      <section 
+        ref={heroRef} 
+        className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden"
+      >
         <div className="absolute inset-0 z-0">
           <img 
             src="https://plus.unsplash.com/premium_photo-1691962725028-e825955a7c1e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

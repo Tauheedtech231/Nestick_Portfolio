@@ -218,8 +218,10 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
             variants={staggerContainer}
           >
             {/*
-              MOBILE: horizontal scroll-snap carousel (cards keep same look, just swipeable)
-              DESKTOP (sm and up): original wrapped/overlapping layout
+              MOBILE: horizontal scroll-snap carousel — SAME overlapping/stacked
+              look as desktop (cards overlap with -ml, tilted with rotateY, fanned
+              z-index), just swipeable since they don't all fit on a small screen.
+              DESKTOP (sm and up): original wrapped/overlapping layout.
             */}
             <div
               className="
@@ -241,7 +243,7 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
                   scale: 1.02,
                   transition: { duration: 0.3 }
                 }}
-                className="group relative z-[6] snap-center shrink-0 flex h-[300px] w-[170px] sm:h-[340px] sm:w-[190px] lg:h-[380px] lg:w-[200px] flex-col items-center justify-center overflow-hidden rounded-[28px] sm:rounded-[34px] border-2 border-white/30 text-center text-white shadow-[0_0_30px_rgba(0,0,0,0.3)] cursor-pointer"
+                className="group relative z-[6] snap-center shrink-0 flex h-[380px] w-[200px] flex-col items-center justify-center overflow-hidden rounded-[34px] border-2 border-white/30 text-center text-white shadow-[0_0_30px_rgba(0,0,0,0.3)] cursor-pointer"
                 style={{
                   background:
                     "linear-gradient(150deg, rgba(47,86,251,0.9) 0%, rgba(30,64,175,0.85) 45%, rgba(21,48,176,0.9) 100%)",
@@ -249,12 +251,12 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
                 }}
               >
                 <Sheen />
-                <div className="relative z-[2] px-4 text-[16px] sm:text-[18px] lg:text-[20px] font-extrabold leading-snug tracking-wide">
+                <div className="relative z-[2] px-4 text-[20px] font-extrabold leading-snug tracking-wide">
                   ASPIRE
                   <br />
                   COLLEGE
                 </div>
-                <div className="relative z-[2] mt-2.5 text-[11px] sm:text-xs leading-relaxed text-white/80">
+                <div className="relative z-[2] mt-2.5 text-xs leading-relaxed text-white/80">
                   Shaping Futures,
                   <br />
                   Inspiring Excellence
@@ -270,7 +272,7 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
                     scale: 1.02,
                     transition: { duration: 0.3 }
                   }}
-                  className="group relative snap-center shrink-0 -ml-[28px] sm:-ml-[40px] lg:-ml-[55px] flex h-[300px] w-[170px] sm:h-[340px] sm:w-[190px] lg:h-[380px] lg:w-[200px] flex-col items-center justify-center overflow-hidden rounded-[28px] sm:rounded-[34px] border-2 text-center shadow-[0_0_30px_rgba(0,0,0,0.2)] cursor-pointer"
+                  className="group relative snap-center shrink-0 -ml-[70px] sm:-ml-[65px] flex h-[380px] w-[200px] flex-col items-center justify-center overflow-hidden rounded-[34px] border-2 text-center shadow-[0_0_30px_rgba(0,0,0,0.2)] cursor-pointer"
                   style={{
                     zIndex: 5 - i,
                     background:
@@ -283,17 +285,17 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
                   }}
                 >
                   <Sheen />
-                  <div className="z-[2] mb-2 sm:mb-3 text-[11px] sm:text-[12px] lg:text-[13px] font-medium text-slate-500 px-2">
+                  <div className="z-[2] mb-3 text-[13px] font-medium text-slate-500 px-2">
                     {stat.label.split(" ").slice(0, -1).join(" ") || stat.label}
                   </div>
-                  <div className="z-[2] mb-2 sm:mb-3 bg-gradient-to-r from-[#2f56fb] to-[#1530b0] bg-clip-text text-[26px] sm:text-[29px] lg:text-[32px] font-extrabold tracking-wide text-transparent">
+                  <div className="z-[2] mb-3 bg-gradient-to-r from-[#2f56fb] to-[#1530b0] bg-clip-text text-[32px] font-extrabold tracking-wide text-transparent">
                     {stat.target ? (
                       <Counter target={stat.target} suffix={stat.suffix || ''} duration={2000} />
                     ) : (
                       stat.value
                     )}
                   </div>
-                  <div className="z-[2] text-[11px] sm:text-[12px] lg:text-[13px] font-medium text-slate-500 px-2">
+                  <div className="z-[2] text-[13px] font-medium text-slate-500 px-2">
                     {stat.label}
                   </div>
                 </motion.div>

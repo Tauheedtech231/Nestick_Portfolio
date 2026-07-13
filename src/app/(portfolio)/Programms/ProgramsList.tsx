@@ -12,7 +12,7 @@ import Link from 'next/link';
 /*  Types                                                             */
 /* ------------------------------------------------------------------ */
 
-type ColorKey = 'blue' | 'green' | 'purple' | 'orange' | 'teal';
+type ColorKey = 'blue' | 'green' | 'teal';
 
 interface Program {
   name: string;
@@ -29,112 +29,116 @@ interface LevelData {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Static data                                                        */
+/*  Static data - COLLEGE LEVEL PROGRAMS                              */
 /* ------------------------------------------------------------------ */
 
 const CAT_META: Record<ColorKey, { color: string; bg: string }> = {
   blue: { color: '#2f56fb', bg: '#dce3f5' },
   green: { color: '#0D9488', bg: '#e6f7f5' },
-  purple: { color: '#7c3aed', bg: '#ede7fe' },
-  orange: { color: '#f59e0b', bg: '#fef3e2' },
   teal: { color: '#0ea5e9', bg: '#e0f2fe' },
 };
 
 const ELIGIBILITY = [
-  'Open to all applicants',
-  'Prior qualification required',
-  'Entry test and interview based',
+  'Matriculation with minimum 60% marks',
+  'Matriculation with Science background',
+  'Matriculation with Arts background',
+  'Open to all eligible candidates',
   'Merit-based admission',
-  'Open enrollment',
 ];
 
 const SHORT_DESCRIPTIONS = [
-  'Build strong foundational knowledge and practical skills.',
-  'Industry-focused curriculum for real-world challenges.',
-  'Career-oriented program with hands-on training.',
-  'Innovative learning with practical application.',
-  'Skill-based program for modern industry demands.',
+  'Build strong foundation for medical careers.',
+  'Develop engineering and technical skills.',
+  'Comprehensive science education for diverse fields.',
+  'Creative and analytical arts education.',
+  'Modern computer science and IT education.',
+  'Business and commerce foundation.',
 ];
 
+// COLLEGE LEVEL PROGRAMS WITH SUBJECTS
 const LEVELS: LevelData[] = [
   {
-    id: 'school',
+    id: 'fsc-medical',
     color: 'blue',
-    label: 'School Level',
-    countLabel: '06 Programs',
+    label: 'FSc Pre-Medical',
+    countLabel: '06 Subjects',
     programs: [
-      { name: 'Primary School', full: 'Primary Education (Grade 1–5)', duration: '5 Years' },
-      { name: 'Middle School', full: 'Middle School Education (Grade 6–8)', duration: '3 Years' },
-      { name: 'Matriculation', full: 'Matric (Science Group)', duration: '2 Years' },
-      { name: 'Matriculation (Arts)', full: 'Matric (Arts Group)', duration: '2 Years' },
-      { name: 'Matriculation (Commerce)', full: 'Matric (Commerce Group)', duration: '2 Years' },
-      { name: 'Islamic Studies (Foundation)', full: 'Dars-e-Nizami / Islamic Foundation Course', duration: '2 Years' },
+      { name: 'Biology', full: 'Biology (Botany & Zoology)', duration: '2 Years' },
+      { name: 'Chemistry', full: 'Chemistry (Organic & Inorganic)', duration: '2 Years' },
+      { name: 'Physics', full: 'Physics (Mechanics & Electromagnetism)', duration: '2 Years' },
+      { name: 'English', full: 'English Language & Literature', duration: '2 Years' },
+      { name: 'Urdu', full: 'Urdu Language & Literature', duration: '2 Years' },
+      { name: 'Pak Studies', full: 'Pakistan Studies', duration: '2 Years' },
     ],
   },
   {
-    id: 'olevel',
+    id: 'fsc-engineering',
     color: 'green',
-    label: 'O-Level',
-    countLabel: '08 Programs',
+    label: 'FSc Pre-Engineering',
+    countLabel: '06 Subjects',
     programs: [
-      { name: 'English Language', full: 'Cambridge O-Level English', duration: '2 Years' },
-      { name: 'Mathematics', full: 'Cambridge O-Level Mathematics', duration: '2 Years' },
-      { name: 'Physics', full: 'Cambridge O-Level Physics', duration: '2 Years' },
-      { name: 'Chemistry', full: 'Cambridge O-Level Chemistry', duration: '2 Years' },
-      { name: 'Biology', full: 'Cambridge O-Level Biology', duration: '2 Years' },
-      { name: 'Accounting', full: 'Cambridge O-Level Accounting', duration: '2 Years' },
-      { name: 'Business Studies', full: 'Cambridge O-Level Business Studies', duration: '2 Years' },
-      { name: 'Computer Science', full: 'Cambridge O-Level Computer Science', duration: '2 Years' },
+      { name: 'Mathematics', full: 'Mathematics (Algebra & Calculus)', duration: '2 Years' },
+      { name: 'Physics', full: 'Physics (Mechanics & Electromagnetism)', duration: '2 Years' },
+      { name: 'Chemistry', full: 'Chemistry (Organic & Inorganic)', duration: '2 Years' },
+      { name: 'English', full: 'English Language & Literature', duration: '2 Years' },
+      { name: 'Urdu', full: 'Urdu Language & Literature', duration: '2 Years' },
+      { name: 'Pak Studies', full: 'Pakistan Studies', duration: '2 Years' },
     ],
   },
   {
-    id: 'alevel',
-    color: 'purple',
-    label: 'A-Level',
-    countLabel: '07 Programs',
-    programs: [
-      { name: 'Physics', full: 'Cambridge A-Level Physics', duration: '2 Years' },
-      { name: 'Chemistry', full: 'Cambridge A-Level Chemistry', duration: '2 Years' },
-      { name: 'Biology', full: 'Cambridge A-Level Biology', duration: '2 Years' },
-      { name: 'Mathematics', full: 'Cambridge A-Level Mathematics', duration: '2 Years' },
-      { name: 'Economics', full: 'Cambridge A-Level Economics', duration: '2 Years' },
-      { name: 'Computer Science', full: 'Cambridge A-Level Computer Science', duration: '2 Years' },
-      { name: 'Business Studies', full: 'Cambridge A-Level Business Studies', duration: '2 Years' },
-    ],
-  },
-  {
-    id: 'college',
-    color: 'orange',
-    label: 'College Level',
-    countLabel: '10 Programs',
-    programs: [
-      { name: 'BA', full: 'Bachelor of Arts', duration: '4 Years' },
-      { name: 'B.Sc', full: 'Bachelor of Science', duration: '4 Years' },
-      { name: 'B.Com', full: 'Bachelor of Commerce', duration: '4 Years' },
-      { name: 'BS (CS)', full: 'Bachelor of Science in Computer Science', duration: '4 Years' },
-      { name: 'BS (IT)', full: 'Bachelor of Science in Information Technology', duration: '4 Years' },
-      { name: 'BBA', full: 'Bachelor of Business Administration', duration: '4 Years' },
-      { name: 'B.Ed', full: 'Bachelor of Education', duration: '4 Years' },
-      { name: 'LLB', full: 'Bachelor of Laws', duration: '5 Years' },
-      { name: 'DPT', full: 'Doctor of Physical Therapy', duration: '5 Years' },
-      { name: 'ADP', full: 'Associate Degree Program', duration: '2 Years' },
-    ],
-  },
-  {
-    id: 'tech',
+    id: 'fsc-general',
     color: 'teal',
-    label: 'Technical Level',
-    countLabel: '09 Programs',
+    label: 'FSc General Science',
+    countLabel: '06 Subjects',
     programs: [
-      { name: 'Diploma in IT', full: 'Diploma in Information Technology', duration: '2 Years' },
-      { name: 'Diploma in Civil', full: 'Diploma in Civil Engineering', duration: '3 Years' },
-      { name: 'Diploma in Electrical', full: 'Diploma in Electrical Engineering', duration: '3 Years' },
-      { name: 'Diploma in Mechanical', full: 'Diploma in Mechanical Engineering', duration: '3 Years' },
-      { name: 'Graphic Design', full: 'Diploma in Graphic Design', duration: '1 Year' },
-      { name: 'Web Development', full: 'Diploma in Web Development', duration: '1 Year' },
-      { name: 'AutoCAD', full: 'Diploma in AutoCAD', duration: '6 Months' },
-      { name: 'Spoken English', full: 'Spoken English Certification', duration: '6 Months' },
-      { name: 'Short Courses', full: 'Various Short Technical Courses', duration: '3–6 Months' },
+      { name: 'Biology', full: 'Biology (Botany & Zoology)', duration: '2 Years' },
+      { name: 'Chemistry', full: 'Chemistry (Organic & Inorganic)', duration: '2 Years' },
+      { name: 'Mathematics', full: 'Mathematics (Algebra & Calculus)', duration: '2 Years' },
+      { name: 'English', full: 'English Language & Literature', duration: '2 Years' },
+      { name: 'Urdu', full: 'Urdu Language & Literature', duration: '2 Years' },
+      { name: 'Pak Studies', full: 'Pakistan Studies', duration: '2 Years' },
+    ],
+  },
+  {
+    id: 'fa-arts',
+    color: 'blue',
+    label: 'FA Arts',
+    countLabel: '06 Subjects',
+    programs: [
+      { name: 'Urdu', full: 'Urdu Language & Literature', duration: '2 Years' },
+      { name: 'English', full: 'English Language & Literature', duration: '2 Years' },
+      { name: 'History', full: 'History of Pakistan & World', duration: '2 Years' },
+      { name: 'Political Science', full: 'Political Science & Governance', duration: '2 Years' },
+      { name: 'Sociology', full: 'Sociology & Social Studies', duration: '2 Years' },
+      { name: 'Pak Studies', full: 'Pakistan Studies', duration: '2 Years' },
+    ],
+  },
+  {
+    id: 'ics',
+    color: 'green',
+    label: 'ICS (Computer Science)',
+    countLabel: '06 Subjects',
+    programs: [
+      { name: 'Computer Science', full: 'Computer Science & Programming', duration: '2 Years' },
+      { name: 'Mathematics', full: 'Mathematics (Algebra & Calculus)', duration: '2 Years' },
+      { name: 'Physics', full: 'Physics (Mechanics & Electromagnetism)', duration: '2 Years' },
+      { name: 'English', full: 'English Language & Literature', duration: '2 Years' },
+      { name: 'Urdu', full: 'Urdu Language & Literature', duration: '2 Years' },
+      { name: 'Pak Studies', full: 'Pakistan Studies', duration: '2 Years' },
+    ],
+  },
+  {
+    id: 'icom',
+    color: 'teal',
+    label: 'I.Com',
+    countLabel: '06 Subjects',
+    programs: [
+      { name: 'Accounting', full: 'Accounting & Financial Reporting', duration: '2 Years' },
+      { name: 'Business Math', full: 'Business Mathematics & Statistics', duration: '2 Years' },
+      { name: 'Economics', full: 'Economics & Development', duration: '2 Years' },
+      { name: 'Business Studies', full: 'Business Studies & Management', duration: '2 Years' },
+      { name: 'English', full: 'English Language & Literature', duration: '2 Years' },
+      { name: 'Pak Studies', full: 'Pakistan Studies', duration: '2 Years' },
     ],
   },
 ];
@@ -160,7 +164,7 @@ function programKey(levelId: string, idx: number) {
 /* ------------------------------------------------------------------ */
 
 export default function ProgramList() {
-  const [activeLevel, setActiveLevel] = useState<string>('school');
+  const [activeLevel, setActiveLevel] = useState<string>('fsc-medical');
   const [openDetails, setOpenDetails] = useState<Record<string, boolean>>({});
   const [detailGen, setDetailGen] = useState<Record<string, number>>({});
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -358,7 +362,7 @@ export default function ProgramList() {
             <strong>{eligibility}</strong>
           </div>
           <div className="item desc" style={{ animationDelay: '.1s' }}>
-            <label>About This Program</label>
+            <label>About This Subject</label>
             <p>{desc}</p>
           </div>
           <div className="apply-row" style={{ animationDelay: '.15s' }}>
@@ -389,7 +393,7 @@ export default function ProgramList() {
             </svg>
             <input
               type="text"
-              placeholder="Search programs..."
+              placeholder="Search subjects..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
@@ -404,7 +408,7 @@ export default function ProgramList() {
               onChange={(e) => setFilterLevel(e.target.value)}
               className="filter-select"
             >
-              <option value="all">All Levels</option>
+              <option value="all">All Programs</option>
               {levelOptions.map((lvl) => (
                 <option key={lvl.id} value={lvl.id}>{lvl.label}</option>
               ))}
@@ -413,7 +417,7 @@ export default function ProgramList() {
         </div>
         {filteredPrograms.length > 0 && (
           <div className="results-count">
-            Showing {filteredPrograms.length} program{filteredPrograms.length !== 1 ? 's' : ''}
+            Showing {filteredPrograms.length} subject{filteredPrograms.length !== 1 ? 's' : ''}
           </div>
         )}
       </div>
@@ -425,14 +429,12 @@ export default function ProgramList() {
           <svg className="root-ring" viewBox="0 0 132 132">
             <circle cx="66" cy="66" r="63" fill="none" stroke="#2f56fb" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="68 328" strokeDashoffset="0" />
             <circle cx="66" cy="66" r="63" fill="none" stroke="#0D9488" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="68 328" strokeDashoffset="-79.2" />
-            <circle cx="66" cy="66" r="63" fill="none" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="68 328" strokeDashoffset="-158.4" />
-            <circle cx="66" cy="66" r="63" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="68 328" strokeDashoffset="-237.6" />
-            <circle cx="66" cy="66" r="63" fill="none" stroke="#0ea5e9" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="68 328" strokeDashoffset="-316.8" />
+            <circle cx="66" cy="66" r="63" fill="none" stroke="#0ea5e9" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="68 328" strokeDashoffset="-158.4" />
           </svg>
           <div className="root-inner">
             <div className="cap">🎓</div>
-            <div className="label">All Programs</div>
-            <div className="count">40+</div>
+            <div className="label">College Programs</div>
+            <div className="count">06</div>
           </div>
         </div>
 
@@ -471,7 +473,7 @@ export default function ProgramList() {
                       <table>
                         <thead>
                           <tr>
-                            <th>Program Name</th>
+                            <th>Subject Name</th>
                             <th>Full Name</th>
                             <th>Duration</th>
                             <th>Action</th>
@@ -537,14 +539,12 @@ export default function ProgramList() {
           })}
         </div>
       </div>
-
- 
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/*  CSS                                                               */
+/*  CSS - Same as before with 3 colors                                */
 /* ------------------------------------------------------------------ */
 
 const CSS = `
@@ -556,8 +556,6 @@ const CSS = `
   --card:#ffffff;
   --blue:#2f56fb;   --blue-bg:#dce3f5;
   --green:#0D9488;  --green-bg:#e6f7f5;
-  --purple:#7c3aed; --purple-bg:#ede7fe;
-  --orange:#f59e0b; --orange-bg:#fef3e2;
   --teal:#0ea5e9;   --teal-bg:#e0f2fe;
 
   background:var(--bg);
@@ -651,44 +649,6 @@ const CSS = `
   color:var(--sub);
 }
 
-/* CTA */
-.cta-wrapper{
-  max-width:1180px;
-  margin:30px auto 10px;
-  text-align:center;
-  padding:0 20px;
-}
-.cta-btn{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  padding:14px 40px;
-  border-radius:999px;
-  border:none;
-  font-family:'Inter',sans-serif;
-  font-size:16px;
-  font-weight:600;
-  color:#fff;
-  cursor:pointer;
-  background:linear-gradient(135deg, #2f56fb, #1530b0);
-  box-shadow:0 12px 28px -8px rgba(47,86,251,0.5);
-  transition:all .3s ease;
-}
-.cta-btn:hover{
-  transform:scale(1.02);
-  box-shadow:0 20px 40px -12px rgba(47,86,251,0.7);
-}
-@media (max-width:600px){
-  .cta-btn{
-    padding:12px 28px;
-    font-size:14px;
-    width:100%;
-    justify-content:center;
-  }
-}
-
-.pl-root .header{text-align:center;margin-bottom:20px;}
-
 .pl-root .canvas{position:relative;max-width:1180px;margin:0 auto;}
 .pl-root svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
 
@@ -734,7 +694,7 @@ const CSS = `
   .pl-root .search-input{font-size:13px;padding:10px 0;}
   .pl-root .filter-select{font-size:13px;padding:10px 16px;}
   .pl-root .cat-node{padding:8px 12px;gap:8px;}
-  .pl-root .cat-node .avatar{width:32px;height:32px;font-size:13px;}
+  .pl-root .cat-node .avatar{width:32px;height:32px;font-size:12px;}
   .pl-root .cat-node .txt strong{font-size:12px;}
   .pl-root .cat-node .txt span{font-size:9px;}
   .pl-root .cat-node .chevron{font-size:10px;}
@@ -747,7 +707,6 @@ const CSS = `
   .pl-root .detail-info .item strong{font-size:13px;}
   .pl-root .detail-info .desc p{font-size:12px;}
   .pl-root .apply-btn{font-size:12px;padding:8px 20px;}
-  .pl-root .cta-wrapper{margin:20px auto 5px;padding:0 10px;}
   .pl-root .results-count{font-size:12px;}
 }
 
@@ -778,7 +737,7 @@ const CSS = `
 .pl-root .cat-node:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(20,27,51,.1);}
 .pl-root .cat-node .avatar{
   width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:16px;font-weight:700;flex-shrink:0;color:#fff;
+  font-size:14px;font-weight:700;flex-shrink:0;color:#fff;
   transition:transform .3s ease;box-shadow:0 4px 10px rgba(20,27,51,.14);
 }
 .pl-root .cat-node .txt{flex:1;min-width:0;}
@@ -788,13 +747,9 @@ const CSS = `
 
 .pl-root .cat-node.blue .avatar{background:var(--blue);}
 .pl-root .cat-node.green .avatar{background:var(--green);}
-.pl-root .cat-node.purple .avatar{background:var(--purple);}
-.pl-root .cat-node.orange .avatar{background:var(--orange);}
 .pl-root .cat-node.teal .avatar{background:var(--teal);}
 .pl-root .cat-node.blue .txt strong{color:var(--blue);}
 .pl-root .cat-node.green .txt strong{color:var(--green);}
-.pl-root .cat-node.purple .txt strong{color:var(--purple);}
-.pl-root .cat-node.orange .txt strong{color:var(--orange);}
 .pl-root .cat-node.teal .txt strong{color:var(--teal);}
 
 .pl-root .cat-node.active{transform:translateY(-2px) scale(1.05);}
@@ -804,14 +759,10 @@ const CSS = `
 .pl-root .cat-node.active .avatar{transform:scale(1.08);}
 .pl-root .cat-node.active.blue{border-color:var(--blue);background:linear-gradient(180deg,#fff, var(--blue-bg) 220%);box-shadow:0 10px 26px rgba(47,86,251,.22);}
 .pl-root .cat-node.active.green{border-color:var(--green);background:linear-gradient(180deg,#fff, var(--green-bg) 220%);box-shadow:0 10px 26px rgba(13,148,136,.22);}
-.pl-root .cat-node.active.purple{border-color:var(--purple);background:linear-gradient(180deg,#fff, var(--purple-bg) 220%);box-shadow:0 10px 26px rgba(124,79,224,.22);}
-.pl-root .cat-node.active.orange{border-color:var(--orange);background:linear-gradient(180deg,#fff, var(--orange-bg) 220%);box-shadow:0 10px 26px rgba(245,158,11,.22);}
 .pl-root .cat-node.active.teal{border-color:var(--teal);background:linear-gradient(180deg,#fff, var(--teal-bg) 220%);box-shadow:0 10px 26px rgba(14,165,233,.22);}
 .pl-root .cat-node.active .chevron{transform:rotate(90deg);}
 .pl-root .cat-node.active.blue .chevron{color:var(--blue);}
 .pl-root .cat-node.active.green .chevron{color:var(--green);}
-.pl-root .cat-node.active.purple .chevron{color:var(--purple);}
-.pl-root .cat-node.active.orange .chevron{color:var(--orange);}
 .pl-root .cat-node.active.teal .chevron{color:var(--teal);}
 
 .pl-root .dot-marker{
@@ -823,14 +774,10 @@ const CSS = `
 }
 .pl-root .blue .dot-marker{border-color:var(--blue);}
 .pl-root .green .dot-marker{border-color:var(--green);}
-.pl-root .purple .dot-marker{border-color:var(--purple);}
-.pl-root .orange .dot-marker{border-color:var(--orange);}
 .pl-root .teal .dot-marker{border-color:var(--teal);}
 .pl-root .cat-node.active .dot-marker{background:currentColor;}
 .pl-root .cat-node.active.blue .dot-marker{background:var(--blue);box-shadow:0 0 0 4px var(--blue-bg);}
 .pl-root .cat-node.active.green .dot-marker{background:var(--green);box-shadow:0 0 0 4px var(--green-bg);}
-.pl-root .cat-node.active.purple .dot-marker{background:var(--purple);box-shadow:0 0 0 4px var(--purple-bg);}
-.pl-root .cat-node.active.orange .dot-marker{background:var(--orange);box-shadow:0 0 0 4px var(--orange-bg);}
 .pl-root .cat-node.active.teal .dot-marker{background:var(--teal);box-shadow:0 0 0 4px var(--teal-bg);}
 
 .pl-root .table-wrap{
@@ -859,8 +806,6 @@ const CSS = `
 .pl-root td.name::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0;}
 .pl-root .blue td.name::before{background:var(--blue);}
 .pl-root .green td.name::before{background:var(--green);}
-.pl-root .purple td.name::before{background:var(--purple);}
-.pl-root .orange td.name::before{background:var(--orange);}
 .pl-root .teal td.name::before{background:var(--teal);}
 
 .pl-root .btn{
@@ -875,8 +820,6 @@ const CSS = `
 .pl-root .btn:active{transform:translateY(0);}
 .pl-root .blue .btn{background:var(--blue-bg);color:var(--blue);}
 .pl-root .green .btn{background:var(--green-bg);color:var(--green);}
-.pl-root .purple .btn{background:var(--purple-bg);color:var(--purple);}
-.pl-root .orange .btn{background:var(--orange-bg);color:var(--orange);}
 .pl-root .teal .btn{background:var(--teal-bg);color:var(--teal);}
 
 .pl-root th:nth-child(1){width:26%;}

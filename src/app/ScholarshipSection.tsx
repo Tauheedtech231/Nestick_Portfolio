@@ -107,7 +107,7 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
   return (
     <section 
       ref={sectionRef}
-      className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      className="relative w-full min-h-screen  flex flex-col items-center justify-center overflow-hidden"
       style={{
         background: 'linear-gradient(180deg, #fbfcff 0%, #f4f6fd 100%)',
       }}
@@ -121,7 +121,7 @@ export default function ScholarshipSection({ cards, title, subtitle, badgeText }
         <div className="absolute bottom-20 right-20 w-64 h-64 bg-indigo-300/20 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 py-6 lg:py-8">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 py-16 lg:py-16">
         {/* Heading - Top Center */}
         <motion.div 
           className="text-center mb-5 lg:mb-6"

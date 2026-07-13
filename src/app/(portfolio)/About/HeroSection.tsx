@@ -64,7 +64,7 @@ export default function HeroSection({ onContactClick }: HeroSectionProps) {
   };
 
   return (
-    <section className="relative h-[55vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+    <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden">
       {/* Background Image - No Overlay */}
       <div className="absolute inset-0 z-0">
         <img 

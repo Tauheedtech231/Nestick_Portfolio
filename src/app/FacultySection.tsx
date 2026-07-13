@@ -153,9 +153,9 @@ export default function FacultySection() {
           </motion.a>
         </motion.div>
 
-        {/* RIGHT COLUMN - Walking from right */}
+        {/* RIGHT COLUMN - Walking from right - Increased height on mobile */}
         <motion.div 
-          className="relative h-[300px] sm:h-[360px] md:h-[420px] lg:h-[520px] flex items-center justify-center order-1 lg:order-2 w-full"
+          className="relative h-[370px] sm:h-[380px] md:h-[420px] lg:h-[520px] flex items-center justify-center order-1 lg:order-2 w-full"
           variants={walkInRight}
         >
           {/* Arch Outline */}
@@ -164,7 +164,7 @@ export default function FacultySection() {
             className="absolute inset-[-8px] border border-[#bfe6da] rounded-[200px_60px_200px_60px] pointer-events-none" 
           />
 
-          {/* Photo Frame */}
+          {/* Photo Frame - Increased height on mobile */}
           <motion.div 
             variants={fadeInScale}
             className="relative w-full h-full rounded-[190px_60px_190px_60px] lg:rounded-[190px_60px_190px_60px] overflow-hidden shadow-[0_24px_50px_-15px_rgba(37,99,235,0.25)] z-10"
@@ -175,11 +175,12 @@ export default function FacultySection() {
               alt="Professor teaching a class"
               className="w-full h-full object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-300 hidden lg:block"
             />
-            {/* Mobile Image - Hidden on desktop */}
+            {/* Mobile Image - Hidden on desktop - Increased object-fit */}
             <img
-              src="https://images.unsplash.com/photo-1577141262638-5548257565d6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZmFjdWx0eXxlbnwwfHwwfHx8MA%3D%3D"
+              src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Professor teaching a class"
               className="w-full h-full object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-300 lg:hidden"
+              style={{ objectPosition: 'center 30%' }}
             />
           </motion.div>
 
@@ -223,10 +224,10 @@ export default function FacultySection() {
             </strong>
           </motion.div>
 
-          {/* Mobile Badges - 2 badges (left and right) */}
+          {/* Mobile Badges - 2 badges (left and right) with better positioning */}
           <motion.div 
             variants={fadeInUp}
-            className="absolute top-4 left-2 bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-2.5 flex items-center gap-2 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 lg:hidden"
+            className="absolute top-3 left-2 bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-2.5 flex items-center gap-2 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 lg:hidden"
             transition={{ delay: 0.3 }}
           >
             <div className="w-7 h-7 rounded-lg bg-[#2f56fb]/10 flex items-center justify-center flex-shrink-0">
@@ -239,7 +240,7 @@ export default function FacultySection() {
 
           <motion.div 
             variants={fadeInUp}
-            className="absolute bottom-4 right-2 bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-2.5 flex items-center gap-2 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 lg:hidden"
+            className="absolute bottom-3 right-2 bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-2.5 flex items-center gap-2 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 lg:hidden"
             transition={{ delay: 0.4 }}
           >
             <div className="w-7 h-7 rounded-lg bg-[#dce3f5] flex items-center justify-center flex-shrink-0">

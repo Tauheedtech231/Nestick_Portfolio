@@ -136,12 +136,12 @@ export default function ProgramsSection() {
         </motion.p>
 
         {/* Feature Row - Cards with HTML shape */}
-        <div className="flex flex-wrap items-center justify-center gap-6 mb-12 lg:gap-4">
-          {/* Card Left 1 - Walking from left */}
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 mb-12 lg:gap-4">
+          {/* Card Left 1 - Walking from left (UP - no offset) */}
           <motion.div 
             variants={walkInLeft}
             whileHover={{ scale: 1.05 }}
-            className="w-[170px] bg-white/95 backdrop-blur-sm rounded-xl px-4 py-5 text-center shadow-[0_10px_30px_-10px_rgba(37,99,235,0.15),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 transition-all duration-300 cursor-pointer"
+            className="w-[150px] sm:w-[170px] bg-white/95 backdrop-blur-sm rounded-xl px-3 sm:px-4 lg:pl-4 lg:pr-8 py-5 text-center shadow-[0_10px_30px_-10px_rgba(37,99,235,0.15),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 transition-all duration-300 cursor-pointer mt-10 lg:mt-0"
             style={{
               clipPath: "path('M5,5 L140,25 Q155,30 155,45 L155,230 Q155,245 140,245 L15,245 Q5,245 5,230 Z')",
             }}
@@ -154,16 +154,16 @@ export default function ProgramsSection() {
               <span className="text-[#2f56fb]">Programs</span>
             </h3>
             <div className="w-[18px] h-[2px] bg-[#2f56fb] opacity-40 mx-auto my-2" />
-            <p className="text-[12px] text-[#3d4566] leading-snug w-full text-left">
+            <p className="text-[12px] text-[#3d4566] leading-snug w-full text-center">
               Wide range of undergraduate and graduate programs.
             </p>
           </motion.div>
 
-          {/* Card Left 2 - Walking from left with delay */}
+          {/* Card Left 2 - Walking from left with delay (DOWN - offset, slope applied on mobile too) */}
           <motion.div 
             variants={walkInLeft}
             whileHover={{ scale: 1.05 }}
-            className="w-[170px] bg-white/95 backdrop-blur-sm rounded-xl px-4 py-5 text-center shadow-[0_10px_30px_-10px_rgba(37,99,235,0.15),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 transition-all duration-300 cursor-pointer lg:mt-12"
+            className="w-[150px] sm:w-[170px] bg-white/95 backdrop-blur-sm rounded-xl px-3 sm:px-4 lg:pl-4 lg:pr-8 py-5 text-center shadow-[0_10px_30px_-10px_rgba(37,99,235,0.15),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 transition-all duration-300 cursor-pointer lg:mt-12"
             style={{
               clipPath: "path('M5,5 L140,25 Q155,30 155,45 L155,240 Q155,255 140,255 L15,255 Q5,255 5,240 Z')",
             }}
@@ -177,7 +177,7 @@ export default function ProgramsSection() {
               <span className="text-[#2f56fb]">Relevant</span>
             </h3>
             <div className="w-[18px] h-[2px] bg-[#2f56fb] opacity-40 mx-auto my-2" />
-            <p className="text-[12px] text-[#3d4566] leading-snug w-full text-left">
+            <p className="text-[12px] text-[#3d4566] leading-snug w-full text-center">
               Curriculum designed to meet real-world industry needs.
             </p>
           </motion.div>
@@ -195,19 +195,19 @@ export default function ProgramsSection() {
               />
             </div>
             {/* Dashed Arc */}
-            <svg className="absolute -top-8 left-1/2 -translate-x-1/2 w-[340px] h-[340px] pointer-events-none" viewBox="0 0 400 400">
+            <svg className="absolute -top-[24px] lg:-top-8 left-1/2 -translate-x-1/2 w-[340px] h-[340px] pointer-events-none" viewBox="0 0 400 400">
               <path d="M 20 200 A 180 180 0 0 1 380 200" fill="none" stroke="#2f56fb" strokeWidth="2" strokeDasharray="6 8" opacity="0.3"/>
             </svg>
             {/* Endpoint Dots */}
-            <div className="absolute top-[72px] -left-5 w-4 h-4 rounded-full bg-white border-2 border-[#2f56fb] shadow-md" />
-            <div className="absolute top-[72px] -right-5 w-4 h-4 rounded-full bg-white border-2 border-[#2f56fb] shadow-md" />
+            <div className="absolute top-[80px] lg:top-[72px] -left-5 w-4 h-4 rounded-full bg-white border-2 border-[#2f56fb] shadow-md" />
+            <div className="absolute top-[80px] lg:top-[72px] -right-5 w-4 h-4 rounded-full bg-white border-2 border-[#2f56fb] shadow-md" />
           </motion.div>
 
-          {/* Card Right 1 - Walking from right, corner cut mirrored to top-right */}
+          {/* Card Right 1 - Walking from right (now DOWN - offset, slope applied on mobile too) */}
           <motion.div 
             variants={walkInRight}
             whileHover={{ scale: 1.05 }}
-            className="w-[170px] bg-white/95 backdrop-blur-sm ml-2 rounded-xl px-4 py-5 text-center shadow-[0_10px_30px_-10px_rgba(37,99,235,0.15),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 transition-all duration-300 cursor-pointer"
+            className="w-[150px] sm:w-[170px] bg-white/95 backdrop-blur-sm ml-2 rounded-xl px-3 sm:px-4 lg:pl-4 lg:pr-8 py-5 text-center shadow-[0_10px_30px_-10px_rgba(37,99,235,0.15),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 transition-all duration-300 cursor-pointer mt-10 lg:mt-12"
             style={{
               clipPath: "path('M150,5 L15,25 Q0,30 0,45 L0,240 Q0,255 15,255 L140,255 Q150,255 150,240 Z')",
             }}
@@ -220,16 +220,16 @@ export default function ProgramsSection() {
               <span className="text-[#2f56fb]">Faculty</span>
             </h3>
             <div className="w-[18px] h-[2px] bg-[#2f56fb] opacity-40 mx-auto my-2" />
-            <p className="text-[12px] text-[#3d4566] leading-snug w-full text-left">
+            <p className="text-[12px] text-[#3d4566] leading-snug w-full text-center">
               Learn from experienced educators and industry leaders.
             </p>
           </motion.div>
 
-          {/* Card Right 2 - Walking from right with delay, corner cut mirrored to top-right */}
+          {/* Card Right 2 - Walking from right with delay (now UP - no offset) */}
           <motion.div 
             variants={walkInRight}
             whileHover={{ scale: 1.05 }}
-            className="w-[170px] bg-white/95 backdrop-blur-sm rounded-xl px-4 py-5 text-center shadow-[0_10px_30px_-10px_rgba(37,99,235,0.15),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 transition-all duration-300 cursor-pointer lg:mt-12"
+            className="w-[150px] sm:w-[170px] bg-white/95 backdrop-blur-sm rounded-xl px-3 sm:px-4 lg:pl-4 lg:pr-8 py-5 text-center shadow-[0_10px_30px_-10px_rgba(37,99,235,0.15),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 transition-all duration-300 cursor-pointer"
             style={{
               clipPath: "path('M150,5 L15,25 Q0,30 0,45 L0,230 Q0,245 15,245 L140,245 Q150,245 150,230 Z')",
             }}
@@ -243,7 +243,7 @@ export default function ProgramsSection() {
               <span className="text-[#2f56fb]">Focused</span>
             </h3>
             <div className="w-[18px] h-[2px] bg-[#2f56fb] opacity-40 mx-auto my-2" />
-            <p className="text-[12px] text-[#3d4566] leading-snug w-full text-left">
+            <p className="text-[12px] text-[#3d4566] leading-snug w-full text-center">
               Build skills for a successful and impactful career.
             </p>
           </motion.div>

@@ -84,6 +84,16 @@ export default function Home() {
     return sentences.map(s => s.trim());
   };
 
+  // Split text into chunks of 3 words for mobile
+  const splitIntoThreeWords = (text: string) => {
+    const words = text.split(' ');
+    const chunks = [];
+    for (let i = 0; i < words.length; i += 3) {
+      chunks.push(words.slice(i, i + 3).join(' '));
+    }
+    return chunks;
+  };
+
   const handlePrev = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
@@ -238,6 +248,7 @@ export default function Home() {
               maxWidth: isMobile ? '100%' : (isFullScreen ? '800px' : '640px'),
               width: '100%',
               padding: isMobile ? '0' : (isFullScreen ? '0 20px' : '0'),
+              marginBottom: isMobile ? '60px' : '0', // Add bottom margin on mobile to avoid overlap with arrows
             }}
           >
             <div 
@@ -264,30 +275,58 @@ export default function Home() {
               {slides[currentSlide].title}
             </div>
             
-            {/* Description - Each sentence on a new line */}
-            <div 
-              className="transition-all duration-800 ease-out space-y-1"
-              style={{
-                transform: isTransitioning ? 'translateX(-140px) scale(0.9)' : 'translateX(0) scale(1)',
-                opacity: isTransitioning ? 0 : 1,
-                transitionDelay: '200ms',
-                margin: isMobile ? '0 auto' : (isFullScreen ? '0 auto' : '0'),
-                maxWidth: '480px',
-              }}
-            >
-              {sentences.map((sentence, index) => (
-                <div 
-                  key={index}
-                  className="text-[0.9rem] md:text-[0.95rem] leading-[1.6]"
-                  style={{
-                    textShadow: isMobile ? '0 1px 15px rgba(0,0,0,0.7)' : (isFullScreen ? '0 1px 15px rgba(0,0,0,0.5)' : 'none'),
-                    color: isMobile ? '#d7dce2' : (isFullScreen ? '#FFFFFF' : '#d7dce2'),
-                  }}
-                >
-                  {sentence}
-                </div>
-              ))}
-            </div>
+            {/* Description - Mobile: 3 words per line, Desktop: sentence by sentence */}
+            {isMobile ? (
+              // Mobile: 3 words per line
+              <div 
+                className="transition-all duration-800 ease-out space-y-0.5"
+                style={{
+                  transform: isTransitioning ? 'translateX(-140px) scale(0.9)' : 'translateX(0) scale(1)',
+                  opacity: isTransitioning ? 0 : 1,
+                  transitionDelay: '200ms',
+                  margin: '0 auto',
+                  maxWidth: '100%',
+                }}
+              >
+                {splitIntoThreeWords(slides[currentSlide].desc).map((chunk, index) => (
+                  <div 
+                    key={index}
+                    className="text-[0.8rem] leading-[1.4]"
+                    style={{
+                      textShadow: '0 1px 15px rgba(0,0,0,0.7)',
+                      color: '#d7dce2',
+                    }}
+                  >
+                    {chunk}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              // Desktop: sentence by sentence
+              <div 
+                className="transition-all duration-800 ease-out space-y-1"
+                style={{
+                  transform: isTransitioning ? 'translateX(-140px) scale(0.9)' : 'translateX(0) scale(1)',
+                  opacity: isTransitioning ? 0 : 1,
+                  transitionDelay: '200ms',
+                  margin: isFullScreen ? '0 auto' : '0',
+                  maxWidth: '480px',
+                }}
+              >
+                {sentences.map((sentence, index) => (
+                  <div 
+                    key={index}
+                    className="text-[0.9rem] md:text-[0.95rem] leading-[1.6]"
+                    style={{
+                      textShadow: isFullScreen ? '0 1px 15px rgba(0,0,0,0.5)' : 'none',
+                      color: isFullScreen ? '#FFFFFF' : '#d7dce2',
+                    }}
+                  >
+                    {sentence}
+                  </div>
+                ))}
+              </div>
+            )}
             
             {/* Two Buttons - Admission + Contact Us */}
             <div
@@ -297,6 +336,7 @@ export default function Home() {
                 opacity: isTransitioning ? 0 : 1,
                 transitionDelay: '300ms',
                 justifyContent: isMobile ? 'center' : (isFullScreen ? 'center' : 'flex-start'),
+                marginBottom: isMobile ? '10px' : '0', // Add margin bottom on mobile
               }}
             >
               {/* Admission Button - Redirects to /Admission */}
@@ -343,44 +383,30 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Navigation Arrows - Bottom on mobile, sides on desktop */}
-        {isMobile ? (
-          // Mobile: Bottom arrows with increased gap
-          <div className="absolute bottom-20 left-0 right-0 z-30 flex justify-center gap-18">
-            <button
-              onClick={handlePrev}
-              className="bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white text-xl p-2 px-4 rounded-full transition-all duration-300 cursor-pointer hover:scale-110"
-              disabled={isTransitioning}
-            >
-              &#10094;
-            </button>
-            <button
-              onClick={handleNext}
-              className="bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white text-xl p-2 px-4 rounded-full transition-all duration-300 cursor-pointer hover:scale-110"
-              disabled={isTransitioning}
-            >
-              &#10095;
-            </button>
-          </div>
-        ) : (
-          // Desktop: Side arrows
-          <>
-            <button
-              onClick={handlePrev}
-              className="absolute top-1/2 -translate-y-1/2 z-30 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white text-xl md:text-2xl p-2 md:p-3 rounded-full transition-all duration-300 cursor-pointer left-[2%] hover:scale-110"
-              disabled={isTransitioning}
-            >
-              &#10094;
-            </button>
-            <button
-              onClick={handleNext}
-              className="absolute top-1/2 -translate-y-1/2 z-30 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white text-xl md:text-2xl p-2 md:p-3 rounded-full transition-all duration-300 cursor-pointer right-[2%] hover:scale-110"
-              disabled={isTransitioning}
-            >
-              &#10095;
-            </button>
-          </>
-        )}
+        {/* Navigation Arrows - Same for both mobile and desktop */}
+        {/* Left Arrow */}
+        <button
+          onClick={handlePrev}
+          className="absolute top-1/2 -translate-y-1/2 z-30 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white text-xl md:text-2xl p-2 md:p-3 rounded-full transition-all duration-300 cursor-pointer left-[2%] hover:scale-110"
+          disabled={isTransitioning}
+          style={{
+            marginTop: isMobile ? '-10px' : '0', // Slight adjustment for mobile
+          }}
+        >
+          &#10094;
+        </button>
+        
+        {/* Right Arrow */}
+        <button
+          onClick={handleNext}
+          className="absolute top-1/2 -translate-y-1/2 z-30 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white text-xl md:text-2xl p-2 md:p-3 rounded-full transition-all duration-300 cursor-pointer right-[2%] hover:scale-110"
+          disabled={isTransitioning}
+          style={{
+            marginTop: isMobile ? '-10px' : '0', // Slight adjustment for mobile
+          }}
+        >
+          &#10095;
+        </button>
       </section>
 
       {/* Stats Component */}

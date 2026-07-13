@@ -71,7 +71,7 @@ export default function AboutSection() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-100/10 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative mx-auto grid max-w-[1300px] grid-cols-1 items-center gap-10 px-6 py-10 sm:px-10 lg:grid-cols-2 lg:gap-10 lg:px-16 lg:py-12">
+      <div className="relative mx-auto grid max-w-[1300px] grid-cols-1 items-center gap-10 px-6 py-16 sm:px-10 lg:grid-cols-2 lg:gap-10 lg:px-16 lg:py-8">
         {/* decorative dot grid, top right */}
         <motion.div
           className="absolute right-16 top-8 hidden h-[60px] w-[90px] opacity-70 lg:block"
