@@ -1,21 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Fraunces, Inter } from "next/font/google";
+// ✅ Comment out Google Fonts (temporary fix for build)
+// import { Fraunces, Inter } from "next/font/google";
 import { motion } from "framer-motion"
 
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
+// ✅ Use system fonts instead
+const fraunces = {
   variable: "--font-fraunces",
-});
+};
 
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+const inter = {
   variable: "--font-inter",
-});
+};
 
 /* ------------------------------------------------------------------ */
 /* Config                                                              */
@@ -109,18 +106,20 @@ export default function ContactSection() {
 
   // ─── Fetch Contact Data with Session Storage ────────────────────────
   useEffect(() => {
-    // ✅ Check session storage first
-    const cachedData = sessionStorage.getItem(SESSION_KEY);
-    
-    if (cachedData) {
-      try {
-        console.log('📦 [ContactSection] Loading from session storage (instant)');
-        const parsedData = JSON.parse(cachedData);
-        setContactData(parsedData);
-        setLoading(false);
-        return;
-      } catch (e) {
-        console.error('Error parsing cached data:', e);
+    // ✅ Check session storage first (only in browser)
+    if (typeof window !== 'undefined') {
+      const cachedData = sessionStorage.getItem(SESSION_KEY);
+      
+      if (cachedData) {
+        try {
+          console.log('📦 [ContactSection] Loading from session storage (instant)');
+          const parsedData = JSON.parse(cachedData);
+          setContactData(parsedData);
+          setLoading(false);
+          return;
+        } catch (e) {
+          console.error('Error parsing cached data:', e);
+        }
       }
     }
 
@@ -168,8 +167,10 @@ export default function ContactSection() {
           fetchedData = contactData;
         }
 
-        // ✅ Save to session storage
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        // ✅ Save to session storage (only in browser)
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        }
         setContactData(fetchedData);
       } catch (error) {
         console.error('❌ [ContactSection] Error fetching:', error);
@@ -267,13 +268,13 @@ export default function ContactSection() {
     laptopBorder: PRIMARY_COLOR, // ✅ Blue border
   };
 
-  // ✅ Show loading only on first visit (no cache)
-  if (loading && !sessionStorage.getItem(SESSION_KEY)) {
+  // ✅ Show loading only on first visit (no cache) - with window check
+  if (loading && typeof window !== 'undefined' && !sessionStorage.getItem(SESSION_KEY)) {
     return (
       <section className="relative w-full max-w-full px-0 py-6 sm:py-20 pb-8 sm:pb-16 md:pb-24 overflow-visible transition-all duration-700 ease-in-out" style={{ background: colors.sectionBg, minHeight: '400px' }}>
         <div className="flex justify-center items-center h-64">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2f56fb] mx-auto mb-4"></div>
             <p className="text-gray-500">Loading contact information...</p>
           </div>
         </div>
@@ -346,10 +347,10 @@ export default function ContactSection() {
                     fontStyle: 'normal',
                   }}
                 >
-                  Connect with{" "}
+                  Contact Us{" "}
                   <br />
                   <span style={{ fontWeight: 400, color: colors.accent }}>
-                    Aspire College
+                   
                   </span>
                 </h1>
 
@@ -402,17 +403,26 @@ export default function ContactSection() {
                     </span>
                   </li>
 
-                  {/* ✅ Dynamic Admissions Email */}
+                  {/* ✅ Dynamic Website - Replaced Admissions Email */}
                   <li className="flex items-center gap-3 py-2 sm:py-3 border-b" style={{ borderColor: colors.border }}>
                     <span className="w-[16px] h-[16px] sm:w-[18px] sm:h-[18px] shrink-0" style={{ color: colors.accent }}>
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="2.5" y="5" width="19" height="14" rx="3" />
-                        <path d="M3 7l9 6 9-6" />
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
                       </svg>
                     </span>
                     <span className="flex flex-col gap-0.5">
-                      <span className="text-[8px] sm:text-[10px] tracking-[0.08em] uppercase font-semibold" style={{ color: colors.textMuted }}>Admissions</span>
-                      <span className="text-[11px] sm:text-sm font-medium" style={{ color: colors.textPrimary }}>{contactData.email}</span>
+                      <span className="text-[8px] sm:text-[10px] tracking-[0.08em] uppercase font-semibold" style={{ color: colors.textMuted }}>Website</span>
+                      <a 
+                        href={contactData.website || '#'} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-[11px] sm:text-sm font-medium hover:underline" 
+                        style={{ color: colors.textPrimary }}
+                      >
+                        {contactData.website ? contactData.website.replace(/^https?:\/\//, '') : 'Not provided'}
+                      </a>
                     </span>
                   </li>
                 </ul>
@@ -448,7 +458,7 @@ export default function ContactSection() {
                           <span className="w-3 h-3 rounded-full bg-green-500"></span>
                         </div>
                         <span className="text-xs font-medium ml-2" style={{ color: colors.textMuted }}>
-                          Aspire College - Contact Form
+                          Contact Form
                         </span>
                       </div>
                       <div className="flex items-center gap-1">

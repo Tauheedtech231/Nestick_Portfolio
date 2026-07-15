@@ -103,15 +103,17 @@ export default function Stats() {
   useEffect(() => {
     async function fetchStatsData() {
       try {
-        // Check if data exists in session storage
-        const cachedData = sessionStorage.getItem(SESSION_KEY);
-        
-        if (cachedData) {
-          console.log('📦 [Stats] Loading from session storage');
-          const parsedData = JSON.parse(cachedData);
-          setStatsData(parsedData);
-          setLoading(false);
-          return;
+        // ✅ Check if data exists in session storage (with window check)
+        if (typeof window !== 'undefined') {
+          const cachedData = sessionStorage.getItem(SESSION_KEY);
+          
+          if (cachedData) {
+            console.log('📦 [Stats] Loading from session storage');
+            const parsedData = JSON.parse(cachedData);
+            setStatsData(parsedData);
+            setLoading(false);
+            return;
+          }
         }
 
         // If no cached data, fetch from API
@@ -129,13 +131,17 @@ export default function Stats() {
           finalData = getDefaultStatsData();
         }
 
-        // Save to session storage
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify(finalData));
+        // ✅ Save to session storage (with window check)
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(finalData));
+        }
         setStatsData(finalData);
       } catch (error) {
         console.error('❌ [Stats] Error:', error);
         const fallbackData = getDefaultStatsData();
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify(fallbackData));
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(fallbackData));
+        }
         setStatsData(fallbackData);
       } finally {
         setLoading(false);
@@ -157,12 +163,12 @@ export default function Stats() {
     ]
   });
 
-  // ✅ Show loading only on first visit (no cache)
-  if (loading && !statsData) {
+  // ✅ Show loading only on first visit (no cache) - with window check
+  if (loading && typeof window !== 'undefined' && !statsData) {
     return (
       <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#f0f4ff]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-teal-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#2f56fb] mx-auto mb-4"></div>
           <p className="text-gray-500">Loading stats...</p>
         </div>
       </section>

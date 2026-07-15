@@ -159,17 +159,21 @@ export default function HeroSection({ onContactClick, collegeId = "8" }: HeroSec
     return data.heroDesktopImage || "https://images.unsplash.com/photo-1641160616553-a9d21a846e49?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   };
 
-  // ✅ Show loading only on first visit (no cache)
+  // ✅ Show loading only on first visit (no cache) - with window check
   if (loading && typeof window !== 'undefined' && !sessionStorage.getItem(SESSION_KEY)) {
     return (
       <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden bg-gray-100">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2f56fb] mx-auto mb-4"></div>
           <p className="text-gray-500">Loading...</p>
         </div>
       </section>
     );
   }
+
+  // ✅ Increased subtitle (Slight increase as requested)
+  const displaySubtitle = data.heroSubtitle + 
+    ' We are committed to nurturing talent, fostering creativity, and building a community where every individual can thrive and make a meaningful impact on society.';
 
   return (
     <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden">
@@ -202,7 +206,7 @@ export default function HeroSection({ onContactClick, collegeId = "8" }: HeroSec
             className="text-[15px] sm:text-[15px] text-white max-w-3xl mx-auto leading-[1.8] mb-6"
             style={{ textShadow: '0 2px 15px rgba(0,0,0,0.5)' }}
           >
-            {data.heroSubtitle}
+            {displaySubtitle}
           </motion.p>
 
           {/* Contact Button - Same as Navbar "Apply Now" button */}

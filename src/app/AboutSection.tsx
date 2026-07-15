@@ -100,19 +100,20 @@ export default function AboutSection() {
 
   // ✅ Fetch data with session storage caching
   useEffect(() => {
-    // ✅ Check session storage first (synchronous)
-    const cachedData = sessionStorage.getItem(SESSION_KEY);
-    
-    if (cachedData) {
-      try {
-        console.log('📦 [AboutSection] Loading from session storage (instant)');
-        const parsedData = JSON.parse(cachedData);
-        setData(parsedData);
-        setLoading(false);
-        // ✅ Return early - no API call needed
-        return;
-      } catch (e) {
-        console.error('Error parsing cached data:', e);
+    // ✅ Check session storage first (only in browser)
+    if (typeof window !== 'undefined') {
+      const cachedData = sessionStorage.getItem(SESSION_KEY);
+      
+      if (cachedData) {
+        try {
+          console.log('📦 [AboutSection] Loading from session storage (instant)');
+          const parsedData = JSON.parse(cachedData);
+          setData(parsedData);
+          setLoading(false);
+          return;
+        } catch (e) {
+          console.error('Error parsing cached data:', e);
+        }
       }
     }
 
@@ -133,8 +134,10 @@ export default function AboutSection() {
           fetchedData = getDefaultData();
         }
 
-        // ✅ Save to session storage
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        // ✅ Save to session storage (only in browser)
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        }
         setData(fetchedData);
       } catch (error) {
         console.error('❌ [AboutSection] Error:', error);
@@ -149,12 +152,12 @@ export default function AboutSection() {
     fetchData();
   }, [SESSION_KEY]);
 
-  // ✅ Show loading only on first visit (no cache)
-  if (loading && !data) {
+  // ✅ Show loading only on first visit (no cache) - with window check
+  if (loading && typeof window !== 'undefined' && !data) {
     return (
       <section className="relative bg-gradient-to-br from-[#f0f4ff] via-white to-[#e8edf8] overflow-x-hidden min-h-[400px] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2f56fb] mx-auto mb-4"></div>
           <p className="text-gray-500">Loading...</p>
         </div>
       </section>
@@ -165,11 +168,11 @@ export default function AboutSection() {
 
   return (
     <section className="relative bg-gradient-to-br from-[#f0f4ff] via-white to-[#e8edf8] overflow-x-hidden">
-      {/* Deep blue decorative elements */}
+      {/* Deep blue decorative elements - Updated to match brand colors */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-200/25 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-100/10 rounded-full blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#2f56fb]/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#2f56fb]/15 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#2f56fb]/5 rounded-full blur-3xl" />
       </div>
 
       <div className="relative mx-auto grid max-w-[1300px] grid-cols-1 items-center gap-10 px-6 py-16 sm:px-10 lg:grid-cols-2 lg:gap-10 lg:px-16 lg:py-8">
@@ -274,7 +277,7 @@ export default function AboutSection() {
 
             {/* white-bordered blob frame with image */}
             <motion.div
-              className="absolute left-5 top-5 h-[440px] w-[440px] bg-white p-3.5 shadow-[0_30px_60px_-20px_rgba(15,30,80,0.3)] transition-transform duration-300 hover:scale-[1.02] cursor-pointer"
+              className="absolute left-5 top-5 h-[440px] w-[440px] bg-white p-3.5 shadow-[0_30px_60px_-20px_rgba(47,86,251,0.15)] transition-transform duration-300 hover:scale-[1.02] cursor-pointer"
               style={{ borderRadius: "49% 51% 54% 46% / 57% 44% 56% 43%" }}
               initial={{ opacity: 0, scale: 0.92 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -294,7 +297,7 @@ export default function AboutSection() {
               </div>
             </motion.div>
 
-            {/* graduation cap badge */}
+            {/* graduation cap badge - Updated shadow to blue */}
             <motion.div 
               className="absolute left-[50px] top-[50px] z-10 flex h-[74px] w-[74px] items-center justify-center rounded-full border-[5px] border-white bg-gradient-to-br from-[#1a3fd6] to-[#0f2996] shadow-[0_15px_30px_-8px_rgba(47,86,251,0.5)] cursor-pointer hover:scale-105 transition-transform duration-200"
               initial={{ opacity: 0, y: -10 }}
@@ -316,9 +319,9 @@ export default function AboutSection() {
               transition={{ duration: 0.5, delay: 0.5 }}
             />
 
-            {/* ✅ Dynamic quote card */}
+            {/* ✅ Dynamic quote card - Updated shadow to blue */}
             <motion.div 
-              className="absolute bottom-[70px] right-1.5 z-10 w-[220px] rounded-2xl bg-white/95 backdrop-blur-sm px-[20px] pb-[16px] pt-[20px] shadow-[0_25px_50px_-15px_rgba(15,30,80,0.35)] cursor-pointer hover:shadow-[0_35px_65px_-20px_rgba(15,30,80,0.5)] transition-shadow duration-300 border border-white/50"
+              className="absolute bottom-[70px] right-1.5 z-10 w-[220px] rounded-2xl bg-white/95 backdrop-blur-sm px-[20px] pb-[16px] pt-[20px] shadow-[0_25px_50px_-15px_rgba(47,86,251,0.2)] cursor-pointer hover:shadow-[0_35px_65px_-20px_rgba(47,86,251,0.3)] transition-shadow duration-300 border border-white/50"
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

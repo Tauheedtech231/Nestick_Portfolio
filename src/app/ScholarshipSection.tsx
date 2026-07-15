@@ -111,19 +111,20 @@ export default function ScholarshipSection() {
 
   // ✅ Fetch data with session storage caching
   useEffect(() => {
-    // ✅ Check session storage first (synchronous)
-    const cachedData = sessionStorage.getItem(SESSION_KEY);
-    
-    if (cachedData) {
-      try {
-        console.log('📦 [ScholarshipSection] Loading from session storage (instant)');
-        const parsedData = JSON.parse(cachedData);
-        setData(parsedData);
-        setLoading(false);
-        // ✅ Return early - no API call needed
-        return;
-      } catch (e) {
-        console.error('Error parsing cached data:', e);
+    // ✅ Check session storage first (only in browser)
+    if (typeof window !== 'undefined') {
+      const cachedData = sessionStorage.getItem(SESSION_KEY);
+      
+      if (cachedData) {
+        try {
+          console.log('📦 [ScholarshipSection] Loading from session storage (instant)');
+          const parsedData = JSON.parse(cachedData);
+          setData(parsedData);
+          setLoading(false);
+          return;
+        } catch (e) {
+          console.error('Error parsing cached data:', e);
+        }
       }
     }
 
@@ -150,8 +151,10 @@ export default function ScholarshipSection() {
           fetchedData = getDefaultData();
         }
 
-        // ✅ Save to session storage
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        // ✅ Save to session storage (only in browser)
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        }
         setData(fetchedData);
       } catch (error) {
         console.error('❌ [ScholarshipSection] Error:', error);
@@ -177,8 +180,8 @@ export default function ScholarshipSection() {
     return lines.join(' ');
   };
 
-  // ✅ Show loading only on first visit (no cache)
-  if (loading && !data) {
+  // ✅ Show loading only on first visit (no cache) - with window check
+  if (loading && typeof window !== 'undefined' && !data) {
     console.log('⏳ [ScholarshipSection] Loading state...');
     return (
       <section 
@@ -188,7 +191,7 @@ export default function ScholarshipSection() {
         }}
       >
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2f56fb] mx-auto mb-4"></div>
           <p className="text-gray-500">Loading...</p>
         </div>
       </section>
@@ -233,13 +236,13 @@ export default function ScholarshipSection() {
         </defs>
       </svg>
 
-      {/* Depth Shadow Decorative Elements */}
+      {/* Depth Shadow Decorative Elements - Updated to blue */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-200/40 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-200/30 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-100/20 rounded-full blur-3xl" />
-        <div className="absolute top-20 left-20 w-64 h-64 bg-blue-300/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-20 w-64 h-64 bg-indigo-300/20 rounded-full blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#2f56fb]/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#2f56fb]/15 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#2f56fb]/5 rounded-full blur-3xl" />
+        <div className="absolute top-20 left-20 w-64 h-64 bg-[#2f56fb]/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-20 w-64 h-64 bg-[#2f56fb]/10 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-5 py-16 lg:py-16">

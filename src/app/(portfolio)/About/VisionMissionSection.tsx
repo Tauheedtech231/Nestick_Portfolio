@@ -24,18 +24,20 @@ export default function VisionMissionSection() {
 
   // ✅ Fetch data with session storage caching
   useEffect(() => {
-    // ✅ Check session storage first
-    const cachedData = sessionStorage.getItem(SESSION_KEY);
-    
-    if (cachedData) {
-      try {
-        console.log('📦 [VisionMission] Loading from session storage (instant)');
-        const parsedData = JSON.parse(cachedData);
-        setData(parsedData);
-        setLoading(false);
-        return;
-      } catch (e) {
-        console.error('Error parsing cached data:', e);
+    // ✅ Check session storage first (only in browser)
+    if (typeof window !== 'undefined') {
+      const cachedData = sessionStorage.getItem(SESSION_KEY);
+      
+      if (cachedData) {
+        try {
+          console.log('📦 [VisionMission] Loading from session storage (instant)');
+          const parsedData = JSON.parse(cachedData);
+          setData(parsedData);
+          setLoading(false);
+          return;
+        } catch (e) {
+          console.error('Error parsing cached data:', e);
+        }
       }
     }
 
@@ -65,8 +67,10 @@ export default function VisionMissionSection() {
           };
         }
 
-        // ✅ Save to session storage
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        // ✅ Save to session storage (only in browser)
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        }
         setData(fetchedData);
       } catch (error) {
         console.error('❌ [VisionMission] Error:', error);
@@ -85,11 +89,11 @@ export default function VisionMissionSection() {
     fetchData();
   }, []);
 
-  // ✅ Show loading only on first visit (no cache)
-  if (loading && !sessionStorage.getItem(SESSION_KEY)) {
+  // ✅ Show loading only on first visit (no cache) - with window check
+  if (loading && typeof window !== 'undefined' && !sessionStorage.getItem(SESSION_KEY)) {
     return (
       <section className="relative overflow-hidden bg-white px-5 py-3 text-center min-h-[400px] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2f56fb]"></div>
       </section>
     );
   }

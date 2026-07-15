@@ -143,19 +143,20 @@ export default function ProgramsSection() {
 
   // ✅ Fetch data with session storage caching
   useEffect(() => {
-    // ✅ Check session storage first (synchronous)
-    const cachedData = sessionStorage.getItem(SESSION_KEY);
-    
-    if (cachedData) {
-      try {
-        console.log('📦 [ProgramsSection] Loading from session storage (instant)');
-        const parsedData = JSON.parse(cachedData);
-        setData(parsedData);
-        setLoading(false);
-        // ✅ Return early - no API call needed
-        return;
-      } catch (e) {
-        console.error('Error parsing cached data:', e);
+    // ✅ Check session storage first (only in browser)
+    if (typeof window !== 'undefined') {
+      const cachedData = sessionStorage.getItem(SESSION_KEY);
+      
+      if (cachedData) {
+        try {
+          console.log('📦 [ProgramsSection] Loading from session storage (instant)');
+          const parsedData = JSON.parse(cachedData);
+          setData(parsedData);
+          setLoading(false);
+          return;
+        } catch (e) {
+          console.error('Error parsing cached data:', e);
+        }
       }
     }
 
@@ -176,8 +177,10 @@ export default function ProgramsSection() {
           fetchedData = getDefaultData();
         }
 
-        // ✅ Save to session storage
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        // ✅ Save to session storage (only in browser)
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        }
         setData(fetchedData);
       } catch (error) {
         console.error('❌ [ProgramsSection] Error:', error);
@@ -192,12 +195,12 @@ export default function ProgramsSection() {
     fetchData();
   }, [SESSION_KEY]);
 
-  // ✅ Show loading only on first visit (no cache)
-  if (loading && !data) {
+  // ✅ Show loading only on first visit (no cache) - with window check
+  if (loading && typeof window !== 'undefined' && !data) {
     return (
       <section className="relative bg-gradient-to-br from-[#f0f4ff] via-white to-[#e8edf8] overflow-x-hidden py-16 px-4 flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2f56fb] mx-auto mb-4"></div>
           <p className="text-gray-500">Loading...</p>
         </div>
       </section>
@@ -213,11 +216,11 @@ export default function ProgramsSection() {
 
   return (
     <section className="relative bg-gradient-to-br from-[#f0f4ff] via-white to-[#e8edf8] overflow-x-hidden py-16 px-4">
-      {/* Deep shadow decorative elements */}
+      {/* Deep shadow decorative elements - Updated to blue */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-200/25 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-100/10 rounded-full blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#2f56fb]/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#2f56fb]/15 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#2f56fb]/5 rounded-full blur-3xl" />
       </div>
 
       <motion.div 
@@ -275,27 +278,13 @@ export default function ProgramsSection() {
           {d.description}
         </motion.p>
 
-        {/*
-          Feature Row - Cards with HTML shape.
-
-          On mobile/tablet (below lg) the row wraps into 3 lines:
-          Line 1 (above image): [Card Left 1] [Card Left 2]
-          Line 2:               [Center Image]
-          Line 3 (below image): [Card Right 1] [Card Right 2]
-
-          Requested slope: in EACH pair, the left card sits lower (mt-10)
-          and the right card sits higher (mt-0) — on both the top pair
-          and the bottom pair. This is now set explicitly with base +
-          sm: values so it's guaranteed on every mobile/tablet width,
-          while lg: keeps the original desktop symmetric zigzag
-          (up / down / down / up) around the image untouched.
-        */}
+        {/* Feature Row */}
         <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 mb-12 lg:gap-4">
-          {/* Card Left 1 (top pair - left, lower) */}
+          {/* Card Left 1 */}
           <motion.div 
             variants={walkInLeft}
             whileHover={{ scale: 1.05 }}
-            className="w-[calc(50%-6px)] sm:w-[170px] max-w-[150px] sm:max-w-none bg-white/95 backdrop-blur-sm rounded-xl px-2.5 sm:px-4 lg:pl-4 lg:pr-8 py-5 text-center shadow-[0_10px_30px_-10px_rgba(37,99,235,0.15),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 transition-all duration-300 cursor-pointer mt-10 sm:mt-10 lg:mt-0"
+            className="w-[calc(50%-6px)] sm:w-[170px] max-w-[150px] sm:max-w-none bg-white/95 backdrop-blur-sm rounded-xl px-2.5 sm:px-4 lg:pl-4 lg:pr-8 py-5 text-center shadow-[0_10px_30px_-10px_rgba(47,86,251,0.15),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 transition-all duration-300 cursor-pointer mt-10 sm:mt-10 lg:mt-0"
             style={{
               clipPath: "path('M5,5 L140,25 Q155,30 155,45 L155,230 Q155,245 140,245 L15,245 Q5,245 5,230 Z')",
             }}
@@ -313,11 +302,11 @@ export default function ProgramsSection() {
             </p>
           </motion.div>
 
-          {/* Card Left 2 (top pair - right, higher) */}
+          {/* Card Left 2 */}
           <motion.div 
             variants={walkInLeft}
             whileHover={{ scale: 1.05 }}
-            className="w-[calc(50%-6px)] sm:w-[170px] max-w-[150px] sm:max-w-none bg-white/95 backdrop-blur-sm rounded-xl px-2.5 sm:px-4 lg:pl-4 lg:pr-8 py-5 text-center shadow-[0_10px_30px_-10px_rgba(37,99,235,0.15),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 transition-all duration-300 cursor-pointer mt-0 sm:mt-0 lg:mt-12"
+            className="w-[calc(50%-6px)] sm:w-[170px] max-w-[150px] sm:max-w-none bg-white/95 backdrop-blur-sm rounded-xl px-2.5 sm:px-4 lg:pl-4 lg:pr-8 py-5 text-center shadow-[0_10px_30px_-10px_rgba(47,86,251,0.15),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 transition-all duration-300 cursor-pointer mt-0 sm:mt-0 lg:mt-12"
             style={{
               clipPath: "path('M5,5 L140,25 Q155,30 155,45 L155,240 Q155,255 140,255 L15,255 Q5,255 5,240 Z')",
             }}
@@ -341,7 +330,7 @@ export default function ProgramsSection() {
             variants={fadeInScale}
             className="relative w-[280px] h-[340px] ml-2 lg:-ml-2"
           >
-            <div className="w-full h-full rounded-[140px_140px_16px_16px] overflow-hidden border-[5px] border-white shadow-[0_20px_45px_-15px_rgba(37,99,235,0.25),inset_0_1px_0_rgba(255,255,255,0.8)] cursor-pointer hover:scale-[1.02] transition-transform duration-300">
+            <div className="w-full h-full rounded-[140px_140px_16px_16px] overflow-hidden border-[5px] border-white shadow-[0_20px_45px_-15px_rgba(47,86,251,0.25),inset_0_1px_0_rgba(255,255,255,0.8)] cursor-pointer hover:scale-[1.02] transition-transform duration-300">
               <img
                 src={d.centerImage}
                 alt="Student studying"
@@ -357,11 +346,11 @@ export default function ProgramsSection() {
             <div className="absolute top-[80px] lg:top-[72px] -right-5 w-4 h-4 rounded-full bg-white border-2 border-[#2f56fb] shadow-md" />
           </motion.div>
 
-          {/* Card Right 1 (bottom pair - left, lower) */}
+          {/* Card Right 1 */}
           <motion.div 
             variants={walkInRight}
             whileHover={{ scale: 1.05 }}
-            className="w-[calc(50%-6px)] sm:w-[170px] max-w-[150px] sm:max-w-none bg-white/95 backdrop-blur-sm sm:ml-2 rounded-xl px-2.5 sm:px-4 lg:pl-4 lg:pr-8 py-5 text-center shadow-[0_10px_30px_-10px_rgba(37,99,235,0.15),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 transition-all duration-300 cursor-pointer mt-10 sm:mt-10 lg:mt-12"
+            className="w-[calc(50%-6px)] sm:w-[170px] max-w-[150px] sm:max-w-none bg-white/95 backdrop-blur-sm sm:ml-2 rounded-xl px-2.5 sm:px-4 lg:pl-4 lg:pr-8 py-5 text-center shadow-[0_10px_30px_-10px_rgba(47,86,251,0.15),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 transition-all duration-300 cursor-pointer mt-10 sm:mt-10 lg:mt-12"
             style={{
               clipPath: "path('M150,5 L15,25 Q0,30 0,45 L0,240 Q0,255 15,255 L140,255 Q150,255 150,240 Z')",
             }}
@@ -379,11 +368,11 @@ export default function ProgramsSection() {
             </p>
           </motion.div>
 
-          {/* Card Right 2 (bottom pair - right, higher) */}
+          {/* Card Right 2 */}
           <motion.div 
             variants={walkInRight}
             whileHover={{ scale: 1.05 }}
-            className="w-[calc(50%-6px)] sm:w-[170px] max-w-[150px] sm:max-w-none bg-white/95 backdrop-blur-sm rounded-xl px-2.5 sm:px-4 lg:pl-4 lg:pr-8 py-5 text-center shadow-[0_10px_30px_-10px_rgba(37,99,235,0.15),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 transition-all duration-300 cursor-pointer mt-0 sm:mt-0 lg:mt-0"
+            className="w-[calc(50%-6px)] sm:w-[170px] max-w-[150px] sm:max-w-none bg-white/95 backdrop-blur-sm rounded-xl px-2.5 sm:px-4 lg:pl-4 lg:pr-8 py-5 text-center shadow-[0_10px_30px_-10px_rgba(47,86,251,0.15),inset_0_1px_0_rgba(255,255,255,0.8)] border border-white/50 transition-all duration-300 cursor-pointer mt-0 sm:mt-0 lg:mt-0"
             style={{
               clipPath: "path('M150,5 L15,25 Q0,30 0,45 L0,230 Q0,245 15,245 L140,245 Q150,245 150,230 Z')",
             }}

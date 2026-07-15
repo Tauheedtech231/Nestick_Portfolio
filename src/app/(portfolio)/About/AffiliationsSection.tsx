@@ -54,20 +54,48 @@ export default function Affiliations() {
   // ✅ Session storage key
   const SESSION_KEY = 'affiliations_8';
 
+  // ✅ Inject styles on client only to avoid hydration mismatch
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.id = 'affiliations-styles';
+    style.textContent = `
+      @keyframes marqueeScrollAffil {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      .marquee-track-affil {
+        animation: marqueeScrollAffil 26s linear infinite;
+      }
+      .marquee-track-affil:hover {
+        animation-play-state: paused;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .marquee-track-affil { animation: none; }
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      const el = document.getElementById('affiliations-styles');
+      if (el) el.remove();
+    };
+  }, []);
+
   // ✅ Fetch data with session storage caching
   useEffect(() => {
-    // ✅ Check session storage first
-    const cachedData = sessionStorage.getItem(SESSION_KEY);
-    
-    if (cachedData) {
-      try {
-        console.log('📦 [Affiliations] Loading from session storage (instant)');
-        const parsedData = JSON.parse(cachedData);
-        setData(parsedData);
-        setLoading(false);
-        return;
-      } catch (e) {
-        console.error('Error parsing cached data:', e);
+    // ✅ Check session storage first (only in browser)
+    if (typeof window !== 'undefined') {
+      const cachedData = sessionStorage.getItem(SESSION_KEY);
+      
+      if (cachedData) {
+        try {
+          console.log('📦 [Affiliations] Loading from session storage (instant)');
+          const parsedData = JSON.parse(cachedData);
+          setData(parsedData);
+          setLoading(false);
+          return;
+        } catch (e) {
+          console.error('Error parsing cached data:', e);
+        }
       }
     }
 
@@ -120,8 +148,10 @@ export default function Affiliations() {
           setError('No data received from API');
         }
 
-        // ✅ Save to session storage
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        // ✅ Save to session storage (only in browser)
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        }
         setData(fetchedData);
       } catch (error) {
         console.error('❌ [Affiliations] Error fetching:', error);
@@ -147,16 +177,16 @@ export default function Affiliations() {
   };
 
   // ✅ Show loading only on first visit (no cache)
-  if (loading && !sessionStorage.getItem(SESSION_KEY)) {
+  if (loading && typeof window !== 'undefined' && !sessionStorage.getItem(SESSION_KEY)) {
     console.log('⏳ [Affiliations] Loading state...');
     return (
       <section className="relative w-full overflow-hidden bg-white py-10 min-h-[300px] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2f56fb]"></div>
       </section>
     );
   }
 
-  if (error && !sessionStorage.getItem(SESSION_KEY)) {
+  if (error && typeof window !== 'undefined' && !sessionStorage.getItem(SESSION_KEY)) {
     console.log('❌ [Affiliations] Error state:', error);
     return (
       <section className="relative w-full overflow-hidden bg-white py-10 min-h-[300px] flex items-center justify-center">
@@ -164,7 +194,7 @@ export default function Affiliations() {
           <p className="text-red-500">Error loading affiliations: {error}</p>
           <button 
             onClick={() => window.location.reload()} 
-            className="mt-4 px-4 py-2 bg-teal-600 text-white rounded-lg cursor-pointer"
+            className="mt-4 px-4 py-2 bg-[#2f56fb] text-white rounded-lg cursor-pointer"
           >
             Retry
           </button>
@@ -182,21 +212,7 @@ export default function Affiliations() {
       ref={sectionRef}
       className="relative w-full overflow-hidden bg-white py-10"
     >
-      <style>{`
-        @keyframes marqueeScrollAffil {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .marquee-track-affil {
-          animation: marqueeScrollAffil 26s linear infinite;
-        }
-        .marquee-track-affil:hover {
-          animation-play-state: paused;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .marquee-track-affil { animation: none; }
-        }
-      `}</style>
+      {/* ✅ Style tag removed - now injected via useEffect */}
 
       {/* Heading with Description */}
       <motion.div

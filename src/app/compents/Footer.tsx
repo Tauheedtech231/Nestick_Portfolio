@@ -75,18 +75,20 @@ export default function Footer() {
 
   // ✅ Fetch footer data with session storage caching
   useEffect(() => {
-    // ✅ Check session storage first
-    const cachedData = sessionStorage.getItem(SESSION_KEY);
-    
-    if (cachedData) {
-      try {
-        console.log('📦 [Footer] Loading from session storage (instant)');
-        const parsedData = JSON.parse(cachedData);
-        setFooterData(parsedData);
-        setLoading(false);
-        return;
-      } catch (e) {
-        console.error('Error parsing cached data:', e);
+    // ✅ Check session storage first (only in browser)
+    if (typeof window !== 'undefined') {
+      const cachedData = sessionStorage.getItem(SESSION_KEY);
+      
+      if (cachedData) {
+        try {
+          console.log('📦 [Footer] Loading from session storage (instant)');
+          const parsedData = JSON.parse(cachedData);
+          setFooterData(parsedData);
+          setLoading(false);
+          return;
+        } catch (e) {
+          console.error('Error parsing cached data:', e);
+        }
       }
     }
 
@@ -124,8 +126,10 @@ export default function Footer() {
           fetchedData = defaultFooterData;
         }
 
-        // ✅ Save to session storage
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        // ✅ Save to session storage (only in browser)
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        }
         setFooterData(fetchedData);
       } catch (error) {
         console.error('❌ [Footer] Error fetching:', error);
@@ -153,13 +157,13 @@ export default function Footer() {
   const ACCENT_COLOR = '#0D9488'; // Teal - Only for highlights
   const DARK_BG = footerData.darkBgColor || '#0a0e1a';
 
-  // ✅ Show loading only on first visit (no cache)
-  if (loading && !sessionStorage.getItem(SESSION_KEY)) {
+  // ✅ Show loading only on first visit (no cache) - with window check
+  if (loading && typeof window !== 'undefined' && !sessionStorage.getItem(SESSION_KEY)) {
     return (
       <footer className="relative text-white pt-[40px] px-[5%] overflow-hidden" style={{ backgroundColor: DARK_BG }}>
         <div className="flex justify-center items-center h-64">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2f56fb] mx-auto mb-4"></div>
             <p className="text-gray-400">Loading footer...</p>
           </div>
         </div>

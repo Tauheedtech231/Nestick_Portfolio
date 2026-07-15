@@ -24,18 +24,20 @@ export default function Navbar() {
 
   // ✅ Check session storage FIRST - synchronously before useEffect runs
   useEffect(() => {
-    // ✅ Check if data exists in session storage immediately
-    const cachedData = sessionStorage.getItem(SESSION_KEY);
-    
-    if (cachedData) {
-      try {
-        const parsedData = JSON.parse(cachedData);
-        console.log('📦 [Navbar] Loading logo from session storage (instant)');
-        setLogo(parsedData.logo || '/logo.png');
-        // ✅ Return early - no API call needed
-        return;
-      } catch (e) {
-        console.error('Error parsing cached data:', e);
+    // ✅ Check if data exists in session storage immediately (only in browser)
+    if (typeof window !== 'undefined') {
+      const cachedData = sessionStorage.getItem(SESSION_KEY);
+      
+      if (cachedData) {
+        try {
+          const parsedData = JSON.parse(cachedData);
+          console.log('📦 [Navbar] Loading logo from session storage (instant)');
+          setLogo(parsedData.logo || '/logo.png');
+          // ✅ Return early - no API call needed
+          return;
+        } catch (e) {
+          console.error('Error parsing cached data:', e);
+        }
       }
     }
 
@@ -66,8 +68,10 @@ export default function Navbar() {
           console.log('❌ [Navbar] API success false or no content, using default');
         }
 
-        // ✅ Save to session storage
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify({ logo: logoUrl }));
+        // ✅ Save to session storage (only in browser)
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify({ logo: logoUrl }));
+        }
         setLogo(logoUrl);
       } catch (error) {
         console.error('❌ [Navbar] Error fetching logo:', error);

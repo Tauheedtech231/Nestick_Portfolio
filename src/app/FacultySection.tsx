@@ -132,19 +132,20 @@ export default function FacultySection() {
 
   // ✅ Fetch data with session storage caching
   useEffect(() => {
-    // ✅ Check session storage first (synchronous)
-    const cachedData = sessionStorage.getItem(SESSION_KEY);
-    
-    if (cachedData) {
-      try {
-        console.log('📦 [FacultySection] Loading from session storage (instant)');
-        const parsedData = JSON.parse(cachedData);
-        setData(parsedData);
-        setLoading(false);
-        // ✅ Return early - no API call needed
-        return;
-      } catch (e) {
-        console.error('Error parsing cached data:', e);
+    // ✅ Check session storage first (only in browser)
+    if (typeof window !== 'undefined') {
+      const cachedData = sessionStorage.getItem(SESSION_KEY);
+      
+      if (cachedData) {
+        try {
+          console.log('📦 [FacultySection] Loading from session storage (instant)');
+          const parsedData = JSON.parse(cachedData);
+          setData(parsedData);
+          setLoading(false);
+          return;
+        } catch (e) {
+          console.error('Error parsing cached data:', e);
+        }
       }
     }
 
@@ -165,8 +166,10 @@ export default function FacultySection() {
           fetchedData = getDefaultData();
         }
 
-        // ✅ Save to session storage
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        // ✅ Save to session storage (only in browser)
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        }
         setData(fetchedData);
       } catch (error) {
         console.error('❌ [FacultySection] Error:', error);
@@ -181,12 +184,12 @@ export default function FacultySection() {
     fetchData();
   }, [SESSION_KEY]);
 
-  // ✅ Show loading only on first visit (no cache)
-  if (loading && !data) {
+  // ✅ Show loading only on first visit (no cache) - with window check
+  if (loading && typeof window !== 'undefined' && !data) {
     return (
       <section className="relative bg-gradient-to-br from-[#f0f4ff] via-white to-[#e8edf8] overflow-x-hidden py-16 px-0 flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2f56fb] mx-auto mb-4"></div>
           <p className="text-gray-500">Loading...</p>
         </div>
       </section>
@@ -201,11 +204,11 @@ export default function FacultySection() {
 
   return (
     <section className="relative bg-gradient-to-br from-[#f0f4ff] via-white to-[#e8edf8] overflow-x-hidden py-16 px-0 flex items-center justify-center">
-      {/* Deep shadow decorative elements */}
+      {/* Deep shadow decorative elements - Updated to blue */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-200/25 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-100/10 rounded-full blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#2f56fb]/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#2f56fb]/15 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#2f56fb]/5 rounded-full blur-3xl" />
       </div>
 
       <motion.div 
@@ -294,10 +297,10 @@ export default function FacultySection() {
             className="absolute inset-[-8px] border border-[#bfe6da] rounded-[200px_60px_200px_60px] pointer-events-none" 
           />
 
-          {/* Photo Frame */}
+          {/* Photo Frame - Updated shadow to blue */}
           <motion.div 
             variants={fadeInScale}
-            className="relative w-full h-full rounded-[190px_60px_190px_60px] lg:rounded-[190px_60px_190px_60px] overflow-hidden shadow-[0_24px_50px_-15px_rgba(37,99,235,0.25)] z-10"
+            className="relative w-full h-full rounded-[190px_60px_190px_60px] lg:rounded-[190px_60px_190px_60px] overflow-hidden shadow-[0_24px_50px_-15px_rgba(47,86,251,0.25)] z-10"
           >
             {/* Desktop Image - Dynamic */}
             <img
@@ -314,10 +317,10 @@ export default function FacultySection() {
             />
           </motion.div>
 
-          {/* Floating Cards - 3 badges on desktop */}
+          {/* Floating Cards - 3 badges on desktop - Updated shadows to blue */}
           <motion.div 
             variants={fadeInUp}
-            className="absolute top-6 left-[-8px] bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-3 flex items-center gap-3 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 hidden lg:flex"
+            className="absolute top-6 left-[-8px] bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(47,86,251,0.2)] p-3 flex items-center gap-3 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 hidden lg:flex"
             transition={{ delay: 0.3 }}
           >
             <div className="w-9 h-9 rounded-lg bg-[#2f56fb]/10 flex items-center justify-center">
@@ -330,7 +333,7 @@ export default function FacultySection() {
 
           <motion.div 
             variants={fadeInUp}
-            className="absolute top-[38%] right-[-32px] bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-3 flex items-center gap-3 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 hidden lg:flex"
+            className="absolute top-[38%] right-[-32px] bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(47,86,251,0.2)] p-3 flex items-center gap-3 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 hidden lg:flex"
             transition={{ delay: 0.4 }}
           >
             <div className="w-9 h-9 rounded-lg bg-[#dce3f5] flex items-center justify-center">
@@ -343,7 +346,7 @@ export default function FacultySection() {
 
           <motion.div 
             variants={fadeInUp}
-            className="absolute bottom-8 left-[-12px] bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-3 flex items-center gap-3 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 hidden lg:flex"
+            className="absolute bottom-8 left-[-12px] bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(47,86,251,0.2)] p-3 flex items-center gap-3 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 hidden lg:flex"
             transition={{ delay: 0.5 }}
           >
             <div className="w-9 h-9 rounded-lg bg-[#dce3f5] flex items-center justify-center">
@@ -354,10 +357,10 @@ export default function FacultySection() {
             </strong>
           </motion.div>
 
-          {/* Mobile Badges - 2 badges */}
+          {/* Mobile Badges - 2 badges - Updated shadows to blue */}
           <motion.div 
             variants={fadeInUp}
-            className="absolute top-3 left-2 bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-2.5 flex items-center gap-2 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 lg:hidden"
+            className="absolute top-3 left-2 bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(47,86,251,0.2)] p-2.5 flex items-center gap-2 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 lg:hidden"
             transition={{ delay: 0.3 }}
           >
             <div className="w-7 h-7 rounded-lg bg-[#2f56fb]/10 flex items-center justify-center flex-shrink-0">
@@ -370,7 +373,7 @@ export default function FacultySection() {
 
           <motion.div 
             variants={fadeInUp}
-            className="absolute bottom-3 right-2 bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-2.5 flex items-center gap-2 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 lg:hidden"
+            className="absolute bottom-3 right-2 bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(47,86,251,0.2)] p-2.5 flex items-center gap-2 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 lg:hidden"
             transition={{ delay: 0.4 }}
           >
             <div className="w-7 h-7 rounded-lg bg-[#dce3f5] flex items-center justify-center flex-shrink-0">
