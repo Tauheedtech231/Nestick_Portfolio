@@ -15,9 +15,14 @@ import Link from 'next/link';
 type ColorKey = 'blue' | 'green' | 'teal';
 
 interface Program {
+  id: number;
   name: string;
   full: string;
   duration: string;
+  level: string;
+  image?: string;
+  description?: string;
+  eligibility?: string;
 }
 
 interface LevelData {
@@ -28,8 +33,12 @@ interface LevelData {
   programs: Program[];
 }
 
+interface ProgramsData {
+  levels: LevelData[];
+}
+
 /* ------------------------------------------------------------------ */
-/*  Static data - COLLEGE LEVEL PROGRAMS                              */
+/*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
 const CAT_META: Record<ColorKey, { color: string; bg: string }> = {
@@ -55,98 +64,6 @@ const SHORT_DESCRIPTIONS = [
   'Business and commerce foundation.',
 ];
 
-// COLLEGE LEVEL PROGRAMS WITH SUBJECTS
-const LEVELS: LevelData[] = [
-  {
-    id: 'fsc-medical',
-    color: 'blue',
-    label: 'FSc Pre-Medical',
-    countLabel: '06 Subjects',
-    programs: [
-      { name: 'Biology', full: 'Biology (Botany & Zoology)', duration: '2 Years' },
-      { name: 'Chemistry', full: 'Chemistry (Organic & Inorganic)', duration: '2 Years' },
-      { name: 'Physics', full: 'Physics (Mechanics & Electromagnetism)', duration: '2 Years' },
-      { name: 'English', full: 'English Language & Literature', duration: '2 Years' },
-      { name: 'Urdu', full: 'Urdu Language & Literature', duration: '2 Years' },
-      { name: 'Pak Studies', full: 'Pakistan Studies', duration: '2 Years' },
-    ],
-  },
-  {
-    id: 'fsc-engineering',
-    color: 'green',
-    label: 'FSc Pre-Engineering',
-    countLabel: '06 Subjects',
-    programs: [
-      { name: 'Mathematics', full: 'Mathematics (Algebra & Calculus)', duration: '2 Years' },
-      { name: 'Physics', full: 'Physics (Mechanics & Electromagnetism)', duration: '2 Years' },
-      { name: 'Chemistry', full: 'Chemistry (Organic & Inorganic)', duration: '2 Years' },
-      { name: 'English', full: 'English Language & Literature', duration: '2 Years' },
-      { name: 'Urdu', full: 'Urdu Language & Literature', duration: '2 Years' },
-      { name: 'Pak Studies', full: 'Pakistan Studies', duration: '2 Years' },
-    ],
-  },
-  {
-    id: 'fsc-general',
-    color: 'teal',
-    label: 'FSc General Science',
-    countLabel: '06 Subjects',
-    programs: [
-      { name: 'Biology', full: 'Biology (Botany & Zoology)', duration: '2 Years' },
-      { name: 'Chemistry', full: 'Chemistry (Organic & Inorganic)', duration: '2 Years' },
-      { name: 'Mathematics', full: 'Mathematics (Algebra & Calculus)', duration: '2 Years' },
-      { name: 'English', full: 'English Language & Literature', duration: '2 Years' },
-      { name: 'Urdu', full: 'Urdu Language & Literature', duration: '2 Years' },
-      { name: 'Pak Studies', full: 'Pakistan Studies', duration: '2 Years' },
-    ],
-  },
-  {
-    id: 'fa-arts',
-    color: 'blue',
-    label: 'FA Arts',
-    countLabel: '06 Subjects',
-    programs: [
-      { name: 'Urdu', full: 'Urdu Language & Literature', duration: '2 Years' },
-      { name: 'English', full: 'English Language & Literature', duration: '2 Years' },
-      { name: 'History', full: 'History of Pakistan & World', duration: '2 Years' },
-      { name: 'Political Science', full: 'Political Science & Governance', duration: '2 Years' },
-      { name: 'Sociology', full: 'Sociology & Social Studies', duration: '2 Years' },
-      { name: 'Pak Studies', full: 'Pakistan Studies', duration: '2 Years' },
-    ],
-  },
-  {
-    id: 'ics',
-    color: 'green',
-    label: 'ICS (Computer Science)',
-    countLabel: '06 Subjects',
-    programs: [
-      { name: 'Computer Science', full: 'Computer Science & Programming', duration: '2 Years' },
-      { name: 'Mathematics', full: 'Mathematics (Algebra & Calculus)', duration: '2 Years' },
-      { name: 'Physics', full: 'Physics (Mechanics & Electromagnetism)', duration: '2 Years' },
-      { name: 'English', full: 'English Language & Literature', duration: '2 Years' },
-      { name: 'Urdu', full: 'Urdu Language & Literature', duration: '2 Years' },
-      { name: 'Pak Studies', full: 'Pakistan Studies', duration: '2 Years' },
-    ],
-  },
-  {
-    id: 'icom',
-    color: 'teal',
-    label: 'I.Com',
-    countLabel: '06 Subjects',
-    programs: [
-      { name: 'Accounting', full: 'Accounting & Financial Reporting', duration: '2 Years' },
-      { name: 'Business Math', full: 'Business Mathematics & Statistics', duration: '2 Years' },
-      { name: 'Economics', full: 'Economics & Development', duration: '2 Years' },
-      { name: 'Business Studies', full: 'Business Studies & Management', duration: '2 Years' },
-      { name: 'English', full: 'English Language & Literature', duration: '2 Years' },
-      { name: 'Pak Studies', full: 'Pakistan Studies', duration: '2 Years' },
-    ],
-  },
-];
-
-/* ------------------------------------------------------------------ */
-/*  Helpers                                                            */
-/* ------------------------------------------------------------------ */
-
 function hashStr(s: string): number {
   let h = 0;
   for (let i = 0; i < s.length; i++) {
@@ -164,11 +81,13 @@ function programKey(levelId: string, idx: number) {
 /* ------------------------------------------------------------------ */
 
 export default function ProgramList() {
-  const [activeLevel, setActiveLevel] = useState<string>('fsc-medical');
+  const [activeLevel, setActiveLevel] = useState<string>('');
   const [openDetails, setOpenDetails] = useState<Record<string, boolean>>({});
   const [detailGen, setDetailGen] = useState<Record<string, number>>({});
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filterLevel, setFilterLevel] = useState<string>('all');
+  const [levels, setLevels] = useState<LevelData[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const canvasRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -176,8 +95,121 @@ export default function ProgramList() {
   const nodeRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const redrawTimer = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // ✅ Session storage key
+  const SESSION_KEY = 'programs_list_8';
+
+  // ✅ Fetch data from API with session storage caching
+  useEffect(() => {
+    // ✅ Check session storage first (only in browser)
+    if (typeof window !== 'undefined') {
+      const cachedData = sessionStorage.getItem(SESSION_KEY);
+      
+      if (cachedData) {
+        try {
+          console.log('📦 [ProgramsList] Loading from session storage (instant)');
+          const parsedData = JSON.parse(cachedData);
+          setLevels(parsedData);
+          if (parsedData.length > 0) {
+            setActiveLevel(parsedData[0].id);
+          }
+          setLoading(false);
+          return;
+        } catch (e) {
+          console.error('Error parsing cached data:', e);
+        }
+      }
+    }
+
+    async function fetchData() {
+      try {
+        console.log('🔄 [ProgramsList] Fetching data...');
+        const response = await fetch(`https://dynamic-section-api.vercel.app/api/public/sections?college_id=8&section_name=Programs`);
+        const result = await response.json();
+        console.log('📦 [ProgramsList] API Response:', result);
+
+        let fetchedLevels;
+        if (result.success && result.content && result.content.levels) {
+          fetchedLevels = result.content.levels;
+          if (fetchedLevels.length > 0) {
+            setActiveLevel(fetchedLevels[0].id);
+          }
+          console.log('✅ [ProgramsList] Data loaded, levels:', fetchedLevels.length);
+        } else {
+          console.log('⚠️ [ProgramsList] No data, using fallback');
+          fetchedLevels = getDefaultLevels();
+          if (fetchedLevels.length > 0) {
+            setActiveLevel(fetchedLevels[0].id);
+          }
+        }
+
+        // ✅ Save to session storage (only in browser)
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedLevels));
+        }
+        setLevels(fetchedLevels);
+      } catch (error) {
+        console.error('❌ [ProgramsList] Error:', error);
+        const fallbackLevels = getDefaultLevels();
+        setLevels(fallbackLevels);
+        if (fallbackLevels.length > 0) {
+          setActiveLevel(fallbackLevels[0].id);
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  // ✅ Default levels (fallback)
+  const getDefaultLevels = (): LevelData[] => [
+    {
+      id: 'fsc-medical',
+      color: 'blue',
+      label: 'FSc Pre-Medical',
+      countLabel: '06 Subjects',
+      programs: [
+        { id: 1, name: 'Biology', full: 'Biology (Botany & Zoology)', duration: '2 Years', level: 'fsc-medical' },
+        { id: 2, name: 'Chemistry', full: 'Chemistry (Organic & Inorganic)', duration: '2 Years', level: 'fsc-medical' },
+        { id: 3, name: 'Physics', full: 'Physics (Mechanics & Electromagnetism)', duration: '2 Years', level: 'fsc-medical' },
+        { id: 4, name: 'English', full: 'English Language & Literature', duration: '2 Years', level: 'fsc-medical' },
+        { id: 5, name: 'Urdu', full: 'Urdu Language & Literature', duration: '2 Years', level: 'fsc-medical' },
+        { id: 6, name: 'Pak Studies', full: 'Pakistan Studies', duration: '2 Years', level: 'fsc-medical' },
+      ],
+    },
+    {
+      id: 'fsc-engineering',
+      color: 'green',
+      label: 'FSc Pre-Engineering',
+      countLabel: '06 Subjects',
+      programs: [
+        { id: 7, name: 'Mathematics', full: 'Mathematics (Algebra & Calculus)', duration: '2 Years', level: 'fsc-engineering' },
+        { id: 8, name: 'Physics', full: 'Physics (Mechanics & Electromagnetism)', duration: '2 Years', level: 'fsc-engineering' },
+        { id: 9, name: 'Chemistry', full: 'Chemistry (Organic & Inorganic)', duration: '2 Years', level: 'fsc-engineering' },
+        { id: 10, name: 'English', full: 'English Language & Literature', duration: '2 Years', level: 'fsc-engineering' },
+        { id: 11, name: 'Urdu', full: 'Urdu Language & Literature', duration: '2 Years', level: 'fsc-engineering' },
+        { id: 12, name: 'Pak Studies', full: 'Pakistan Studies', duration: '2 Years', level: 'fsc-engineering' },
+      ],
+    },
+    {
+      id: 'fsc-general',
+      color: 'teal',
+      label: 'FSc General Science',
+      countLabel: '06 Subjects',
+      programs: [
+        { id: 13, name: 'Biology', full: 'Biology (Botany & Zoology)', duration: '2 Years', level: 'fsc-general' },
+        { id: 14, name: 'Chemistry', full: 'Chemistry (Organic & Inorganic)', duration: '2 Years', level: 'fsc-general' },
+        { id: 15, name: 'Mathematics', full: 'Mathematics (Algebra & Calculus)', duration: '2 Years', level: 'fsc-general' },
+        { id: 16, name: 'English', full: 'English Language & Literature', duration: '2 Years', level: 'fsc-general' },
+        { id: 17, name: 'Urdu', full: 'Urdu Language & Literature', duration: '2 Years', level: 'fsc-general' },
+        { id: 18, name: 'Pak Studies', full: 'Pakistan Studies', duration: '2 Years', level: 'fsc-general' },
+      ],
+    },
+  ];
+
   // Get all programs for search/filter
-  const allPrograms = LEVELS.flatMap(lvl => 
+  const allPrograms = levels.flatMap(lvl => 
     lvl.programs.map(p => ({ ...p, levelId: lvl.id, levelLabel: lvl.label, color: lvl.color }))
   );
 
@@ -190,7 +222,7 @@ export default function ProgramList() {
   });
 
   // Get unique level IDs for filter
-  const levelOptions = LEVELS.map(lvl => ({ id: lvl.id, label: lvl.label }));
+  const levelOptions = levels.map(lvl => ({ id: lvl.id, label: lvl.label }));
 
   /* ---------------- connector line drawing ---------------- */
 
@@ -211,7 +243,7 @@ export default function ProgramList() {
 
     const spineX = rootX + 34;
 
-    const points = LEVELS.map((lvl) => {
+    const points = levels.map((lvl) => {
       const el = nodeRefs.current[lvl.id];
       const r = el
         ? el.getBoundingClientRect()
@@ -219,7 +251,7 @@ export default function ProgramList() {
       return {
         id: lvl.id,
         active: activeLevel === lvl.id,
-        color: CAT_META[lvl.color].color,
+        color: CAT_META[lvl.color]?.color || '#2f56fb',
         x: r.left - cRect.left,
         y: r.top + r.height / 2 - cRect.top,
       };
@@ -293,7 +325,7 @@ export default function ProgramList() {
       dot.setAttribute('opacity', p.active ? '1' : '0.6');
       svg.appendChild(dot);
     });
-  }, [activeLevel]);
+  }, [activeLevel, levels]);
 
   const runRedrawLoop = useCallback(() => {
     if (redrawTimer.current) clearInterval(redrawTimer.current);
@@ -315,13 +347,11 @@ export default function ProgramList() {
       window.removeEventListener('resize', drawLines);
       if (redrawTimer.current) clearInterval(redrawTimer.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [drawLines]);
 
   useEffect(() => {
     runRedrawLoop();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeLevel]);
+  }, [activeLevel, runRedrawLoop]);
 
   /* ---------------- interaction handlers ---------------- */
 
@@ -346,7 +376,7 @@ export default function ProgramList() {
   /* ---------------- detail content ---------------- */
 
   function renderDetailContent(program: Program, color: ColorKey, gen: number) {
-    const meta = CAT_META[color];
+    const meta = CAT_META[color] || CAT_META.blue;
     const seed = hashStr(program.name + program.full);
     const eligibility = ELIGIBILITY[seed % ELIGIBILITY.length];
     const desc = SHORT_DESCRIPTIONS[seed % SHORT_DESCRIPTIONS.length];
@@ -373,6 +403,15 @@ export default function ProgramList() {
             </Link>
           </div>
         </div>
+      </div>
+    );
+  }
+
+  // ✅ Show loading only on first visit (no cache)
+  if (loading && typeof window !== 'undefined' && !sessionStorage.getItem(SESSION_KEY)) {
+    return (
+      <div className="pl-root min-h-[400px] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500"></div>
       </div>
     );
   }
@@ -434,17 +473,15 @@ export default function ProgramList() {
           <div className="root-inner">
             <div className="cap">🎓</div>
             <div className="label">College Programs</div>
-            <div className="count">06</div>
+            <div className="count">{levels.length}</div>
           </div>
         </div>
 
         <div className="rows">
-          {LEVELS.map((lvl) => {
+          {levels.map((lvl) => {
             const isActive = activeLevel === lvl.id;
-            // Check if any program in this level matches search
             const hasMatchingPrograms = filteredPrograms.some(p => p.levelId === lvl.id);
             
-            // If search is active and no matches in this level, hide the level
             if (searchTerm && !hasMatchingPrograms) {
               return null;
             }
@@ -481,11 +518,9 @@ export default function ProgramList() {
                         </thead>
                         <tbody>
                           {lvl.programs.map((program, idx) => {
-                            // Check if this program matches search
                             const matchesSearch = program.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                                                   program.full.toLowerCase().includes(searchTerm.toLowerCase());
                             
-                            // If search is active and program doesn't match, hide it
                             if (searchTerm && !matchesSearch) {
                               return null;
                             }
@@ -544,7 +579,7 @@ export default function ProgramList() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  CSS - Same as before with 3 colors                                */
+/*  CSS - Same as before                                               */
 /* ------------------------------------------------------------------ */
 
 const CSS = `
@@ -648,6 +683,36 @@ const CSS = `
   font-size:13px;
   color:var(--sub);
 }
+
+/* CTA */
+.cta-wrapper{
+  max-width:1180px;
+  margin:30px auto 10px;
+  text-align:center;
+  padding:0 20px;
+}
+.cta-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:14px 40px;
+  border-radius:999px;
+  border:none;
+  font-family:'Inter',sans-serif;
+  font-size:16px;
+  font-weight:600;
+  color:#fff;
+  cursor:pointer;
+  background:linear-gradient(135deg, #2f56fb, #1530b0);
+  box-shadow:0 12px 28px -8px rgba(47,86,251,0.5);
+  transition:all .3s ease;
+}
+.cta-btn:hover{
+  transform:scale(1.02);
+  box-shadow:0 20px 40px -12px rgba(47,86,251,0.7);
+}
+
+.pl-root .header{text-align:center;margin-bottom:20px;}
 
 .pl-root .canvas{position:relative;max-width:1180px;margin:0 auto;}
 .pl-root svg.connectors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}

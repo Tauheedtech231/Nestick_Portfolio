@@ -1,15 +1,105 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+
+interface VisionMissionData {
+  vision: string;
+  mission: string;
+  guidingTitle: string;
+  guidingSubtitle: string;
+}
 
 export default function VisionMissionSection() {
+  const [data, setData] = useState<VisionMissionData>({
+    vision: 'To be a globally recognized institution that empowers students to become innovative leaders, critical thinkers, and responsible citizens who drive positive change in an interconnected world.',
+    mission: 'To provide transformative education through innovative curricula, world-class faculty, and state-of-the-art facilities that foster intellectual growth, ethical values, and lifelong learning skills essential for success in the 21st century.',
+    guidingTitle: 'Our Guiding',
+    guidingSubtitle: 'Principles'
+  });
+  const [loading, setLoading] = useState(true);
+
+  // ✅ Session storage key
+  const SESSION_KEY = 'vision_mission_8';
+
+  // ✅ Fetch data with session storage caching
+  useEffect(() => {
+    // ✅ Check session storage first
+    const cachedData = sessionStorage.getItem(SESSION_KEY);
+    
+    if (cachedData) {
+      try {
+        console.log('📦 [VisionMission] Loading from session storage (instant)');
+        const parsedData = JSON.parse(cachedData);
+        setData(parsedData);
+        setLoading(false);
+        return;
+      } catch (e) {
+        console.error('Error parsing cached data:', e);
+      }
+    }
+
+    async function fetchData() {
+      try {
+        console.log('🔄 [VisionMission] Fetching data...');
+        const response = await fetch(`https://dynamic-section-api.vercel.app/api/public/sections?college_id=8&section_name=About`);
+        const result = await response.json();
+        console.log('📦 [VisionMission] API Response:', result);
+
+        let fetchedData;
+        if (result.success && result.content) {
+          fetchedData = {
+            vision: result.content.vision || 'To be a globally recognized institution that empowers students to become innovative leaders, critical thinkers, and responsible citizens who drive positive change in an interconnected world.',
+            mission: result.content.mission || 'To provide transformative education through innovative curricula, world-class faculty, and state-of-the-art facilities that foster intellectual growth, ethical values, and lifelong learning skills essential for success in the 21st century.',
+            guidingTitle: result.content.guidingTitle || 'Our Guiding',
+            guidingSubtitle: result.content.guidingSubtitle || 'Principles'
+          };
+          console.log('✅ [VisionMission] Data loaded');
+        } else {
+          console.log('⚠️ [VisionMission] No data, using default');
+          fetchedData = {
+            vision: 'To be a globally recognized institution that empowers students to become innovative leaders, critical thinkers, and responsible citizens who drive positive change in an interconnected world.',
+            mission: 'To provide transformative education through innovative curricula, world-class faculty, and state-of-the-art facilities that foster intellectual growth, ethical values, and lifelong learning skills essential for success in the 21st century.',
+            guidingTitle: 'Our Guiding',
+            guidingSubtitle: 'Principles'
+          };
+        }
+
+        // ✅ Save to session storage
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        setData(fetchedData);
+      } catch (error) {
+        console.error('❌ [VisionMission] Error:', error);
+        // ✅ Don't cache on error
+        setData({
+          vision: 'To be a globally recognized institution that empowers students to become innovative leaders, critical thinkers, and responsible citizens who drive positive change in an interconnected world.',
+          mission: 'To provide transformative education through innovative curricula, world-class faculty, and state-of-the-art facilities that foster intellectual growth, ethical values, and lifelong learning skills essential for success in the 21st century.',
+          guidingTitle: 'Our Guiding',
+          guidingSubtitle: 'Principles'
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  // ✅ Show loading only on first visit (no cache)
+  if (loading && !sessionStorage.getItem(SESSION_KEY)) {
+    return (
+      <section className="relative overflow-hidden bg-white px-5 py-3 text-center min-h-[400px] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500"></div>
+      </section>
+    );
+  }
+
   return (
     <section className="relative overflow-hidden bg-white px-5 py-3 text-center">
       <style>{`
         @media (max-width: 900px) {
           .vm-stage { flex-direction: column; gap: 0; }
 
-          /* Hide the desktop SVG blob + its text, we show a CSS blob instead */
           .blob-svg-desktop,
           .blob-content-desktop,
           .vm-blob-left .dots,
@@ -143,7 +233,6 @@ export default function VisionMissionSection() {
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="vm-blob-left relative z-[1] w-[380px] flex-shrink-0 -mr-10 cursor-pointer hover:scale-[1.02] transition-transform duration-300"
         >
-          {/* Desktop SVG shape */}
           <svg
             className="blob-svg-desktop block w-full h-[480px]"
             viewBox="0 0 480 620"
@@ -157,16 +246,7 @@ export default function VisionMissionSection() {
             </defs>
             <path
               fill="url(#gGreen)"
-              d="M90,55
-                 C50,55 38,90 38,130
-                 L38,480
-                 C38,555 75,575 130,575
-                 L255,575
-                 C298,575 328,558 358,522
-                 L432,300
-                 L358,90
-                 C328,55 298,58 255,58
-                 Z"
+              d="M90,55 C50,55 38,90 38,130 L38,480 C38,555 75,575 130,575 L255,575 C298,575 328,558 358,522 L432,300 L358,90 C328,55 298,58 255,58 Z"
             />
           </svg>
 
@@ -181,9 +261,7 @@ export default function VisionMissionSection() {
             </div>
             <h2 className="title mb-3 text-[22px] font-extrabold">Our Vision</h2>
             <p className="description max-w-[230px] px-8 text-[13px] leading-[1.75] text-white/90">
-              To be a globally recognized institution that empowers students to become
-              innovative leaders, critical thinkers, and responsible citizens who drive
-              positive change in an interconnected world.
+              {data.vision}
             </p>
           </div>
 
@@ -193,7 +271,6 @@ export default function VisionMissionSection() {
             ))}
           </div>
 
-          {/* Mobile CSS blob shape (top card, tapers down towards center) */}
           <div className="blob-shape-mobile">
             <div className="mobile-icon-wrapper">
               <div className="flex h-[46px] w-[46px] items-center justify-center rounded-full bg-white">
@@ -205,8 +282,7 @@ export default function VisionMissionSection() {
             </div>
             <h2 className="mobile-title">Our Vision</h2>
             <p className="mobile-desc">
-              To be a globally recognized institution that empowers students to become
-              innovative leaders, critical thinkers, and responsible citizens.
+              {data.vision.length > 150 ? data.vision.substring(0, 150) + '...' : data.vision}
             </p>
           </div>
         </motion.div>
@@ -228,8 +304,8 @@ export default function VisionMissionSection() {
             <svg className="mb-2 h-[28px] w-[28px] text-[#2f56fb]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <path d="M4 21h16M5 21V10M19 21V10M3 10l9-6 9 6M7 10v4M12 10v4M17 10v4" />
             </svg>
-            <div className="center-text text-[15px] font-extrabold text-[#0a1240]">Our Guiding</div>
-            <div className="center-text text-[15px] font-extrabold text-[#2f56fb]">Principles</div>
+            <div className="center-text text-[15px] font-extrabold text-[#0a1240]">{data.guidingTitle}</div>
+            <div className="center-text text-[15px] font-extrabold text-[#2f56fb]">{data.guidingSubtitle}</div>
           </div>
         </motion.div>
 
@@ -254,16 +330,7 @@ export default function VisionMissionSection() {
             </defs>
             <path
               fill="url(#gBlue)"
-              d="M90,55
-                 C50,55 38,90 38,130
-                 L38,480
-                 C38,555 75,575 130,575
-                 L255,575
-                 C298,575 328,558 358,522
-                 L432,300
-                 L358,90
-                 C328,55 298,58 255,58
-                 Z"
+              d="M90,55 C50,55 38,90 38,130 L38,480 C38,555 75,575 130,575 L255,575 C298,575 328,558 358,522 L432,300 L358,90 C328,55 298,58 255,58 Z"
             />
           </svg>
 
@@ -277,10 +344,7 @@ export default function VisionMissionSection() {
             </div>
             <h2 className="title mb-3 text-[22px] font-extrabold">Our Mission</h2>
             <p className="description max-w-[230px] px-8 text-[13px] leading-[1.75] text-white/90">
-              To provide transformative education through innovative curricula, world-class
-              faculty, and state-of-the-art facilities that foster intellectual growth,
-              ethical values, and lifelong learning skills essential for success in the 21st
-              century.
+              {data.mission}
             </p>
           </div>
 
@@ -290,12 +354,10 @@ export default function VisionMissionSection() {
             ))}
           </div>
 
-          {/* Mobile CSS blob shape (bottom card, tapers up towards center) */}
           <div className="blob-shape-mobile">
             <h2 className="mobile-title">Our Mission</h2>
             <p className="mobile-desc mb-3">
-              To provide transformative education through innovative curricula, world-class
-              faculty, and state-of-the-art facilities.
+              {data.mission.length > 150 ? data.mission.substring(0, 150) + '...' : data.mission}
             </p>
             <div className="mobile-icon-wrapper" style={{ marginBottom: 0, marginTop: 4 }}>
               <div className="flex h-[46px] w-[46px] items-center justify-center rounded-full bg-white">

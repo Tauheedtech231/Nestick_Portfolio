@@ -14,386 +14,218 @@ interface Scholarship {
   eligibility: string;
   amount: string;
   description: string;
-  type: 'merit' | 'need' | 'merit_cum_need' | 'fully_funded' | 'partial' | 'tuition_waiver' | 'sports' | 'hafiz' | 'minority' | 'disability' | 'orphan' | 'kinship' | 'alumni' | 'sibling' | 'employee' | 'research' | 'international' | 'exchange' | 'endowment' | 'talent';
+  type: string;
   provider?: string;
   deadline?: string;
   applyLink?: string;
 }
 
-const ScholarshipsPage = () => {
+interface ScholarshipsPageData {
+  heroTitle: string;
+  heroSubtitle: string;
+  heroImage: string;
+  scholarships: Scholarship[];
+}
+
+const getTypeColor = (type: string) => {
+  const colors: Record<string, string> = {
+    merit: 'bg-blue-100 text-blue-800',
+    need: 'bg-green-100 text-green-800',
+    merit_cum_need: 'bg-teal-100 text-teal-800',
+    fully_funded: 'bg-emerald-100 text-emerald-800',
+    partial: 'bg-yellow-100 text-yellow-800',
+    tuition_waiver: 'bg-indigo-100 text-indigo-800',
+    sports: 'bg-purple-100 text-purple-800',
+    hafiz: 'bg-amber-100 text-amber-800',
+    minority: 'bg-rose-100 text-rose-800',
+    disability: 'bg-cyan-100 text-cyan-800',
+    orphan: 'bg-orange-100 text-orange-800',
+    kinship: 'bg-pink-100 text-pink-800',
+    alumni: 'bg-violet-100 text-violet-800',
+    sibling: 'bg-fuchsia-100 text-fuchsia-800',
+    employee: 'bg-slate-100 text-slate-800',
+    research: 'bg-sky-100 text-sky-800',
+    international: 'bg-lime-100 text-lime-800',
+    exchange: 'bg-cyan-100 text-cyan-800',
+    endowment: 'bg-amber-100 text-amber-800',
+    talent: 'bg-purple-100 text-purple-800',
+  };
+  return colors[type] || 'bg-gray-100 text-gray-800';
+};
+
+const getTypeLabel = (type: string) => {
+  const labels: Record<string, string> = {
+    merit: 'Merit Based',
+    need: 'Need Based',
+    merit_cum_need: 'Merit-cum-Need',
+    fully_funded: 'Fully Funded',
+    partial: 'Partial',
+    tuition_waiver: 'Tuition Waiver',
+    sports: 'Sports',
+    hafiz: 'Hafiz-e-Quran',
+    minority: 'Minority',
+    disability: 'Disability',
+    orphan: 'Orphan',
+    kinship: 'Kinship',
+    alumni: 'Alumni',
+    sibling: 'Sibling',
+    employee: 'Employee',
+    research: 'Research',
+    international: 'International',
+    exchange: 'Exchange',
+    endowment: 'Endowment',
+    talent: 'Talent',
+  };
+  return labels[type] || type.charAt(0).toUpperCase() + type.slice(1);
+};
+
+const filterOptions = [
+  { value: 'all', label: 'All Scholarships' },
+  { value: 'merit', label: 'Merit Based' },
+  { value: 'need', label: 'Need Based' },
+  { value: 'merit_cum_need', label: 'Merit-cum-Need' },
+  { value: 'fully_funded', label: 'Fully Funded' },
+  { value: 'partial', label: 'Partial' },
+  { value: 'tuition_waiver', label: 'Tuition Waiver' },
+  { value: 'sports', label: 'Sports' },
+  { value: 'hafiz', label: 'Hafiz-e-Quran' },
+  { value: 'minority', label: 'Minority' },
+  { value: 'disability', label: 'Disability' },
+  { value: 'orphan', label: 'Orphan' },
+  { value: 'kinship', label: 'Kinship' },
+  { value: 'alumni', label: 'Alumni' },
+  { value: 'sibling', label: 'Sibling' },
+  { value: 'employee', label: 'Employee' },
+  { value: 'research', label: 'Research' },
+  { value: 'international', label: 'International' },
+  { value: 'exchange', label: 'Exchange' },
+  { value: 'endowment', label: 'Endowment' },
+  { value: 'talent', label: 'Talent' },
+];
+
+const getDefaultScholarships = (): Scholarship[] => [
+  {
+    id: 1,
+    name: "Merit Excellence Scholarship",
+    program: "All Programs",
+    eligibility: "95%+ marks in Matriculation with outstanding academic record",
+    amount: "100% Tuition Fee",
+    description: "A top scholarship for students with high academic performance.",
+    type: "merit",
+    provider: "Nestick College",
+    deadline: "January 15, 2025"
+  },
+  {
+    id: 2,
+    name: "Financial Need Scholarship",
+    program: "All Programs",
+    eligibility: "Family income below ₹500,000 annually",
+    amount: "25-75% Tuition Fee",
+    description: "A need-based scholarship for financially deserving students.",
+    type: "need",
+    provider: "Nestick College",
+    deadline: "January 15, 2025"
+  },
+  {
+    id: 3,
+    name: "Sports Achievement Scholarship",
+    program: "All Programs",
+    eligibility: "District/Provincial level sports recognition",
+    amount: "50-100% Tuition Fee",
+    description: "For students with outstanding sports achievements.",
+    type: "sports",
+    provider: "Nestick College",
+    deadline: "January 15, 2025"
+  }
+];
+
+export default function ScholarshipsPage() {
   const heroRef = useRef<HTMLElement | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState<string>('all');
   const [selectedScholarship, setSelectedScholarship] = useState<Scholarship | null>(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [data, setData] = useState<ScholarshipsPageData>({
+    heroTitle: 'Scholarships & Financial Aid',
+    heroSubtitle: 'Explore available scholarships and financial support opportunities for your education',
+    heroImage: '',
+    scholarships: getDefaultScholarships()
+  });
+  const [loading, setLoading] = useState(true);
 
-  // All Scholarships with All Types
-  const allScholarships: Scholarship[] = [
-    // ====== Merit Based ======
-    {
-      id: 1,
-      name: "Merit Excellence Scholarship",
-      program: "All Programs",
-      eligibility: "95%+ marks in Matriculation with outstanding academic record and excellent performance in previous studies",
-      amount: "100% Tuition Fee",
-      description: "A top scholarship for students with high academic performance.",
-      type: "merit",
-      provider: "Aspire College",
-      deadline: "January 15, 2025"
-    },
-    {
-      id: 2,
-      name: "Science Talent Scholarship",
-      program: "FSc & ICS",
-      eligibility: "90%+ marks in Science subjects with strong background in Mathematics and Physics",
-      amount: "75% Tuition Fee",
-      description: "For students with outstanding performance in science and mathematics.",
-      type: "merit",
-      provider: "Aspire College",
-      deadline: "January 15, 2025"
-    },
-    {
-      id: 3,
-      name: "Arts & Humanities Scholarship",
-      program: "FA & ICom",
-      eligibility: "85%+ marks in Arts/Commerce subjects with excellent academic record",
-      amount: "50% Tuition Fee",
-      description: "Encouraging excellence in arts, humanities, and commerce education.",
-      type: "merit",
-      provider: "Aspire College",
-      deadline: "January 15, 2025"
-    },
+  // ✅ Session storage key
+  const SESSION_KEY = 'scholarships_page_8';
 
-    // ====== Need Based ======
-    {
-      id: 4,
-      name: "Financial Need Scholarship",
-      program: "All Programs",
-      eligibility: "Family income below ₹500,000 annually with valid income certificate and supporting documents",
-      amount: "25-75% Tuition Fee",
-      description: "A need-based scholarship for financially deserving students.",
-      type: "need",
-      provider: "Aspire College",
-      deadline: "January 15, 2025"
-    },
-    {
-      id: 5,
-      name: "HEC Need-Based Scholarship",
-      program: "All Programs (Public Sector)",
-      eligibility: "Family income below ₹1,000,000 annually with proof of income and domicile certificate",
-      amount: "Up to 100% Tuition",
-      description: "Higher Education Commission scholarship for deserving students across Pakistan.",
-      type: "need",
-      provider: "HEC Pakistan",
-      deadline: "June 30, 2025",
-      applyLink: "https://hec.gov.pk/scholarships"
-    },
-
-    // ====== Merit-cum-Need ======
-    {
-      id: 6,
-      name: "Merit-cum-Need Scholarship",
-      program: "All Programs",
-      eligibility: "70%+ marks & family income below ₹600,000 with both academic and financial documents",
-      amount: "50-100% Tuition Fee",
-      description: "This scholarship considers both merit and financial need.",
-      type: "merit_cum_need",
-      provider: "Aspire College",
-      deadline: "January 15, 2025"
-    },
-
-    // ====== Fully Funded ======
-    {
-      id: 7,
-      name: "Fully Funded Scholarship",
-      program: "All Programs",
-      eligibility: "95%+ marks & outstanding academic record with strong extracurricular activities and leadership skills",
-      amount: "100% Tuition + Stipend + Books",
-      description: "This covers tuition, stipend, and other expenses.",
-      type: "fully_funded",
-      provider: "HEC Pakistan",
-      deadline: "March 31, 2025",
-      applyLink: "https://hec.gov.pk/fully-funded"
-    },
-
-    // ====== Partial Scholarship ======
-    {
-      id: 8,
-      name: "Partial Merit Scholarship",
-      program: "All Programs",
-      eligibility: "80%+ marks with good academic standing and regular attendance",
-      amount: "30-50% Tuition Fee",
-      description: "A portion of the tuition fee is covered.",
-      type: "partial",
-      provider: "Aspire College",
-      deadline: "January 15, 2025"
-    },
-
-    // ====== Tuition Fee Waiver ======
-    {
-      id: 9,
-      name: "Tuition Fee Waiver",
-      program: "All Programs",
-      eligibility: "90%+ marks & financial need with complete documentation and interview",
-      amount: "100% Tuition Waiver",
-      description: "Full or partial waiver of the tuition fee.",
-      type: "tuition_waiver",
-      provider: "Aspire College",
-      deadline: "January 15, 2025"
-    },
-
-    // ====== Sports Scholarship ======
-    {
-      id: 10,
-      name: "Sports Achievement Scholarship",
-      program: "All Programs",
-      eligibility: "District/Provincial level sports recognition with certificates and medals",
-      amount: "50-100% Tuition Fee",
-      description: "For students with outstanding sports achievements.",
-      type: "sports",
-      provider: "Aspire College",
-      deadline: "January 15, 2025"
-    },
-
-    // ====== Hafiz-e-Quran ======
-    {
-      id: 11,
-      name: "Hafiz-e-Quran Scholarship",
-      program: "All Programs",
-      eligibility: "Complete Hifz-ul-Quran with certification from a recognized religious institution",
-      amount: "50% Tuition Fee",
-      description: "A special scholarship for Huffaz.",
-      type: "hafiz",
-      provider: "Aspire College",
-      deadline: "January 15, 2025"
-    },
-
-    // ====== Minority Scholarship ======
-    {
-      id: 12,
-      name: "Minority Scholarship",
-      program: "All Programs",
-      eligibility: "Religious minority students with valid minority certificate and supporting documents",
-      amount: "25-50% Tuition Fee",
-      description: "Government scholarship for religious minority students.",
-      type: "minority",
-      provider: "Government of Pakistan",
-      deadline: "December 31, 2025"
-    },
-
-    // ====== Disability Scholarship ======
-    {
-      id: 13,
-      name: "Disability Support Scholarship",
-      program: "All Programs",
-      eligibility: "Students with disabilities (40%+ disability) with valid medical certificate",
-      amount: "50-100% Tuition Fee",
-      description: "A special scholarship for students with disabilities.",
-      type: "disability",
-      provider: "Aspire College",
-      deadline: "January 15, 2025"
-    },
-
-    // ====== Orphan Scholarship ======
-    {
-      id: 14,
-      name: "Orphan Support Scholarship",
-      program: "All Programs",
-      eligibility: "Orphan students with valid death certificate of both parents and income certificate",
-      amount: "100% Tuition Fee + Stipend",
-      description: "Complete support for orphan students.",
-      type: "orphan",
-      provider: "Pakistan Bait-ul-Mal",
-      deadline: "December 31, 2025",
-      applyLink: "https://baitulmal.gov.pk"
-    },
-
-    // ====== Kinship Scholarship ======
-    {
-      id: 15,
-      name: "Kinship Scholarship",
-      program: "All Programs",
-      eligibility: "University employees or alumni family members with valid relationship proof",
-      amount: "25% Tuition Fee",
-      description: "For family members of university employees or alumni.",
-      type: "kinship",
-      provider: "Aspire College",
-      deadline: "January 15, 2025"
-    },
-
-    // ====== Alumni Scholarship ======
-    {
-      id: 16,
-      name: "Alumni Children Scholarship",
-      program: "All Programs",
-      eligibility: "Alumni or alumni children with valid alumni registration and documents",
-      amount: "20% Tuition Fee",
-      description: "A special discount for alumni or alumni children.",
-      type: "alumni",
-      provider: "Aspire College",
-      deadline: "January 15, 2025"
-    },
-
-    // ====== Sibling Scholarship ======
-    {
-      id: 17,
-      name: "Sibling Discount Scholarship",
-      program: "All Programs",
-      eligibility: "2 or more siblings enrolled in the same college with valid relationship proof",
-      amount: "15-25% Tuition Fee",
-      description: "For two or more siblings in the same university.",
-      type: "sibling",
-      provider: "Aspire College",
-      deadline: "January 15, 2025"
-    },
-
-    // ====== Employee Scholarship ======
-    {
-      id: 18,
-      name: "Employee Family Scholarship",
-      program: "All Programs",
-      eligibility: "University staff and their children with valid employee ID and documents",
-      amount: "50% Tuition Fee",
-      description: "A special scholarship for university staff.",
-      type: "employee",
-      provider: "Aspire College",
-      deadline: "January 15, 2025"
-    },
-
-    // ====== Research Scholarship ======
-    {
-      id: 19,
-      name: "Research Excellence Scholarship",
-      program: "MS, MPhil, PhD",
-      eligibility: "Research proposal & academic record with strong publication potential and references",
-      amount: "100% Tuition + Research Grant",
-      description: "HEC scholarship for MS, MPhil, and PhD researchers.",
-      type: "research",
-      provider: "HEC Pakistan",
-      deadline: "May 31, 2025",
-      applyLink: "https://hec.gov.pk/research"
-    },
-
-    // ====== International Scholarship ======
-    {
-      id: 20,
-      name: "International Study Scholarship",
-      program: "All Programs",
-      eligibility: "Outstanding academic record & IELTS/TOEFL score with strong profile and recommendations",
-      amount: "Full Tuition + Living Expenses",
-      description: "International scholarship for overseas study.",
-      type: "international",
-      provider: "HEC Pakistan",
-      deadline: "February 28, 2025",
-      applyLink: "https://hec.gov.pk/international"
-    },
-
-    // ====== Exchange Scholarship ======
-    {
-      id: 21,
-      name: "Student Exchange Scholarship",
-      program: "All Programs",
-      eligibility: "Academic excellence & language proficiency with strong intercultural skills",
-      amount: "Tuition + Travel + Living",
-      description: "Scholarship for student exchange programs.",
-      type: "exchange",
-      provider: "Aspire College",
-      deadline: "April 30, 2025"
-    },
-
-    // ====== Endowment Scholarship ======
-    {
-      id: 22,
-      name: "Endowment Scholarship",
-      program: "All Programs",
-      eligibility: "Academic excellence & financial need with complete documentation",
-      amount: "Varies (50-100%)",
-      description: "Scholarship funded by donors or trusts.",
-      type: "endowment",
-      provider: "Aspire College Endowment",
-      deadline: "January 15, 2025"
-    },
-
-    // ====== Talent Scholarship ======
-    {
-      id: 23,
-      name: "Talent Scholarship",
-      program: "All Programs",
-      eligibility: "Academic, arts or leadership talent with proven achievements and recommendations",
-      amount: "50% Tuition Fee",
-      description: "For students with academic, arts, or leadership talent.",
-      type: "talent",
-      provider: "Aspire College",
-      deadline: "January 15, 2025"
-    },
-
-    // ====== Government/External ======
-    {
-      id: 24,
-      name: "PEEF Scholarship",
-      program: "All Programs (Punjab)",
-      eligibility: "Punjab domicile, family income below ₹800,000 with complete documentation",
-      amount: "Full Tuition + Stipend",
-      description: "Punjab Educational Endowment Fund for deserving students.",
-      type: "need",
-      provider: "PEEF Pakistan",
-      deadline: "August 15, 2025",
-      applyLink: "https://peef.org.pk"
-    },
-    {
-      id: 25,
-      name: "Benazir Income Support Program (BISP)",
-      program: "All Programs",
-      eligibility: "BISP registered families, income below ₹500,000 with valid registration",
-      amount: "Quarterly Stipend",
-      description: "Government program for BISP registered families.",
-      type: "need",
-      provider: "Government of Pakistan",
-      deadline: "Open - Apply Anytime",
-      applyLink: "https://bisp.gov.pk"
-    },
-    {
-      id: 26,
-      name: "Coca-Cola Pakistan Scholarship",
-      program: "All Programs",
-      eligibility: "Academic excellence & financial need with strong leadership potential",
-      amount: "Varies (50-100%)",
-      description: "Corporate scholarship for talented students.",
-      type: "merit",
-      provider: "Coca-Cola Pakistan",
-      deadline: "March 31, 2025",
-      applyLink: "https://coca-colascholarship.pk"
+  // ✅ Fetch data from API with session storage caching
+  useEffect(() => {
+    // ✅ Check session storage first (only in browser)
+    if (typeof window !== 'undefined') {
+      const cachedData = sessionStorage.getItem(SESSION_KEY);
+      
+      if (cachedData) {
+        try {
+          console.log('📦 [ScholarshipsPage] Loading from session storage (instant)');
+          const parsedData = JSON.parse(cachedData);
+          setData(parsedData);
+          setLoading(false);
+          return;
+        } catch (e) {
+          console.error('Error parsing cached data:', e);
+        }
+      }
     }
-  ];
 
-  // Filter options
-  const filterOptions = [
-    { value: 'all', label: 'All Scholarships' },
-    { value: 'merit', label: 'Merit Based' },
-    { value: 'need', label: 'Need Based' },
-    { value: 'merit_cum_need', label: 'Merit-cum-Need' },
-    { value: 'fully_funded', label: 'Fully Funded' },
-    { value: 'partial', label: 'Partial' },
-    { value: 'tuition_waiver', label: 'Tuition Waiver' },
-    { value: 'sports', label: 'Sports' },
-    { value: 'hafiz', label: 'Hafiz-e-Quran' },
-    { value: 'minority', label: 'Minority' },
-    { value: 'disability', label: 'Disability' },
-    { value: 'orphan', label: 'Orphan' },
-    { value: 'kinship', label: 'Kinship' },
-    { value: 'alumni', label: 'Alumni' },
-    { value: 'sibling', label: 'Sibling' },
-    { value: 'employee', label: 'Employee' },
-    { value: 'research', label: 'Research' },
-    { value: 'international', label: 'International' },
-    { value: 'exchange', label: 'Exchange' },
-    { value: 'endowment', label: 'Endowment' },
-    { value: 'talent', label: 'Talent' },
-  ];
+    async function fetchData() {
+      try {
+        console.log('🔄 [ScholarshipsPage] Fetching data...');
+        const response = await fetch(`https://dynamic-section-api.vercel.app/api/public/sections?college_id=8&section_name=Scholarships`);
+        const result = await response.json();
+        console.log('📦 [ScholarshipsPage] API Response:', result);
+
+        let fetchedData;
+        if (result.success && result.content) {
+          const content = result.content;
+          fetchedData = {
+            heroTitle: content.heroTitle || 'Scholarships & Financial Aid',
+            heroSubtitle: content.heroSubtitle || 'Explore available scholarships and financial support opportunities for your education',
+            heroImage: content.heroImage || '',
+            scholarships: content.scholarships || getDefaultScholarships()
+          };
+          console.log('✅ [ScholarshipsPage] Data loaded, scholarships:', content.scholarships?.length);
+        } else {
+          console.log('⚠️ [ScholarshipsPage] No data, using default');
+          fetchedData = {
+            heroTitle: 'Scholarships & Financial Aid',
+            heroSubtitle: 'Explore available scholarships and financial support opportunities for your education',
+            heroImage: '',
+            scholarships: getDefaultScholarships()
+          };
+        }
+
+        // ✅ Save to session storage (only in browser)
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        }
+        setData(fetchedData);
+      } catch (error) {
+        console.error('❌ [ScholarshipsPage] Error:', error);
+        setData({
+          heroTitle: 'Scholarships & Financial Aid',
+          heroSubtitle: 'Explore available scholarships and financial support opportunities for your education',
+          heroImage: '',
+          scholarships: getDefaultScholarships()
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   // Filter scholarships based on search and type
   const filterScholarships = () => {
-    let filtered = allScholarships;
+    let filtered = data.scholarships || [];
 
     if (searchTerm.trim() !== '') {
       filtered = filtered.filter(s =>
@@ -412,6 +244,8 @@ const ScholarshipsPage = () => {
     return filtered;
   };
 
+  const filteredScholarships = filterScholarships();
+
   const clearSearch = () => {
     setSearchTerm('');
   };
@@ -426,61 +260,9 @@ const ScholarshipsPage = () => {
     setSelectedScholarship(null);
   };
 
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case 'merit': return 'bg-blue-100 text-blue-800';
-      case 'need': return 'bg-green-100 text-green-800';
-      case 'merit_cum_need': return 'bg-teal-100 text-teal-800';
-      case 'fully_funded': return 'bg-emerald-100 text-emerald-800';
-      case 'partial': return 'bg-yellow-100 text-yellow-800';
-      case 'tuition_waiver': return 'bg-indigo-100 text-indigo-800';
-      case 'sports': return 'bg-purple-100 text-purple-800';
-      case 'hafiz': return 'bg-amber-100 text-amber-800';
-      case 'minority': return 'bg-rose-100 text-rose-800';
-      case 'disability': return 'bg-cyan-100 text-cyan-800';
-      case 'orphan': return 'bg-orange-100 text-orange-800';
-      case 'kinship': return 'bg-pink-100 text-pink-800';
-      case 'alumni': return 'bg-violet-100 text-violet-800';
-      case 'sibling': return 'bg-fuchsia-100 text-fuchsia-800';
-      case 'employee': return 'bg-slate-100 text-slate-800';
-      case 'research': return 'bg-sky-100 text-sky-800';
-      case 'international': return 'bg-lime-100 text-lime-800';
-      case 'exchange': return 'bg-cyan-100 text-cyan-800';
-      case 'endowment': return 'bg-amber-100 text-amber-800';
-      case 'talent': return 'bg-purple-100 text-purple-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getTypeLabel = (type: string) => {
-    const labels: Record<string, string> = {
-      merit: 'Merit Based',
-      need: 'Need Based',
-      merit_cum_need: 'Merit-cum-Need',
-      fully_funded: 'Fully Funded',
-      partial: 'Partial',
-      tuition_waiver: 'Tuition Waiver',
-      sports: 'Sports',
-      hafiz: 'Hafiz-e-Quran',
-      minority: 'Minority',
-      disability: 'Disability',
-      orphan: 'Orphan',
-      kinship: 'Kinship',
-      alumni: 'Alumni',
-      sibling: 'Sibling',
-      employee: 'Employee',
-      research: 'Research',
-      international: 'International',
-      exchange: 'Exchange',
-      endowment: 'Endowment',
-      talent: 'Talent',
-    };
-    return labels[type] || type.charAt(0).toUpperCase() + type.slice(1);
-  };
-
-  const filteredScholarships = filterScholarships();
-
   useEffect(() => {
+    if (loading) return;
+    
     gsap.registerPlugin(ScrollTrigger);
 
     gsap.fromTo(heroRef.current, 
@@ -498,21 +280,36 @@ const ScholarshipsPage = () => {
       }
     );
 
-  }, []);
+  }, [loading]);
 
-  const TEAL_600 = '#0D9488';
+  // ✅ Consistent brand colors - EXACTLY same as Navbar
+  const PRIMARY_COLOR = '#2f56fb'; // Blue - Primary brand color
+  const PRIMARY_DARK = '#1530b0'; // Darker blue for hover
+  const ACCENT_COLOR = '#0D9488'; // Teal - Only for highlights
+
+  // ✅ Show loading only on first visit (no cache)
+  if (loading && typeof window !== 'undefined' && !sessionStorage.getItem(SESSION_KEY)) {
+    return (
+      <div className="min-h-screen bg-white transition-colors duration-300 pt-[40px] sm:pt-[80px] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+          <p className="text-gray-500">Loading scholarships...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
    <>
     <div className="min-h-screen bg-white transition-colors duration-300 pt-[40px] sm:pt-[80px] ">
-      {/* Hero Section - Same height as About page: h-[60vh] min-h-[500px] */}
+      {/* Hero Section */}
       <section 
         ref={heroRef} 
         className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden"
       >
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://plus.unsplash.com/premium_photo-1691962725028-e825955a7c1e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src={data.heroImage || "https://plus.unsplash.com/premium_photo-1691962725028-e825955a7c1e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
             alt="Scholarships"
             className="w-full h-full object-cover"
           />
@@ -531,7 +328,7 @@ const ScholarshipsPage = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
             >
-              Scholarships & <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5EEAD4] to-[#0D9488]">Financial Aid</span>
+              {data.heroTitle}
             </motion.h1>
             <motion.p 
               className="text-base sm:text-lg text-white drop-shadow-lg max-w-3xl mx-auto leading-relaxed"
@@ -539,7 +336,7 @@ const ScholarshipsPage = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, ease: "easeOut", delay: 0.5 }}
             >
-              Explore available scholarships and financial support opportunities for your education
+              {data.heroSubtitle}
             </motion.p>
 
             <motion.div 
@@ -556,7 +353,7 @@ const ScholarshipsPage = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && filterScholarships()}
-                    className="w-full px-6 py-3.5 pr-12 rounded-full bg-white/95 backdrop-blur-sm text-[#1E293B] placeholder-[#64748B] border-0 focus:ring-2 focus:ring-[#0D9488] shadow-lg transition-all duration-300 cursor-pointer"
+                    className="w-full px-6 py-3.5 pr-12 rounded-full bg-white/95 backdrop-blur-sm text-[#1E293B] placeholder-[#64748B] border-0 focus:ring-2 focus:ring-[#2f56fb] shadow-lg transition-all duration-300 cursor-pointer"
                   />
                   {searchTerm && (
                     <button
@@ -570,9 +367,15 @@ const ScholarshipsPage = () => {
                 <button
                   onClick={() => filterScholarships()}
                   className="px-6 py-3.5 rounded-full text-white font-medium transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2 cursor-pointer flex-shrink-0"
-                  style={{ backgroundColor: TEAL_600 }}
-                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#0F766E'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = TEAL_600; }}
+                  style={{ 
+                    background: `linear-gradient(135deg, ${PRIMARY_COLOR}, ${PRIMARY_DARK})`,
+                  }}
+                  onMouseEnter={(e) => { 
+                    e.currentTarget.style.transform = 'scale(1.02)';
+                  }}
+                  onMouseLeave={(e) => { 
+                    e.currentTarget.style.transform = 'scale(1)';
+                  }}
                 >
                   <MagnifyingGlassIcon className="w-5 h-5" />
                   Search
@@ -599,7 +402,7 @@ const ScholarshipsPage = () => {
               <select
                 value={activeFilter}
                 onChange={(e) => setActiveFilter(e.target.value)}
-                className="px-4 py-2 rounded-full border border-[#E2E8F0] bg-white text-[#1E293B] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0D9488] cursor-pointer"
+                className="px-4 py-2 rounded-full border border-[#E2E8F0] bg-white text-[#1E293B] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#2f56fb] cursor-pointer"
               >
                 {filterOptions.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -627,34 +430,42 @@ const ScholarshipsPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredScholarships.map((scholarship, index) => (
-                  <motion.tr
-                    key={scholarship.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: Math.min(index * 0.05, 0.5) }}
-                    className="border-b border-gray-100 hover:bg-[#F8FAFC] transition-colors cursor-pointer"
-                  >
-                    <td className="py-4 px-6 font-medium text-[#1E293B]">{scholarship.name}</td>
-                    <td className="py-4 px-6 text-[#475569]">{scholarship.program}</td>
-                    <td className="py-4 px-6 text-[#475569]">{scholarship.provider || 'N/A'}</td>
-                    <td 
-                      onClick={() => openDetailModal(scholarship)}
-                      className="py-4 px-6 text-[#475569] max-w-[200px] truncate cursor-pointer hover:text-[#0D9488] transition-colors"
-                      title="Click to view full eligibility"
+                {filteredScholarships.length > 0 ? (
+                  filteredScholarships.map((scholarship, index) => (
+                    <motion.tr
+                      key={scholarship.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: Math.min(index * 0.05, 0.5) }}
+                      className="border-b border-gray-100 hover:bg-[#F8FAFC] transition-colors cursor-pointer"
                     >
-                      <span className="hover:underline">{scholarship.eligibility}</span>
-                      <span className="ml-1 text-[#0D9488] text-xs">[...]</span>
+                      <td className="py-4 px-6 font-medium text-[#1E293B]">{scholarship.name}</td>
+                      <td className="py-4 px-6 text-[#475569]">{scholarship.program}</td>
+                      <td className="py-4 px-6 text-[#475569]">{scholarship.provider || 'N/A'}</td>
+                      <td 
+                        onClick={() => openDetailModal(scholarship)}
+                        className="py-4 px-6 text-[#475569] max-w-[200px] truncate cursor-pointer hover:text-[#2f56fb] transition-colors"
+                        title="Click to view full eligibility"
+                      >
+                        <span className="hover:underline">{scholarship.eligibility}</span>
+                        <span className="ml-1 text-[#2f56fb] text-xs">[...]</span>
+                      </td>
+                      <td className="py-4 px-6 font-semibold text-[#2f56fb]">{scholarship.amount}</td>
+                      <td className="py-4 px-6 text-[#475569]">{scholarship.deadline || 'N/A'}</td>
+                      <td className="py-4 px-6">
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${getTypeColor(scholarship.type)}`}>
+                          {getTypeLabel(scholarship.type)}
+                        </span>
+                      </td>
+                    </motion.tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={7} className="text-center py-8 text-[#475569]">
+                      No scholarships found matching your criteria.
                     </td>
-                    <td className="py-4 px-6 font-semibold text-[#0D9488]">{scholarship.amount}</td>
-                    <td className="py-4 px-6 text-[#475569]">{scholarship.deadline || 'N/A'}</td>
-                    <td className="py-4 px-6">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getTypeColor(scholarship.type)}`}>
-                        {getTypeLabel(scholarship.type)}
-                      </span>
-                    </td>
-                  </motion.tr>
-                ))}
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -665,9 +476,15 @@ const ScholarshipsPage = () => {
               <button
                 onClick={() => { setSearchTerm(''); setActiveFilter('all'); }}
                 className="mt-4 px-6 py-2 text-white rounded-full text-sm font-medium transition-all duration-300 cursor-pointer"
-                style={{ backgroundColor: TEAL_600 }}
-                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#0F766E'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = TEAL_600; }}
+                style={{ 
+                  background: `linear-gradient(135deg, ${PRIMARY_COLOR}, ${PRIMARY_DARK})`,
+                }}
+                onMouseEnter={(e) => { 
+                  e.currentTarget.style.transform = 'scale(1.02)';
+                }}
+                onMouseLeave={(e) => { 
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
               >
                 Clear all filters
               </button>
@@ -723,7 +540,7 @@ const ScholarshipsPage = () => {
                 </div>
                 <div>
                   <h4 className="text-sm font-semibold text-[#1E293B] mb-2">Amount</h4>
-                  <p className="text-[#0D9488] font-bold text-sm">{selectedScholarship.amount}</p>
+                  <p className="text-[#2f56fb] font-bold text-sm">{selectedScholarship.amount}</p>
                 </div>
               </div>
 
@@ -756,9 +573,15 @@ const ScholarshipsPage = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block w-full py-2.5 text-center text-white font-semibold rounded-full text-sm transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
-                  style={{ backgroundColor: TEAL_600 }}
-                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#0F766E'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = TEAL_600; }}
+                  style={{ 
+                    background: `linear-gradient(135deg, ${PRIMARY_COLOR}, ${PRIMARY_DARK})`,
+                  }}
+                  onMouseEnter={(e) => { 
+                    e.currentTarget.style.transform = 'scale(1.02)';
+                  }}
+                  onMouseLeave={(e) => { 
+                    e.currentTarget.style.transform = 'scale(1)';
+                  }}
                 >
                   Apply Now →
                 </a>
@@ -781,6 +604,4 @@ const ScholarshipsPage = () => {
     <ContactSection/>
    </>
   );
-};
-
-export default ScholarshipsPage;
+}

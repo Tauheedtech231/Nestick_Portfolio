@@ -1,32 +1,33 @@
 'use client';
 
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView, Variants } from "framer-motion";
 import Image from "next/image";
 
-interface StatsProps {
-  stats?: StatItem[];
-  title?: string;
-  subtitle?: string;
-}
-
 interface StatItem {
+  id: number;
   label: string;
   value: string;
-  target?: number;
-  suffix?: string;
+  target: number;
+  suffix: string;
+  icon?: string;
 }
 
-// Animation variants - Same as HeroSection
+interface StatsData {
+  title: string;
+  subtitle: string;
+  backgroundImage: string;
+  stats: StatItem[];
+  achievementsBadge: string;
+}
+
+// Animation variants
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut"
-    }
+    transition: { duration: 0.6, ease: "easeOut" }
   }
 };
 
@@ -34,9 +35,7 @@ const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.15
-    }
+    transition: { staggerChildren: 0.15 }
   }
 };
 
@@ -46,10 +45,7 @@ const cardHover: Variants = {
     opacity: 1,
     y: 0,
     rotateY: 34,
-    transition: {
-      duration: 0.7,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    }
+    transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }
   }
 };
 
@@ -58,14 +54,12 @@ function Sheen() {
     <div
       className="pointer-events-none absolute -left-[60%] -top-[40%] h-[90%] w-[140%] -rotate-[8deg] transition-opacity duration-300 group-hover:opacity-80"
       style={{
-        background:
-          "linear-gradient(120deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.08) 35%, rgba(255,255,255,0) 55%)",
+        background: "linear-gradient(120deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.08) 35%, rgba(255,255,255,0) 55%)",
       }}
     />
   );
 }
 
-// Counter Component
 function Counter({ target, suffix = "", duration = 2000 }: { target: number; suffix?: string; duration?: number }) {
   const [count, setCount] = useState(0);
   const counterRef = useRef<HTMLDivElement>(null);
@@ -73,80 +67,134 @@ function Counter({ target, suffix = "", duration = 2000 }: { target: number; suf
 
   useEffect(() => {
     if (!isInView) return;
-
     let startTime: number | null = null;
-    const startValue = 0;
     const endValue = target;
 
     const animateCount = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const progress = Math.min((timestamp - startTime) / duration, 1);
-      const currentCount = Math.floor(progress * (endValue - startValue) + startValue);
+      const currentCount = Math.floor(progress * (endValue - 0) + 0);
       setCount(currentCount);
-
       if (progress < 1) {
         requestAnimationFrame(animateCount);
       } else {
         setCount(endValue);
       }
     };
-
     requestAnimationFrame(animateCount);
-
-    return () => {
-      startTime = null;
-    };
+    return () => { startTime = null; };
   }, [isInView, target, duration]);
 
   return (
     <span ref={counterRef} className="inline-flex items-center">
-      {count}
-      {suffix && <span className="ml-0.5">{suffix}</span>}
+      {count}{suffix && <span className="ml-0.5">{suffix}</span>}
     </span>
   );
 }
 
-export default function Stats({ stats, title, subtitle }: StatsProps) {
+export default function Stats() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const [statsData, setStatsData] = useState<StatsData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const collegeId = "8";
+  const SESSION_KEY = `stats_data_${collegeId}`;
 
-  const defaultStats: StatItem[] = [
-    { label: "Years of Excellence", value: "25+", target: 25, suffix: "+" },
-    { label: "Academic Programs", value: "15+", target: 15, suffix: "+" },
-    { label: "Faculty Members", value: "40+", target: 40, suffix: "+" },
-    { label: "Success Rate", value: "97%", target: 97, suffix: "%" },
-  ];
+  useEffect(() => {
+    async function fetchStatsData() {
+      try {
+        // Check if data exists in session storage
+        const cachedData = sessionStorage.getItem(SESSION_KEY);
+        
+        if (cachedData) {
+          console.log('📦 [Stats] Loading from session storage');
+          const parsedData = JSON.parse(cachedData);
+          setStatsData(parsedData);
+          setLoading(false);
+          return;
+        }
 
-  const displayStats = stats || defaultStats;
-  const displayTitle = title || 'Why Choose';
-  const displaySubtitle = subtitle || 'Excellence in education, innovation, and student success';
+        // If no cached data, fetch from API
+        console.log('🔄 [Stats] Fetching from API...');
+        const response = await fetch(`https://dynamic-section-api.vercel.app/api/public/sections?college_id=${collegeId}&section_name=Stats`);
+        const data = await response.json();
+        console.log('📦 [Stats] API Response:', data);
 
-  // Process stats to extract target and suffix
-  const processedStats = displayStats.map((stat) => {
-    // If target is provided, use it
-    if (stat.target !== undefined) {
-      return stat;
+        let finalData;
+        if (data.success && data.content && data.content.stats) {
+          console.log('✅ [Stats] Stats found:', data.content.stats.length);
+          finalData = data.content;
+        } else {
+          console.log('⚠️ [Stats] No stats, using fallback');
+          finalData = getDefaultStatsData();
+        }
+
+        // Save to session storage
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(finalData));
+        setStatsData(finalData);
+      } catch (error) {
+        console.error('❌ [Stats] Error:', error);
+        const fallbackData = getDefaultStatsData();
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(fallbackData));
+        setStatsData(fallbackData);
+      } finally {
+        setLoading(false);
+      }
     }
+    fetchStatsData();
+  }, [SESSION_KEY]);
 
-    // Otherwise parse from value string
-    const valueStr = stat.value.toString();
-    const match = valueStr.match(/^(\d+)(\+|%|K|\+K)?$/);
-    if (match) {
-      const num = parseInt(match[1]);
-      const suffix = match[2] || '';
-      return { ...stat, target: num, suffix: suffix };
-    }
-    return { ...stat, target: 0, suffix: '' };
+  const getDefaultStatsData = (): StatsData => ({
+    title: 'Why Choose',
+    subtitle: 'Excellence in education, innovation, and student success',
+    achievementsBadge: 'Our Achievements',
+    backgroundImage: '/stats.jpg',
+    stats: [
+      { id: 1, label: "Years of Excellence", value: "25+", target: 25, suffix: "+" },
+      { id: 2, label: "Academic Programs", value: "15+", target: 15, suffix: "+" },
+      { id: 3, label: "Faculty Members", value: "40+", target: 40, suffix: "+" },
+      { id: 4, label: "Success Rate", value: "97%", target: 97, suffix: "%" },
+    ]
   });
+
+  // ✅ Show loading only on first visit (no cache)
+  if (loading && !statsData) {
+    return (
+      <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#f0f4ff]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-teal-500 mx-auto mb-4"></div>
+          <p className="text-gray-500">Loading stats...</p>
+        </div>
+      </section>
+    );
+  }
+
+  const data = statsData || getDefaultStatsData();
+  console.log('📊 [Stats] Final data:', data);
+
+  const displayStats = data.stats || [];
+  console.log('📊 [Stats] Display stats length:', displayStats.length);
+
+  const displayTitle = data.title || 'Why Choose';
+  const displaySubtitle = data.subtitle || 'Excellence in education, innovation, and student success';
+  const displayBadge = data.achievementsBadge || 'Our Achievements';
+  const bgImage = data.backgroundImage || '/stats.jpg';
+
+  const processedStats = displayStats.map((stat) => ({
+    ...stat,
+    target: stat.target || 0,
+    suffix: stat.suffix || ''
+  }));
+
+  console.log('📊 [Stats] Processed stats:', processedStats);
 
   return (
     <section
       ref={sectionRef}
       className="relative flex min-h-screen flex-col items-center overflow-hidden"
     >
-      {/* Heading Section - With Depth Shadow Like About */}
+      {/* Heading Section */}
       <div className="relative z-10 w-full py-12 sm:py-16 px-5 overflow-hidden" style={{ background: 'linear-gradient(135deg, #f0f4ff 0%, #ffffff 40%, #e8edf8 70%, #dce3f5 100%)' }}>
-        {/* Deep shadow decorative elements - Same as About */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl" />
           <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-200/25 rounded-full blur-3xl" />
@@ -157,7 +205,8 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
           <motion.div
             className="text-center"
             initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
             variants={staggerContainer}
           >
             <motion.div
@@ -167,15 +216,14 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
               <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                 <path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6" />
               </svg>
-              Our Achievements
+              {displayBadge}
             </motion.div>
 
             <motion.h2
               variants={fadeInUp}
               className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0a1240]"
             >
-              Why Choose{" "}
-              <span className="text-[#2f56fb]">Aspire College?</span>
+              {displayTitle}
             </motion.h2>
 
             <motion.p
@@ -188,20 +236,23 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
         </div>
       </div>
 
-      {/* Stats Section - With Background Image */}
+      {/* Stats Section */}
       <div className="relative w-full flex-1 flex items-center justify-center overflow-hidden px-0 sm:px-5 py-12 sm:py-16">
-        {/* Background Image - stats.jpg from public folder */}
+        {/* Background Image - Fixed height to cover full area */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/stats.jpg"
+            src={bgImage}
             alt="Campus background"
             fill
-            className="object-cover object-top"
+            className="object-cover object-center"
             priority
+            sizes="100vw"
           />
+          {/* Dark overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/30 z-[1]" />
         </div>
 
-        {/* Deep shadow decorative elements */}
+        {/* Decorative elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-[1]">
           <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#2f56fb]/20 rounded-full blur-3xl" />
           <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#2f56fb]/15 rounded-full blur-3xl" />
@@ -209,20 +260,15 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
           <div className="absolute bottom-20 right-20 w-64 h-64 bg-[#1530b0]/10 rounded-full blur-3xl" />
         </div>
 
-        {/* Stats Cards - z-[2] to be above background */}
+        {/* Stats Cards */}
         <div className="relative z-[2] w-full max-w-7xl mx-auto">
           <motion.div
             className="[perspective:1200px] sm:[perspective:1800px] lg:[perspective:2200px] [perspective-origin:20%_50%]"
             initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
             variants={staggerContainer}
           >
-            {/*
-              MOBILE: horizontal scroll-snap carousel — SAME overlapping/stacked
-              look as desktop (cards overlap with -ml, tilted with rotateY, fanned
-              z-index), just swipeable since they don't all fit on a small screen.
-              DESKTOP (sm and up): original wrapped/overlapping layout.
-            */}
             <div
               className="
                 flex items-center
@@ -236,7 +282,7 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
                 no-scrollbar
               "
             >
-              {/* Card 1 - Hero with Background Image */}
+              {/* Card 1 - Hero Card */}
               <motion.div
                 variants={cardHover}
                 whileHover={{
@@ -263,10 +309,10 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
                 </div>
               </motion.div>
 
-              {/* Cards 2-5 - With Dynamic Counter */}
+              {/* Cards 2-5 */}
               {processedStats.map((stat, i) => (
                 <motion.div
-                  key={stat.label}
+                  key={stat.id || i}
                   variants={cardHover}
                   whileHover={{
                     scale: 1.02,
@@ -292,7 +338,7 @@ export default function Stats({ stats, title, subtitle }: StatsProps) {
                     {stat.target ? (
                       <Counter target={stat.target} suffix={stat.suffix || ''} duration={2000} />
                     ) : (
-                      stat.value
+                      stat.value || '0'
                     )}
                   </div>
                   <div className="z-[2] text-[13px] font-medium text-slate-500 px-2">

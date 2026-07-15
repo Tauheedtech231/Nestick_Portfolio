@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { Users, Award, Lightbulb, Sparkles } from "lucide-react";
 import { motion, Variants } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
 // Animation variants
 const fadeInUp: Variants = {
@@ -68,7 +70,135 @@ const staggerContainer = {
   }
 };
 
+interface FacultyStatsData {
+  badgeText: string;
+  headingFirst: string;
+  headingHighlight: string;
+  description: string;
+  buttonText: string;
+  buttonLink: string;
+  desktopImage: string;
+  mobileImage: string;
+  badge1Icon: string;
+  badge1Text: string;
+  badge1Subtext: string;
+  badge2Icon: string;
+  badge2Text: string;
+  badge2Subtext: string;
+  badge3Icon: string;
+  badge3Text: string;
+  badge3Subtext: string;
+  mobileBadge1Text: string;
+  mobileBadge2Text: string;
+}
+
+const iconMap: Record<string, any> = {
+  Users: Users,
+  Award: Award,
+  Lightbulb: Lightbulb,
+  Sparkles: Sparkles
+};
+
 export default function FacultySection() {
+  const [data, setData] = useState<FacultyStatsData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Hardcoded college ID for testing
+  const collegeId = "8";
+  const SESSION_KEY = `faculty_stats_${collegeId}`;
+
+  // Get default data
+  const getDefaultData = (): FacultyStatsData => ({
+    badgeText: 'EXCELLENCE IN EDUCATION',
+    headingFirst: 'Distinguished',
+    headingHighlight: 'Faculty',
+    description: 'Learn from accomplished scholars and industry professionals dedicated to mentoring and inspiring the next generation of leaders and innovators.',
+    buttonText: 'Meet Our Faculty',
+    buttonLink: '/Faculty',
+    desktopImage: 'https://plus.unsplash.com/premium_photo-1661756423422-4486e27eb6dd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    mobileImage: 'https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    badge1Icon: 'Users',
+    badge1Text: 'Mentorship',
+    badge1Subtext: 'That Matters',
+    badge2Icon: 'Award',
+    badge2Text: 'Knowledge',
+    badge2Subtext: 'That Empowers',
+    badge3Icon: 'Lightbulb',
+    badge3Text: 'Excellence',
+    badge3Subtext: 'That Inspires',
+    mobileBadge1Text: 'Mentorship',
+    mobileBadge2Text: 'Excellence'
+  });
+
+  // ✅ Fetch data with session storage caching
+  useEffect(() => {
+    // ✅ Check session storage first (synchronous)
+    const cachedData = sessionStorage.getItem(SESSION_KEY);
+    
+    if (cachedData) {
+      try {
+        console.log('📦 [FacultySection] Loading from session storage (instant)');
+        const parsedData = JSON.parse(cachedData);
+        setData(parsedData);
+        setLoading(false);
+        // ✅ Return early - no API call needed
+        return;
+      } catch (e) {
+        console.error('Error parsing cached data:', e);
+      }
+    }
+
+    // If no cached data, fetch from API
+    async function fetchData() {
+      try {
+        console.log('🔄 [FacultySection] Fetching data for college:', collegeId);
+        const response = await fetch(`https://dynamic-section-api.vercel.app/api/public/sections?college_id=${collegeId}&section_name=FacultyStats`);
+        const result = await response.json();
+        console.log('📦 [FacultySection] API Response:', result);
+
+        let fetchedData;
+        if (result.success && result.content) {
+          console.log('✅ [FacultySection] Data loaded');
+          fetchedData = result.content;
+        } else {
+          console.log('⚠️ [FacultySection] No data, using fallback');
+          fetchedData = getDefaultData();
+        }
+
+        // ✅ Save to session storage
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        setData(fetchedData);
+      } catch (error) {
+        console.error('❌ [FacultySection] Error:', error);
+        const fallbackData = getDefaultData();
+        // ✅ Don't cache failed response
+        setData(fallbackData);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, [SESSION_KEY]);
+
+  // ✅ Show loading only on first visit (no cache)
+  if (loading && !data) {
+    return (
+      <section className="relative bg-gradient-to-br from-[#f0f4ff] via-white to-[#e8edf8] overflow-x-hidden py-16 px-0 flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+          <p className="text-gray-500">Loading...</p>
+        </div>
+      </section>
+    );
+  }
+
+  const d = data || getDefaultData();
+
+  const Badge1Icon = iconMap[d.badge1Icon] || Users;
+  const Badge2Icon = iconMap[d.badge2Icon] || Award;
+  const Badge3Icon = iconMap[d.badge3Icon] || Lightbulb;
+
   return (
     <section className="relative bg-gradient-to-br from-[#f0f4ff] via-white to-[#e8edf8] overflow-x-hidden py-16 px-0 flex items-center justify-center">
       {/* Deep shadow decorative elements */}
@@ -114,15 +244,15 @@ export default function FacultySection() {
             className="inline-flex items-center gap-2 rounded-full bg-[#dce3f5] px-4 py-1.5 text-[12px] font-semibold text-[#1c3fe0] shadow-sm mb-5 cursor-pointer hover:bg-[#c8d2ed] transition-colors"
           >
             <Sparkles className="h-3.5 w-3.5" />
-            EXCELLENCE IN EDUCATION
+            {d.badgeText}
           </motion.div>
 
           <motion.h1 
             variants={fadeInUp}
             className="text-3xl sm:text-4xl font-extrabold text-[#0a1240] leading-[1.08]"
           >
-            Distinguished<br />
-            <span className="text-[#2f56fb]">Faculty</span>
+            {d.headingFirst}<br />
+            <span className="text-[#2f56fb]">{d.headingHighlight}</span>
           </motion.h1>
 
           <motion.div 
@@ -134,17 +264,17 @@ export default function FacultySection() {
             variants={fadeInUp}
             className="text-[15px] leading-[1.7] text-[#3d4566] max-w-[420px] mb-7"
           >
-            Learn from accomplished scholars and industry professionals dedicated to mentoring and inspiring the next generation of leaders and innovators.
+            {d.description}
           </motion.p>
 
           <motion.a
             variants={fadeInUp}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            href="/Faculty"
+            href={d.buttonLink}
             className="inline-flex items-center gap-3 rounded-full bg-gradient-to-br from-[#2f56fb] to-[#1530b0] px-7 py-3.5 text-[14px] font-semibold text-white shadow-[0_12px_28px_-8px_rgba(47,86,251,0.5)] hover:shadow-[0_20px_40px_-12px_rgba(47,86,251,0.7)] transition-all duration-300 cursor-pointer"
           >
-            Meet Our Faculty
+            {d.buttonText}
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5">
                 <path d="M5 12h14M13 6l6 6-6 6"/>
@@ -153,7 +283,7 @@ export default function FacultySection() {
           </motion.a>
         </motion.div>
 
-        {/* RIGHT COLUMN - Walking from right - Increased height on mobile */}
+        {/* RIGHT COLUMN - Walking from right */}
         <motion.div 
           className="relative h-[370px] sm:h-[380px] md:h-[420px] lg:h-[520px] flex items-center justify-center order-1 lg:order-2 w-full"
           variants={walkInRight}
@@ -164,20 +294,20 @@ export default function FacultySection() {
             className="absolute inset-[-8px] border border-[#bfe6da] rounded-[200px_60px_200px_60px] pointer-events-none" 
           />
 
-          {/* Photo Frame - Increased height on mobile */}
+          {/* Photo Frame */}
           <motion.div 
             variants={fadeInScale}
             className="relative w-full h-full rounded-[190px_60px_190px_60px] lg:rounded-[190px_60px_190px_60px] overflow-hidden shadow-[0_24px_50px_-15px_rgba(37,99,235,0.25)] z-10"
           >
-            {/* Desktop Image - Hidden on mobile */}
+            {/* Desktop Image - Dynamic */}
             <img
-              src="https://plus.unsplash.com/premium_photo-1661756423422-4486e27eb6dd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src={d.desktopImage}
               alt="Professor teaching a class"
               className="w-full h-full object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-300 hidden lg:block"
             />
-            {/* Mobile Image - Hidden on desktop - Increased object-fit */}
+            {/* Mobile Image - Dynamic */}
             <img
-              src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src={d.mobileImage}
               alt="Professor teaching a class"
               className="w-full h-full object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-300 lg:hidden"
               style={{ objectPosition: 'center 30%' }}
@@ -191,10 +321,10 @@ export default function FacultySection() {
             transition={{ delay: 0.3 }}
           >
             <div className="w-9 h-9 rounded-lg bg-[#2f56fb]/10 flex items-center justify-center">
-              <Users className="h-4.5 w-4.5 text-[#2f56fb]" strokeWidth={2} />
+              <Badge1Icon className="h-4.5 w-4.5 text-[#2f56fb]" strokeWidth={2} />
             </div>
             <strong className="text-[13px] font-bold text-[#0a1240] leading-tight">
-              Mentorship<br />That Matters
+              {d.badge1Text}<br />{d.badge1Subtext}
             </strong>
           </motion.div>
 
@@ -204,10 +334,10 @@ export default function FacultySection() {
             transition={{ delay: 0.4 }}
           >
             <div className="w-9 h-9 rounded-lg bg-[#dce3f5] flex items-center justify-center">
-              <Award className="h-4.5 w-4.5 text-[#2f56fb]" strokeWidth={2} />
+              <Badge2Icon className="h-4.5 w-4.5 text-[#2f56fb]" strokeWidth={2} />
             </div>
             <strong className="text-[13px] font-bold text-[#0a1240] leading-tight">
-              Knowledge<br />That Empowers
+              {d.badge2Text}<br />{d.badge2Subtext}
             </strong>
           </motion.div>
 
@@ -217,14 +347,14 @@ export default function FacultySection() {
             transition={{ delay: 0.5 }}
           >
             <div className="w-9 h-9 rounded-lg bg-[#dce3f5] flex items-center justify-center">
-              <Lightbulb className="h-4.5 w-4.5 text-[#2f56fb]" strokeWidth={2} />
+              <Badge3Icon className="h-4.5 w-4.5 text-[#2f56fb]" strokeWidth={2} />
             </div>
             <strong className="text-[13px] font-bold text-[#0a1240] leading-tight">
-              Excellence<br />That Inspires
+              {d.badge3Text}<br />{d.badge3Subtext}
             </strong>
           </motion.div>
 
-          {/* Mobile Badges - 2 badges (left and right) with better positioning */}
+          {/* Mobile Badges - 2 badges */}
           <motion.div 
             variants={fadeInUp}
             className="absolute top-3 left-2 bg-white/95 backdrop-blur-sm rounded-xl shadow-[0_10px_24px_-8px_rgba(37,99,235,0.2)] p-2.5 flex items-center gap-2 z-20 cursor-pointer hover:scale-[1.05] transition-all duration-300 border border-white/50 lg:hidden"
@@ -234,7 +364,7 @@ export default function FacultySection() {
               <Users className="h-3.5 w-3.5 text-[#2f56fb]" strokeWidth={2} />
             </div>
             <strong className="text-[11px] font-bold text-[#0a1240] leading-tight">
-              Mentorship
+              {d.mobileBadge1Text}
             </strong>
           </motion.div>
 
@@ -247,7 +377,7 @@ export default function FacultySection() {
               <Award className="h-3.5 w-3.5 text-[#2f56fb]" strokeWidth={2} />
             </div>
             <strong className="text-[11px] font-bold text-[#0a1240] leading-tight">
-              Excellence
+              {d.mobileBadge2Text}
             </strong>
           </motion.div>
 

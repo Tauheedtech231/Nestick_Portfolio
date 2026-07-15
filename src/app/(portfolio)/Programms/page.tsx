@@ -1,8 +1,9 @@
-// app/programs/page.tsx (Main Page)
+// app/programs/page.tsx (Main Page - Dynamic)
 'use client';
 
 import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import ProgramsList from './ProgramsList';
 import CoursesTab from './CoursesTab';
 
@@ -46,14 +47,106 @@ const buttonVariants: Variants = {
   }
 };
 
+interface ProgramsPageData {
+  heroTitle: string;
+  heroSubtitle: string;
+  heroImage: string;
+}
+
 export default function ProgramsPage() {
+  const [data, setData] = useState<ProgramsPageData>({
+    heroTitle: 'Our Programs',
+    heroSubtitle: 'Discover your path to success with our diverse range of programs',
+    heroImage: ''
+  });
+  const [loading, setLoading] = useState(true);
+
+  // ✅ Session storage key
+  const SESSION_KEY = 'programs_page_8';
+
+  // ✅ Fetch data from API with session storage caching
+  useEffect(() => {
+    // ✅ Check session storage first (only in browser)
+    if (typeof window !== 'undefined') {
+      const cachedData = sessionStorage.getItem(SESSION_KEY);
+      
+      if (cachedData) {
+        try {
+          console.log('📦 [ProgramsPage] Loading from session storage (instant)');
+          const parsedData = JSON.parse(cachedData);
+          setData(parsedData);
+          setLoading(false);
+          return;
+        } catch (e) {
+          console.error('Error parsing cached data:', e);
+        }
+      }
+    }
+
+    async function fetchData() {
+      try {
+        console.log('🔄 [ProgramsPage] Fetching data...');
+        const response = await fetch(`https://dynamic-section-api.vercel.app/api/public/sections?college_id=8&section_name=Programs`);
+        const result = await response.json();
+        console.log('📦 [ProgramsPage] API Response:', result);
+
+        let fetchedData;
+        if (result.success && result.content) {
+          const content = result.content;
+          fetchedData = {
+            heroTitle: content.heroTitle || 'Our Programs',
+            heroSubtitle: content.heroSubtitle || 'Discover your path to success with our diverse range of programs',
+            heroImage: content.heroDesktopImage || content.heroImage || ''
+          };
+          console.log('✅ [ProgramsPage] Data loaded');
+        } else {
+          console.log('⚠️ [ProgramsPage] No data, using default');
+          fetchedData = {
+            heroTitle: 'Our Programs',
+            heroSubtitle: 'Discover your path to success with our diverse range of programs',
+            heroImage: ''
+          };
+        }
+
+        // ✅ Save to session storage (only in browser)
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        }
+        setData(fetchedData);
+      } catch (error) {
+        console.error('❌ [ProgramsPage] Error:', error);
+        setData({
+          heroTitle: 'Our Programs',
+          heroSubtitle: 'Discover your path to success with our diverse range of programs',
+          heroImage: ''
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  // ✅ Show loading only on first visit (no cache)
+  if (loading && typeof window !== 'undefined' && !sessionStorage.getItem(SESSION_KEY)) {
+    return (
+      <div className="min-h-screen bg-white transition-colors duration-300 pt-[40px] sm:pt-[80px] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+          <p className="text-gray-500">Loading programs...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white transition-colors duration-300 pt-[40px] sm:pt-[80px]">
-      {/* Hero Section - Same height as About page: h-[60vh] min-h-[500px] */}
+      {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://plus.unsplash.com/premium_photo-1691962725001-8e9157a933cd?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src={data.heroImage || "https://plus.unsplash.com/premium_photo-1691962725001-8e9157a933cd?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
             alt="Programs Hero"
             className="w-full h-full object-cover"
           />
@@ -67,8 +160,7 @@ export default function ProgramsPage() {
             className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-4 text-white drop-shadow-lg"
             style={{ textShadow: '0 2px 20px rgba(0,0,0,0.5)' }}
           >
-            <span className="text-white">Our </span>
-            <span style={{ color: '#5DCAA5' }}>Programs</span>
+            <span className="text-white">{data.heroTitle}</span>
           </motion.h1>
 
           <motion.p 
@@ -78,10 +170,10 @@ export default function ProgramsPage() {
             className="text-[15px] sm:text-[18px] lg:text-[20px] text-white drop-shadow-lg max-w-2xl mx-auto leading-[1.8]"
             style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}
           >
-            Discover your path to success with our diverse range of programs
+            {data.heroSubtitle}
           </motion.p>
 
-          {/* Apply Now Button */}
+          {/* Apply Now Button - Hardcoded */}
           <motion.div
             variants={buttonVariants}
             initial="hidden"
@@ -107,7 +199,7 @@ export default function ProgramsPage() {
         </div>
       </section>
 
-      {/* Programs List Component */}
+      {/* Programs List Component - Dynamic */}
       <ProgramsList />
       <CoursesTab />
     </div>

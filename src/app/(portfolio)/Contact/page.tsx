@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 interface FormData {
@@ -10,6 +10,31 @@ interface FormData {
   phone: string;
   subject: string;
   message: string;
+}
+
+interface ContactData {
+  email: string;
+  phone: string;
+  address: string;
+  website: string;
+  mapLink: string;
+  appointmentLink: string;
+  socialMedia: {
+    facebook: string;
+    twitter: string;
+    linkedin: string;
+    instagram: string;
+  };
+  workingHours: {
+    weekdays: string;
+    saturday: string;
+    sunday: string;
+  };
+  contactNumbers: {
+    phone: string;
+    whatsapp: string;
+    office: string;
+  };
 }
 
 export default function ContactSection() {
@@ -23,6 +48,112 @@ export default function ContactSection() {
 
   const [submitted, setSubmitted] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [contactData, setContactData] = useState<ContactData>({
+    email: 'info@aspirecollege.edu.pk',
+    phone: '+92 300 1234567',
+    address: '123 Education Street, Lahore, Pakistan',
+    website: 'https://www.aspirecollege.edu.pk',
+    mapLink: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27202.57722541243!2d74.312598!3d31.489459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39190483e58107d9%3A0x17e9ba30aae47afd!2sLahore%2C%20Pakistan!5e0!3m2!1sen!2s!4v1700000000000',
+    appointmentLink: '',
+    socialMedia: {
+      facebook: '',
+      twitter: '',
+      linkedin: '',
+      instagram: ''
+    },
+    workingHours: {
+      weekdays: '8:00 AM - 6:00 PM',
+      saturday: '9:00 AM - 2:00 PM',
+      sunday: 'Closed'
+    },
+    contactNumbers: {
+      phone: '+92 300 1234567',
+      whatsapp: '',
+      office: ''
+    }
+  });
+
+  const collegeId = "8"; // ✅ Hardcoded college ID
+  const SESSION_KEY = `contact_page_${collegeId}`;
+
+  // ✅ Fetch contact data from API with session storage caching
+  useEffect(() => {
+    // ✅ Check session storage first (only in browser)
+    if (typeof window !== 'undefined') {
+      const cachedData = sessionStorage.getItem(SESSION_KEY);
+      
+      if (cachedData) {
+        try {
+          console.log('📦 [ContactSection] Loading from session storage (instant)');
+          const parsedData = JSON.parse(cachedData);
+          setContactData(parsedData);
+          setLoading(false);
+          return;
+        } catch (e) {
+          console.error('Error parsing cached data:', e);
+        }
+      }
+    }
+
+    async function fetchContactData() {
+      try {
+        setLoading(true);
+        console.log('🔄 [ContactSection] Fetching from API...');
+        const response = await fetch(`https://dynamic-section-api.vercel.app/api/public/sections?college_id=${collegeId}&section_name=Contact`);
+        const result = await response.json();
+        
+        console.log('📦 [ContactSection] API Response:', result);
+
+        let fetchedData;
+        if (result.success && result.content) {
+          const content = result.content;
+          fetchedData = {
+            email: content.email || contactData.email,
+            phone: content.phone || content.contactNumbers?.phone || contactData.phone,
+            address: content.address || contactData.address,
+            website: content.website || contactData.website,
+            mapLink: content.mapLink || contactData.mapLink,
+            appointmentLink: content.appointmentLink || contactData.appointmentLink,
+            socialMedia: {
+              facebook: content.socialMedia?.facebook || '',
+              twitter: content.socialMedia?.twitter || '',
+              linkedin: content.socialMedia?.linkedin || '',
+              instagram: content.socialMedia?.instagram || ''
+            },
+            workingHours: {
+              weekdays: content.workingHours?.weekdays || contactData.workingHours.weekdays,
+              saturday: content.workingHours?.saturday || contactData.workingHours.saturday,
+              sunday: content.workingHours?.sunday || contactData.workingHours.sunday
+            },
+            contactNumbers: {
+              phone: content.contactNumbers?.phone || content.phone || contactData.phone,
+              whatsapp: content.contactNumbers?.whatsapp || '',
+              office: content.contactNumbers?.office || ''
+            }
+          };
+          console.log('✅ [ContactSection] Data loaded successfully');
+        } else {
+          console.log('⚠️ [ContactSection] No data, using default');
+          fetchedData = contactData;
+        }
+
+        // ✅ Save to session storage (only in browser)
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        }
+        setContactData(fetchedData);
+      } catch (error) {
+        console.error('❌ [ContactSection] Error fetching:', error);
+        // ✅ Don't cache on error
+        setContactData(contactData);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchContactData();
+  }, [collegeId, SESSION_KEY]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -31,7 +162,7 @@ export default function ContactSection() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
+    console.log('📤 [ContactSection] Form Data:', formData);
     setSubmitted(true);
     setFormData({
       name: '',
@@ -47,10 +178,24 @@ export default function ContactSection() {
     setIsFlipped(!isFlipped);
   };
 
-  // About Theme Colors
-  const TEAL_600 = '#0D9488';
-  const BLUE_600 = '#2f56fb';
-  const BLUE_DARK = '#1530b0';
+  // ✅ Show loading only on first visit (no cache)
+  if (loading && typeof window !== 'undefined' && !sessionStorage.getItem(SESSION_KEY)) {
+    return (
+      <section id="contact" className="min-h-screen bg-white pt-[85px] sm:pt-[93px]">
+        <div className="container mx-auto px-4 py-16 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+            <p className="text-gray-500">Loading contact information...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // ✅ Consistent brand colors - EXACTLY same as Navbar
+  const PRIMARY_COLOR = '#2f56fb'; // Blue - Primary brand color
+  const PRIMARY_DARK = '#1530b0'; // Darker blue for hover
+  const ACCENT_COLOR = '#0D9488'; // Teal - Only for highlights
   const LIGHT_BG = '#f8faff';
   const DARK_TEXT = '#0a1240';
   const MUTED_TEXT = '#3d4566';
@@ -130,11 +275,11 @@ export default function ContactSection() {
             >
               <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ backgroundColor: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(5px)' }}>
                 <span className="text-white/70 text-xs">📞</span>
-                <span className="text-white text-[15px]">+92 300 1234567</span>
+                <span className="text-white text-[15px]">{contactData.contactNumbers.phone || contactData.phone}</span>
               </div>
               <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ backgroundColor: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(5px)' }}>
                 <span className="text-white/70 text-xs">✉️</span>
-                <span className="text-white text-[15px]">info@aspirecollege.edu.pk</span>
+                <span className="text-white text-[15px]">{contactData.email}</span>
               </div>
             </motion.div>
           </motion.div>
@@ -175,8 +320,8 @@ export default function ContactSection() {
             >
               <div>
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="w-8 h-px" style={{ backgroundColor: BLUE_600 }} />
-                  <span className="text-[12px] font-semibold tracking-[0.16em] uppercase" style={{ color: BLUE_600 }}>
+                  <span className="w-8 h-px" style={{ backgroundColor: PRIMARY_COLOR }} />
+                  <span className="text-[12px] font-semibold tracking-[0.16em] uppercase" style={{ color: PRIMARY_COLOR }}>
                     Contact Info
                   </span>
                 </div>
@@ -191,36 +336,48 @@ export default function ContactSection() {
               {/* Contact Info with Dots */}
               <div className="space-y-3">
                 <div className="flex items-start gap-3 p-4 rounded-xl transition-all duration-300 hover:shadow-md" style={{ backgroundColor: LIGHT_BG }}>
-                  <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: BLUE_600 }} />
+                  <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: PRIMARY_COLOR }} />
                   <div>
                     <h4 className="text-[14px] font-bold" style={{ color: DARK_TEXT }}>Address</h4>
-                    <p className="text-[15px]" style={{ color: MUTED_TEXT }}>123 Education Street, Lahore, Pakistan</p>
+                    <p className="text-[15px]" style={{ color: MUTED_TEXT }}>{contactData.address}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3 p-4 rounded-xl transition-all duration-300 hover:shadow-md" style={{ backgroundColor: LIGHT_BG }}>
-                  <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: BLUE_600 }} />
+                  <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: PRIMARY_COLOR }} />
                   <div>
                     <h4 className="text-[14px] font-bold" style={{ color: DARK_TEXT }}>Phone</h4>
-                    <p className="text-[15px]" style={{ color: MUTED_TEXT }}>+92 300 1234567</p>
+                    <p className="text-[15px]" style={{ color: MUTED_TEXT }}>{contactData.contactNumbers.phone || contactData.phone}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3 p-4 rounded-xl transition-all duration-300 hover:shadow-md" style={{ backgroundColor: LIGHT_BG }}>
-                  <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: BLUE_600 }} />
+                  <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: PRIMARY_COLOR }} />
                   <div>
                     <h4 className="text-[14px] font-bold" style={{ color: DARK_TEXT }}>Email</h4>
-                    <p className="text-[15px]" style={{ color: MUTED_TEXT }}>info@aspirecollege.edu.pk</p>
+                    <p className="text-[15px]" style={{ color: MUTED_TEXT }}>{contactData.email}</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-4 rounded-xl transition-all duration-300 hover:shadow-md" style={{ backgroundColor: LIGHT_BG }}>
-                  <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: BLUE_600 }} />
-                  <div>
-                    <h4 className="text-[14px] font-bold" style={{ color: DARK_TEXT }}>Admissions</h4>
-                    <p className="text-[15px]" style={{ color: MUTED_TEXT }}>admissions@aspirecollege.edu.pk</p>
+                {contactData.contactNumbers.whatsapp && (
+                  <div className="flex items-start gap-3 p-4 rounded-xl transition-all duration-300 hover:shadow-md" style={{ backgroundColor: LIGHT_BG }}>
+                    <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: PRIMARY_COLOR }} />
+                    <div>
+                      <h4 className="text-[14px] font-bold" style={{ color: DARK_TEXT }}>WhatsApp</h4>
+                      <p className="text-[15px]" style={{ color: MUTED_TEXT }}>{contactData.contactNumbers.whatsapp}</p>
+                    </div>
                   </div>
-                </div>
+                )}
+
+                {contactData.contactNumbers.office && (
+                  <div className="flex items-start gap-3 p-4 rounded-xl transition-all duration-300 hover:shadow-md" style={{ backgroundColor: LIGHT_BG }}>
+                    <span className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: PRIMARY_COLOR }} />
+                    <div>
+                      <h4 className="text-[14px] font-bold" style={{ color: DARK_TEXT }}>Office</h4>
+                      <p className="text-[15px]" style={{ color: MUTED_TEXT }}>{contactData.contactNumbers.office}</p>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Office Hours */}
@@ -228,16 +385,16 @@ export default function ContactSection() {
                 <h4 className="text-[14px] font-bold mb-2" style={{ color: DARK_TEXT }}>Office Hours</h4>
                 <ul className="space-y-1">
                   <li className="flex items-center gap-2 text-[15px]" style={{ color: MUTED_TEXT }}>
-                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: BLUE_600 }} />
-                    Monday - Friday: 8:00 AM - 6:00 PM
+                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: PRIMARY_COLOR }} />
+                    Monday - Friday: {contactData.workingHours.weekdays}
                   </li>
                   <li className="flex items-center gap-2 text-[15px]" style={{ color: MUTED_TEXT }}>
-                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: BLUE_600 }} />
-                    Saturday: 9:00 AM - 2:00 PM
+                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: PRIMARY_COLOR }} />
+                    Saturday: {contactData.workingHours.saturday}
                   </li>
                   <li className="flex items-center gap-2 text-[15px]" style={{ color: MUTED_TEXT }}>
-                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: BLUE_600 }} />
-                    Sunday: Closed
+                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: PRIMARY_COLOR }} />
+                    Sunday: {contactData.workingHours.sunday}
                   </li>
                 </ul>
               </div>
@@ -245,7 +402,7 @@ export default function ContactSection() {
               {/* Google Map */}
               <div className="rounded-xl overflow-hidden shadow-md border" style={{ borderColor: BORDER }}>
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27202.57722541243!2d74.312598!3d31.489459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39190483e58107d9%3A0x17e9ba30aae47afd!2sLahore%2C%20Pakistan!5e0!3m2!1sen!2s!4v1700000000000"
+                  src={contactData.mapLink}
                   width="100%"
                   height="180"
                   style={{ border: 0 }}
@@ -253,7 +410,7 @@ export default function ContactSection() {
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   className="w-full"
-                  title="Aspire College Location"
+                  title="College Location"
                 />
               </div>
             </motion.div>
@@ -275,8 +432,8 @@ export default function ContactSection() {
                   <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 border" style={{ borderColor: BORDER }}>
                     {submitted ? (
                       <div className="text-center py-12">
-                        <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: BLUE_600 + '20' }}>
-                          <svg className="w-8 h-8" style={{ color: BLUE_600 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: PRIMARY_COLOR + '20' }}>
+                          <svg className="w-8 h-8" style={{ color: PRIMARY_COLOR }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
@@ -290,7 +447,7 @@ export default function ContactSection() {
                           <button
                             onClick={handleFlip}
                             className="text-[12px] font-semibold px-3 py-1.5 rounded-full transition-all duration-300 hover:shadow-md cursor-pointer"
-                            style={{ backgroundColor: LIGHT_BG, color: BLUE_600 }}
+                            style={{ backgroundColor: LIGHT_BG, color: PRIMARY_COLOR }}
                           >
                             📍 View Map
                           </button>
@@ -389,7 +546,7 @@ export default function ContactSection() {
                           <button
                             type="submit"
                             className="w-full py-3 sm:py-3.5 text-white font-semibold rounded-full text-[14px] transition-all duration-300 shadow-[0_12px_28px_-8px_rgba(47,86,251,0.5)] hover:shadow-[0_20px_40px_-12px_rgba(47,86,251,0.7)] transform hover:-translate-y-0.5 cursor-pointer"
-                            style={{ background: `linear-gradient(135deg, ${BLUE_600} 0%, ${BLUE_DARK} 100%)` }}
+                            style={{ background: `linear-gradient(135deg, ${PRIMARY_COLOR} 0%, ${PRIMARY_DARK} 100%)` }}
                             onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.95'; }}
                             onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
                           >
@@ -412,14 +569,14 @@ export default function ContactSection() {
                       <button
                         onClick={handleFlip}
                         className="text-[12px] font-semibold px-3 py-1.5 rounded-full transition-all duration-300 hover:shadow-md cursor-pointer"
-                        style={{ backgroundColor: LIGHT_BG, color: BLUE_600 }}
+                        style={{ backgroundColor: LIGHT_BG, color: PRIMARY_COLOR }}
                       >
                         ✕ Close
                       </button>
                     </div>
                     <div className="flex-1 rounded-xl overflow-hidden border" style={{ borderColor: BORDER }}>
                       <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27202.57722541243!2d74.312598!3d31.489459!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39190483e58107d9%3A0x17e9ba30aae47afd!2sLahore%2C%20Pakistan!5e0!3m2!1sen!2s!4v1700000000000"
+                        src={contactData.mapLink}
                         width="100%"
                         height="100%"
                         style={{ border: 0 }}
@@ -427,12 +584,12 @@ export default function ContactSection() {
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
                         className="w-full h-full min-h-[300px]"
-                        title="Aspire College Location"
+                        title="College Location"
                       />
                     </div>
                     <div className="mt-3 text-center">
                       <p className="text-[15px]" style={{ color: MUTED_TEXT }}>
-                        📍 123 Education Street, Lahore, Pakistan
+                        📍 {contactData.address}
                       </p>
                     </div>
                   </div>

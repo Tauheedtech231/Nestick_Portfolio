@@ -43,37 +43,145 @@ const FIELDS: FieldConfig[] = [
 /* Component                                                           */
 /* ------------------------------------------------------------------ */
 
+interface ContactData {
+  email: string;
+  phone: string;
+  address: string;
+  website: string;
+  mapLink: string;
+  appointmentLink: string;
+  contactImage: string;
+  contactMobileImage: string;
+  socialMedia: {
+    facebook: string;
+    twitter: string;
+    linkedin: string;
+    instagram: string;
+  };
+  workingHours: {
+    weekdays: string;
+    saturday: string;
+    sunday: string;
+  };
+  contactNumbers: {
+    phone: string;
+    whatsapp: string;
+    office: string;
+  };
+}
+
 export default function ContactSection() {
   const [time, setTime] = useState("9:41");
   const [sendState, setSendState] = useState<"idle" | "sending" | "sent">("idle");
   const [values, setValues] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(true);
+  const [contactData, setContactData] = useState<ContactData>({
+    email: 'info@aspirecollege.edu.pk',
+    phone: '+92 300 1234567',
+    address: '123 Education Street, Lahore',
+    website: 'https://www.aspirecollege.edu.pk',
+    mapLink: '',
+    appointmentLink: '',
+    contactImage: '',
+    contactMobileImage: '',
+    socialMedia: {
+      facebook: '',
+      twitter: '',
+      linkedin: '',
+      instagram: ''
+    },
+    workingHours: {
+      weekdays: '9:00 AM - 6:00 PM',
+      saturday: '9:00 AM - 2:00 PM',
+      sunday: 'Closed'
+    },
+    contactNumbers: {
+      phone: '+92 300 1234567',
+      whatsapp: '',
+      office: ''
+    }
+  });
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
+  const collegeId = "8"; // ✅ Hardcoded college ID
+  const SESSION_KEY = `contact_data_${collegeId}`;
 
-  // ─── Theme Colors - Solid Colors ────────────────────────────────────────────
-  const TEAL_600 = '#0D9488';
-  
-  const colors = {
-    sectionBg: '#FFFFFF',
-    cardBg: '#FFFFFF',
-    leftBg: '#F8FAFC',
-    textPrimary: '#0a1240',
-    textSecondary: '#0a1240',
-    textMuted: '#3d4566',
-    border: 'rgba(13, 148, 136, 0.15)',
-    accent: TEAL_600,
-    accentLight: 'rgba(13, 148, 136, 0.08)',
-    inputBg: '#FFFFFF',
-    inputBorder: '#E2E8F0',
-    shadow: '0 20px 50px rgba(0,0,0,0.06)',
-    laptopBg: '#0F172A',
-    formBg: '#FFFFFF',
-    inputFocus: TEAL_600,
-    buttonBg: TEAL_600,
-    buttonText: '#FFFFFF',
-    laptopBorder: TEAL_600,
-  };
+  // ─── Fetch Contact Data with Session Storage ────────────────────────
+  useEffect(() => {
+    // ✅ Check session storage first
+    const cachedData = sessionStorage.getItem(SESSION_KEY);
+    
+    if (cachedData) {
+      try {
+        console.log('📦 [ContactSection] Loading from session storage (instant)');
+        const parsedData = JSON.parse(cachedData);
+        setContactData(parsedData);
+        setLoading(false);
+        return;
+      } catch (e) {
+        console.error('Error parsing cached data:', e);
+      }
+    }
+
+    async function fetchContactData() {
+      try {
+        setLoading(true);
+        console.log('🔄 [ContactSection] Fetching from API...');
+        const response = await fetch(`https://dynamic-section-api.vercel.app/api/public/sections?college_id=${collegeId}&section_name=Contact`);
+        const result = await response.json();
+        
+        console.log('📦 [ContactSection] API Response:', result);
+
+        let fetchedData;
+        if (result.success && result.content) {
+          const content = result.content;
+          fetchedData = {
+            email: content.email || contactData.email,
+            phone: content.contactNumbers?.phone || content.phone || contactData.phone,
+            address: content.address || contactData.address,
+            website: content.website || contactData.website,
+            mapLink: content.mapLink || contactData.mapLink,
+            appointmentLink: content.appointmentLink || contactData.appointmentLink,
+            contactImage: content.contactImage || contactData.contactImage,
+            contactMobileImage: content.contactMobileImage || contactData.contactMobileImage,
+            socialMedia: {
+              facebook: content.socialMedia?.facebook || '',
+              twitter: content.socialMedia?.twitter || '',
+              linkedin: content.socialMedia?.linkedin || '',
+              instagram: content.socialMedia?.instagram || ''
+            },
+            workingHours: {
+              weekdays: content.workingHours?.weekdays || contactData.workingHours.weekdays,
+              saturday: content.workingHours?.saturday || contactData.workingHours.saturday,
+              sunday: content.workingHours?.sunday || contactData.workingHours.sunday
+            },
+            contactNumbers: {
+              phone: content.contactNumbers?.phone || content.phone || contactData.phone,
+              whatsapp: content.contactNumbers?.whatsapp || '',
+              office: content.contactNumbers?.office || ''
+            }
+          };
+          console.log('✅ [ContactSection] Data loaded successfully');
+        } else {
+          console.log('⚠️ [ContactSection] No data, using default');
+          fetchedData = contactData;
+        }
+
+        // ✅ Save to session storage
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        setContactData(fetchedData);
+      } catch (error) {
+        console.error('❌ [ContactSection] Error fetching:', error);
+        // ✅ Don't cache on error
+        setContactData(contactData);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchContactData();
+  }, [collegeId, SESSION_KEY]);
 
   // ─── Live clock ──────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -133,6 +241,46 @@ export default function ContactSection() {
   const sendLabel =
     sendState === "sending" ? "Sending..." : sendState === "sent" ? "Message sent ✓" : "Send Message";
 
+  // ─── Theme Colors - Consistent with Navbar ──────────────────────────────────
+  const PRIMARY_COLOR = '#2f56fb'; // ✅ Same as Navbar
+  const PRIMARY_DARK = '#1530b0'; // ✅ Same as Navbar
+  const ACCENT_COLOR = '#0D9488'; // Teal - Only for highlights
+  
+  const colors = {
+    sectionBg: '#FFFFFF',
+    cardBg: '#FFFFFF',
+    leftBg: '#F8FAFC',
+    textPrimary: '#0a1240',
+    textSecondary: '#0a1240',
+    textMuted: '#3d4566',
+    border: `rgba(47, 86, 251, 0.15)`, // ✅ Blue border
+    accent: PRIMARY_COLOR, // ✅ Blue primary color
+    accentLight: 'rgba(47, 86, 251, 0.08)', // ✅ Blue light
+    inputBg: '#FFFFFF',
+    inputBorder: '#E2E8F0',
+    shadow: '0 20px 50px rgba(0,0,0,0.06)',
+    laptopBg: '#0F172A',
+    formBg: '#FFFFFF',
+    inputFocus: PRIMARY_COLOR, // ✅ Blue focus
+    buttonBg: PRIMARY_COLOR, // ✅ Blue button
+    buttonText: '#FFFFFF',
+    laptopBorder: PRIMARY_COLOR, // ✅ Blue border
+  };
+
+  // ✅ Show loading only on first visit (no cache)
+  if (loading && !sessionStorage.getItem(SESSION_KEY)) {
+    return (
+      <section className="relative w-full max-w-full px-0 py-6 sm:py-20 pb-8 sm:pb-16 md:pb-24 overflow-visible transition-all duration-700 ease-in-out" style={{ background: colors.sectionBg, minHeight: '400px' }}>
+        <div className="flex justify-center items-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+            <p className="text-gray-500">Loading contact information...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section
       ref={sectionRef}
@@ -146,7 +294,7 @@ export default function ContactSection() {
       onKeyDown={handleKeyDown}
     >
       <div className="px-3 sm:px-8 md:px-16">
-        {/* Eyebrow */}
+        {/* Eyebrow - Using PRIMARY_COLOR */}
         <div className="flex items-center gap-3 text-[10px] sm:text-[12px] font-semibold tracking-[0.16em] uppercase mb-3 sm:mb-5 md:mb-7">
           <span className="w-5 sm:w-6 h-px inline-block" style={{ background: colors.accent }} />
           <span style={{ color: colors.accent }}>Get in Touch</span>
@@ -169,12 +317,12 @@ export default function ContactSection() {
         >
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] items-stretch">
             
-            {/* ─── LEFT COLUMN ────────────────────────────────────────────────── */}
+            {/* ─── LEFT COLUMN - Dynamic Contact Info ────────────────────────── */}
             <div 
               className="relative p-[20px_16px_20px] sm:p-[24px_20px_24px] lg:p-[30px_24px_24px] flex flex-col justify-center min-h-[300px] sm:min-h-[340px] overflow-hidden"
               style={{ background: colors.leftBg }}
             >
-              {/* Decorative elements */}
+              {/* Decorative elements - Using PRIMARY_COLOR */}
               <div className="absolute -top-[30px] -left-[10px] w-[50px] h-[50px] sm:w-[70px] sm:h-[70px] rounded-full pointer-events-none" style={{ background: colors.accent, opacity: 0.15 }} />
               <div className="absolute -top-[10px] left-[22px] w-[40px] h-[40px] sm:w-[56px] sm:h-[56px] rounded-full pointer-events-none" style={{ background: colors.accent, opacity: 0.15 }} />
               <div className="absolute -left-[16px] top-[44%] w-[24px] h-[24px] sm:w-[34px] sm:h-[34px] rounded-full pointer-events-none" style={{ background: colors.accent, opacity: 0.15 }} />
@@ -187,7 +335,7 @@ export default function ContactSection() {
                 ))}
               </div>
 
-              {/* Content */}
+              {/* Content - Dynamic */}
               <div className="relative z-[3]">
                 <h1
                   className="text-[clamp(24px,3vw,42px)] leading-[1.08] tracking-[-0.01em] max-w-[420px]"
@@ -213,6 +361,7 @@ export default function ContactSection() {
                 </p>
 
                 <ul className="mt-4 sm:mt-6 lg:mt-9 list-none">
+                  {/* ✅ Dynamic Email */}
                   <li className="flex items-center gap-3 py-2 sm:py-3 border-t border-b" style={{ borderColor: colors.border }}>
                     <span className="w-[16px] h-[16px] sm:w-[18px] sm:h-[18px] shrink-0" style={{ color: colors.accent }}>
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -222,9 +371,11 @@ export default function ContactSection() {
                     </span>
                     <span className="flex flex-col gap-0.5">
                       <span className="text-[8px] sm:text-[10px] tracking-[0.08em] uppercase font-semibold" style={{ color: colors.textMuted }}>Email</span>
-                      <span className="text-[11px] sm:text-sm font-medium" style={{ color: colors.textPrimary }}>info@aspirecollege.edu.pk</span>
+                      <span className="text-[11px] sm:text-sm font-medium" style={{ color: colors.textPrimary }}>{contactData.email}</span>
                     </span>
                   </li>
+
+                  {/* ✅ Dynamic Phone */}
                   <li className="flex items-center gap-3 py-2 sm:py-3 border-b" style={{ borderColor: colors.border }}>
                     <span className="w-[16px] h-[16px] sm:w-[18px] sm:h-[18px] shrink-0" style={{ color: colors.accent }}>
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -233,9 +384,11 @@ export default function ContactSection() {
                     </span>
                     <span className="flex flex-col gap-0.5">
                       <span className="text-[8px] sm:text-[10px] tracking-[0.08em] uppercase font-semibold" style={{ color: colors.textMuted }}>Phone</span>
-                      <span className="text-[11px] sm:text-sm font-medium" style={{ color: colors.textPrimary }}>+92 300 1234567</span>
+                      <span className="text-[11px] sm:text-sm font-medium" style={{ color: colors.textPrimary }}>{contactData.contactNumbers.phone || contactData.phone}</span>
                     </span>
                   </li>
+
+                  {/* ✅ Dynamic Address */}
                   <li className="flex items-center gap-3 py-2 sm:py-3 border-b" style={{ borderColor: colors.border }}>
                     <span className="w-[16px] h-[16px] sm:w-[18px] sm:h-[18px] shrink-0" style={{ color: colors.accent }}>
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -245,9 +398,11 @@ export default function ContactSection() {
                     </span>
                     <span className="flex flex-col gap-0.5">
                       <span className="text-[8px] sm:text-[10px] tracking-[0.08em] uppercase font-semibold" style={{ color: colors.textMuted }}>Location</span>
-                      <span className="text-[11px] sm:text-sm font-medium" style={{ color: colors.textPrimary }}>123 Education Street, Lahore</span>
+                      <span className="text-[11px] sm:text-sm font-medium" style={{ color: colors.textPrimary }}>{contactData.address}</span>
                     </span>
                   </li>
+
+                  {/* ✅ Dynamic Admissions Email */}
                   <li className="flex items-center gap-3 py-2 sm:py-3 border-b" style={{ borderColor: colors.border }}>
                     <span className="w-[16px] h-[16px] sm:w-[18px] sm:h-[18px] shrink-0" style={{ color: colors.accent }}>
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -257,7 +412,7 @@ export default function ContactSection() {
                     </span>
                     <span className="flex flex-col gap-0.5">
                       <span className="text-[8px] sm:text-[10px] tracking-[0.08em] uppercase font-semibold" style={{ color: colors.textMuted }}>Admissions</span>
-                      <span className="text-[11px] sm:text-sm font-medium" style={{ color: colors.textPrimary }}>admissions@aspirecollege.edu.pk</span>
+                      <span className="text-[11px] sm:text-sm font-medium" style={{ color: colors.textPrimary }}>{contactData.email}</span>
                     </span>
                   </li>
                 </ul>
@@ -273,7 +428,7 @@ export default function ContactSection() {
               }}
             >
               <div className="relative flex justify-center items-center z-[2] w-full">
-                {/* Laptop Mockup - No Bottom Shadow */}
+                {/* Laptop Mockup - Using PRIMARY_COLOR */}
                 <div 
                   className="relative w-full max-w-[500px] rounded-t-2xl overflow-hidden transition-colors duration-300"
                   style={{

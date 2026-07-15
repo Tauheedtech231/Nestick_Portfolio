@@ -1,8 +1,10 @@
+/* eslint-disable react/no-unescaped-entities */
 'use client';
 
 import { motion, Variants } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
-// Animation variants - Reduced distance for smoother feel
+// Animation variants
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -61,7 +63,106 @@ const staggerContainer = {
   }
 };
 
+interface AboutStatsData {
+  badgeText: string;
+  headingFirst: string;
+  headingHighlight: string;
+  headingLast: string;
+  description: string;
+  buttonText: string;
+  buttonLink: string;
+  desktopImage: string;
+  mobileImage: string;
+  quoteText: string;
+}
+
 export default function AboutSection() {
+  const [data, setData] = useState<AboutStatsData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Hardcoded college ID for testing
+  const collegeId = "8";
+  const SESSION_KEY = `about_stats_${collegeId}`;
+
+  // Get default data
+  const getDefaultData = (): AboutStatsData => ({
+    badgeText: 'About Our Institution',
+    headingFirst: 'Our',
+    headingHighlight: 'Mission.',
+    headingLast: 'Our Vision.',
+    description: 'Discover the driving force behind our institution\'s commitment to excellence, innovation, and student success in a rapidly evolving world. We believe in nurturing talent, fostering creativity, and building a community where every individual can thrive and make a meaningful impact on society.',
+    buttonText: 'Explore Our Story',
+    buttonLink: '/About',
+    desktopImage: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=749&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    mobileImage: '',
+    quoteText: 'Education is the foundation of every great achievement.'
+  });
+
+  // ✅ Fetch data with session storage caching
+  useEffect(() => {
+    // ✅ Check session storage first (synchronous)
+    const cachedData = sessionStorage.getItem(SESSION_KEY);
+    
+    if (cachedData) {
+      try {
+        console.log('📦 [AboutSection] Loading from session storage (instant)');
+        const parsedData = JSON.parse(cachedData);
+        setData(parsedData);
+        setLoading(false);
+        // ✅ Return early - no API call needed
+        return;
+      } catch (e) {
+        console.error('Error parsing cached data:', e);
+      }
+    }
+
+    // If no cached data, fetch from API
+    async function fetchData() {
+      try {
+        console.log('🔄 [AboutSection] Fetching data for college:', collegeId);
+        const response = await fetch(`https://dynamic-section-api.vercel.app/api/public/sections?college_id=${collegeId}&section_name=AboutStats`);
+        const result = await response.json();
+        console.log('📦 [AboutSection] API Response:', result);
+
+        let fetchedData;
+        if (result.success && result.content) {
+          console.log('✅ [AboutSection] Data loaded');
+          fetchedData = result.content;
+        } else {
+          console.log('⚠️ [AboutSection] No data, using fallback');
+          fetchedData = getDefaultData();
+        }
+
+        // ✅ Save to session storage
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(fetchedData));
+        setData(fetchedData);
+      } catch (error) {
+        console.error('❌ [AboutSection] Error:', error);
+        const fallbackData = getDefaultData();
+        // ✅ Don't cache failed response
+        setData(fallbackData);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, [SESSION_KEY]);
+
+  // ✅ Show loading only on first visit (no cache)
+  if (loading && !data) {
+    return (
+      <section className="relative bg-gradient-to-br from-[#f0f4ff] via-white to-[#e8edf8] overflow-x-hidden min-h-[400px] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+          <p className="text-gray-500">Loading...</p>
+        </div>
+      </section>
+    );
+  }
+
+  const d = data || getDefaultData();
+
   return (
     <section className="relative bg-gradient-to-br from-[#f0f4ff] via-white to-[#e8edf8] overflow-x-hidden">
       {/* Deep blue decorative elements */}
@@ -106,37 +207,33 @@ export default function AboutSection() {
             >
               <path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6" />
             </svg>
-            About Our Institution
+            {d.badgeText}
           </motion.div>
 
           <motion.h1 
             variants={fadeInUp}
             className="mb-4 text-3xl font-extrabold leading-[1.08] tracking-tight text-[#0a1240] sm:text-4xl"
           >
-            Our <span className="text-[#2f56fb]">Mission.</span>
+            {d.headingFirst} <span className="text-[#2f56fb]">{d.headingHighlight}</span>
             <br />
-            Our <span className="text-[#2f56fb]">Vision.</span>
+            {d.headingLast}
           </motion.h1>
 
           <motion.p 
             variants={fadeInUp}
             className="mb-6 max-w-[500px] text-[15px] leading-[1.8] text-[#3d4566]"
           >
-            Discover the driving force behind our institution&apos;s
-            commitment to excellence, innovation, and student success in a
-            rapidly evolving world. We believe in nurturing talent, fostering
-            creativity, and building a community where every individual can
-            thrive and make a meaningful impact on society.
+            {d.description}
           </motion.p>
 
           <motion.a
             variants={fadeInUp}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            href="/About"
+            href={d.buttonLink}
             className="mb-12 inline-flex items-center gap-3.5 rounded-full bg-gradient-to-br from-[#2f56fb] to-[#1530b0] py-[14px] pl-6 pr-[10px] text-[14px] font-semibold text-white shadow-[0_12px_28px_-8px_rgba(47,86,251,0.5)] hover:shadow-[0_20px_40px_-12px_rgba(47,86,251,0.7)] transition-all duration-300 cursor-pointer"
           >
-            Explore Our Story
+            {d.buttonText}
             <span className="flex h-[32px] w-[32px] items-center justify-center rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
               <svg
                 width="15"
@@ -165,7 +262,7 @@ export default function AboutSection() {
             style={{ width: 500, height: 500 }}
             variants={fadeInScale}
           >
-            {/* blue accent shape behind the photo - deeper blue */}
+            {/* blue accent shape behind the photo */}
             <motion.div
               className="absolute left-[56px] top-[56px] h-[440px] w-[440px] bg-gradient-to-br from-[#1a3fd6] to-[#0f2996] opacity-90"
               style={{ borderRadius: "49% 51% 54% 46% / 57% 44% 56% 43%" }}
@@ -188,15 +285,16 @@ export default function AboutSection() {
                 className="relative h-full w-full overflow-hidden"
                 style={{ borderRadius: "49% 51% 54% 46% / 57% 44% 56% 43%" }}
               >
+                {/* ✅ Dynamic image - desktop or fallback */}
                 <img
-                  src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=749&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  src={d.desktopImage || "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=749&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
                   alt="University campus with students"
                   className="h-full w-full object-cover"
                 />
               </div>
             </motion.div>
 
-            {/* graduation cap badge — deeper blue gradient */}
+            {/* graduation cap badge */}
             <motion.div 
               className="absolute left-[50px] top-[50px] z-10 flex h-[74px] w-[74px] items-center justify-center rounded-full border-[5px] border-white bg-gradient-to-br from-[#1a3fd6] to-[#0f2996] shadow-[0_15px_30px_-8px_rgba(47,86,251,0.5)] cursor-pointer hover:scale-105 transition-transform duration-200"
               initial={{ opacity: 0, y: -10 }}
@@ -218,7 +316,7 @@ export default function AboutSection() {
               transition={{ duration: 0.5, delay: 0.5 }}
             />
 
-            {/* quote card - with deeper shadow */}
+            {/* ✅ Dynamic quote card */}
             <motion.div 
               className="absolute bottom-[70px] right-1.5 z-10 w-[220px] rounded-2xl bg-white/95 backdrop-blur-sm px-[20px] pb-[16px] pt-[20px] shadow-[0_25px_50px_-15px_rgba(15,30,80,0.35)] cursor-pointer hover:shadow-[0_35px_65px_-20px_rgba(15,30,80,0.5)] transition-shadow duration-300 border border-white/50"
               initial={{ opacity: 0, y: 15 }}
@@ -230,7 +328,7 @@ export default function AboutSection() {
                 &ldquo;
               </div>
               <p className="mb-3 text-[13px] font-semibold leading-snug text-[#0e1642]">
-                Education is the foundation of every great achievement.
+                {d.quoteText}
               </p>
               <div className="h-[3px] w-[24px] rounded-full bg-[#2f56fb]" />
             </motion.div>
