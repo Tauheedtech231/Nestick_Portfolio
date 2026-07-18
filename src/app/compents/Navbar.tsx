@@ -13,79 +13,71 @@ export default function Navbar() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // ✅ Dynamic logo state
-  const [logo, setLogo] = useState<string>('/logo.png');
+  // ✅ Logo state
+  const [logo, setLogo] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // ✅ TESTING: Hardcoded college_id
   const collegeId = "8";
   const SESSION_KEY = `navbar_logo_${collegeId}`;
-  
-  console.log('🏫 [Navbar] College ID (hardcoded):', collegeId);
 
-  // ✅ Check session storage FIRST - synchronously before useEffect runs
+  // ✅ Check session storage FIRST
   useEffect(() => {
-    // ✅ Check if data exists in session storage immediately (only in browser)
     if (typeof window !== 'undefined') {
       const cachedData = sessionStorage.getItem(SESSION_KEY);
       
       if (cachedData) {
         try {
           const parsedData = JSON.parse(cachedData);
-          console.log('📦 [Navbar] Loading logo from session storage (instant)');
-          setLogo(parsedData.logo || '/logo.png');
-          // ✅ Return early - no API call needed
-          return;
+          if (parsedData.logo && parsedData.logo !== '/logo.png') {
+            console.log('📦 [Navbar] Loading logo from session storage');
+            setLogo(parsedData.logo);
+            setIsLoading(false);
+            return;
+          }
         } catch (e) {
           console.error('Error parsing cached data:', e);
         }
       }
     }
 
-    // If no cached data, fetch from API
     async function fetchLogo() {
       try {
         console.log('🔄 [Navbar] Fetching from API...');
-        console.log('📡 [Navbar] API URL:', `https://dynamic-section-api.vercel.app/api/public/sections?college_id=${collegeId}&section_name=Navbar`);
+        setIsLoading(true);
         
-        const response = await fetch(`https://dynamic-section-api.vercel.app/api/public/sections?college_id=${collegeId}&section_name=Navbar`);
-        console.log('📥 [Navbar] API Response Status:', response.status);
+        const response = await fetch(
+          `https://dynamic-section-api.vercel.app/api/public/sections?college_id=${collegeId}&section_name=Navbar`
+        );
         
         const data = await response.json();
-        console.log('📦 [Navbar] API Response Data:', JSON.stringify(data, null, 2));
+        console.log('📦 [Navbar] API Response:', data);
         
-        let logoUrl = '/logo.png';
+        let logoUrl = null;
         
-        if (data.success && data.content) {
-          console.log('✅ [Navbar] API success, content:', data.content);
-          
-          if (data.content.logo) {
-            console.log('🖼️ [Navbar] Logo found in API:', data.content.logo);
-            logoUrl = data.content.logo;
-          } else {
-            console.log('⚠️ [Navbar] No logo in API response, using default');
-          }
+        if (data.success && data.content && data.content.logo) {
+          console.log('✅ [Navbar] Logo found in API:', data.content.logo);
+          logoUrl = data.content.logo;
         } else {
-          console.log('❌ [Navbar] API success false or no content, using default');
+          console.log('❌ [Navbar] No logo in API response');
         }
 
-        // ✅ Save to session storage (only in browser)
-        if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined' && logoUrl) {
           sessionStorage.setItem(SESSION_KEY, JSON.stringify({ logo: logoUrl }));
         }
+        
         setLogo(logoUrl);
+        setIsLoading(false);
       } catch (error) {
         console.error('❌ [Navbar] Error fetching logo:', error);
-        // ✅ Use default logo when API fails
-        const fallbackLogo = '/logo.png';
-        setLogo(fallbackLogo);
-        // ✅ Don't cache failed response - will try again on next visit
+        setLogo(null);
+        setIsLoading(false);
       }
     }
 
     fetchLogo();
   }, [SESSION_KEY]);
 
-  // Nav items - Hardcoded
+  // Nav items
   const navItems = [
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/About' },
@@ -159,10 +151,11 @@ export default function Navbar() {
     }, 150);
   };
 
-  const handleDropdownClick = (path: string) => {
-    window.location.href = path;
+  // ✅ Navigation handler - Use Next.js Link instead of window.location
+  const handleNavigation = (path: string) => {
     setOpenDropdown(null);
     setIsMobileMenuOpen(false);
+    // ✅ Next.js Link already handles navigation
   };
 
   // Always White Theme
@@ -190,30 +183,43 @@ export default function Navbar() {
           borderRadius: '0px',
         }}
       >
-        {/* ① LOGO BLOCK - Instant render with default or cached logo */}
-        <div 
-          className="h-full flex items-center gap-3 sm:gap-4 flex-shrink-0"
-          style={{
-            background: 'transparent',
-            padding: '0 16px 0 16px',
-          }}
-        >
-          <div 
-            className="w-[56px] h-[56px] sm:w-[70px] sm:h-[70px] flex items-center justify-center flex-shrink-0 cursor-pointer hover:scale-105 transition-transform duration-200"
-            onClick={() => window.location.href = '/'}
+        {/* ① LOGO BLOCK */}
+        {logo ? (
+          <Link 
+            href="/"
+            className="h-full flex items-center gap-3 sm:gap-4 flex-shrink-0"
+            style={{
+              background: 'transparent',
+              padding: '0 16px 0 16px',
+            }}
           >
-            <Image
-              src={logo}
-              alt="Logo"
-              width={70}
-              height={70}
-              className="rounded-full w-[70px] h-[70px] object-cover"
-              priority
-            />
+            <div 
+              className="w-[56px] h-[56px] sm:w-[70px] sm:h-[70px] flex items-center justify-center flex-shrink-0 hover:scale-105 transition-transform duration-200"
+            >
+              <Image
+                src={logo}
+                alt="Logo"
+                width={70}
+                height={70}
+                className="rounded-full w-[70px] h-[70px] object-cover"
+                priority
+              />
+            </div>
+          </Link>
+        ) : (
+          <div className="h-full flex items-center flex-shrink-0 px-4">
+            {isLoading ? (
+              // ✅ Loader - Match with other components
+              <div className="w-[70px] h-[70px] flex items-center justify-center">
+                <div className="w-8 h-8 border-4 border-[#2f56fb] border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            ) : (
+              <div className="w-[70px] h-[70px]"></div>
+            )}
           </div>
-        </div>
+        )}
 
-        {/* ② NAV LINKS - Hardcoded */}
+        {/* ② NAV LINKS */}
         <div className="hidden md:flex flex-1 h-full items-center gap-0 pl-1 overflow-visible">
           {navItems.map((item) => {
             const isActive = pathname === item.path;
@@ -228,36 +234,52 @@ export default function Navbar() {
                 onMouseEnter={() => hasDropdown && handleDropdownEnter(item.name)}
                 onMouseLeave={handleDropdownLeave}
               >
-                <button
-                  onClick={() => {
-                    if (hasDropdown) {
+                {hasDropdown ? (
+                  // ✅ Dropdown button
+                  <button
+                    onClick={() => {
                       setOpenDropdown(isDropdownOpen ? null : item.name);
-                    } else {
-                      window.location.href = item.path;
-                    }
-                  }}
-                  className={`relative h-full flex items-center whitespace-nowrap text-[13px] lg:text-[14px] font-medium tracking-[0.6px] px-2 lg:px-5 gap-1 cursor-pointer transition-colors duration-200 ${
-                    isActive ? 'text-[#2f56fb]' : 'text-[#0a1240] hover:text-[#2f56fb]'
-                  }`}
-                  style={{
-                    fontWeight: isActive ? '600' : '500',
-                    fontFamily: "'Inter', sans-serif",
-                  }}
-                >
-                  {item.name}
-                  {hasDropdown && (
+                    }}
+                    className={`relative h-full flex items-center whitespace-nowrap text-[13px] lg:text-[14px] font-medium tracking-[0.6px] px-2 lg:px-5 gap-1 cursor-pointer transition-colors duration-200 ${
+                      isActive ? 'text-[#2f56fb]' : 'text-[#0a1240] hover:text-[#2f56fb]'
+                    }`}
+                    style={{
+                      fontWeight: isActive ? '600' : '500',
+                      fontFamily: "'Inter', sans-serif",
+                    }}
+                  >
+                    {item.name}
                     <ChevronDown 
                       className={`w-3.5 h-3.5 transition-transform duration-300 ${
                         isDropdownOpen ? 'rotate-180' : ''
                       }`}
                       style={{ color: isActive ? accentColor : navTextColor }}
                     />
-                  )}
-                  {isActive && !hasDropdown && (
-                    <span className="absolute bottom-0 left-0 right-0 h-[3px] rounded-t-md"
-                      style={{ background: navActiveColor }} />
-                  )}
-                </button>
+                    {isActive && (
+                      <span className="absolute bottom-0 left-0 right-0 h-[3px] rounded-t-md"
+                        style={{ background: navActiveColor }} />
+                    )}
+                  </button>
+                ) : (
+                  // ✅ Link for non-dropdown items
+                  <Link
+                    href={item.path}
+                    className={`relative h-full flex items-center whitespace-nowrap text-[13px] lg:text-[14px] font-medium tracking-[0.6px] px-2 lg:px-5 cursor-pointer transition-colors duration-200 ${
+                      isActive ? 'text-[#2f56fb]' : 'text-[#0a1240] hover:text-[#2f56fb]'
+                    }`}
+                    style={{
+                      fontWeight: isActive ? '600' : '500',
+                      fontFamily: "'Inter', sans-serif",
+                    }}
+                    onClick={() => handleNavigation(item.path)}
+                  >
+                    {item.name}
+                    {isActive && (
+                      <span className="absolute bottom-0 left-0 right-0 h-[3px] rounded-t-md"
+                        style={{ background: navActiveColor }} />
+                    )}
+                  </Link>
+                )}
 
                 {/* Dropdown Menu */}
                 {hasDropdown && isDropdownOpen && (
@@ -274,10 +296,10 @@ export default function Navbar() {
                   >
                     <div className="py-2">
                       {item.dropdownItems?.map((dropdownItem, idx) => (
-                        <button
+                        <Link
                           key={idx}
-                          onClick={() => handleDropdownClick(item.path)}
-                          className="w-full text-left px-5 py-2.5 text-[13px] font-medium transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-[#F8FAFC] cursor-pointer"
+                          href={item.path}
+                          className="w-full text-left px-5 py-2.5 text-[13px] font-medium transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-[#F8FAFC] cursor-pointer block"
                           style={{
                             color: '#0a1240',
                             fontFamily: "'Inter', sans-serif",
@@ -285,6 +307,7 @@ export default function Navbar() {
                             opacity: 0,
                             transform: 'translateY(-8px)',
                           }}
+                          onClick={() => handleNavigation(item.path)}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.color = accentColor;
                             e.currentTarget.style.paddingLeft = '24px';
@@ -298,7 +321,7 @@ export default function Navbar() {
                             <span className="w-1.5 h-1.5 rounded-full bg-[#2f56fb] opacity-40"></span>
                             {dropdownItem.name}
                           </span>
-                        </button>
+                        </Link>
                       ))}
                     </div>
                   </div>
@@ -342,7 +365,7 @@ export default function Navbar() {
           `}</style>
         </div>
 
-        {/* ③ RIGHT CONTROLS - Hardcoded */}
+        {/* ③ RIGHT CONTROLS */}
         <div className="flex items-center gap-1 sm:gap-3 pr-4 flex-shrink-0 ml-auto">
           <Link
             href="/Admission"
@@ -406,7 +429,8 @@ export default function Navbar() {
                         if (hasDropdown) {
                           setOpenDropdown(isMobileDropdownOpen ? null : item.name);
                         } else {
-                          window.location.href = item.path;
+                          // ✅ Use Next.js router for mobile navigation
+                          window.location.href = item.path; // Fallback
                           setIsMobileMenuOpen(false);
                         }
                       }}

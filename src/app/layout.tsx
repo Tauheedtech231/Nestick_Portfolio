@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Aspire College",
+  title: "Apex College",
   description: "Portfolio with Online Admission Form, Scholarship Info, and Programs Overview",
 };
 

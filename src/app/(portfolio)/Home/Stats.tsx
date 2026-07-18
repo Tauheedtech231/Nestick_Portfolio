@@ -96,59 +96,90 @@ export default function Stats() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
   const [statsData, setStatsData] = useState<StatsData | null>(null);
+  const [collegeName, setCollegeName] = useState<string>("College");
   const [loading, setLoading] = useState(true);
   const collegeId = "8";
-  const SESSION_KEY = `stats_data_${collegeId}`;
+  
+  // ✅ Separate session keys for stats and college name
+  const STATS_SESSION_KEY = `stats_data_${collegeId}`;
+  const COLLEGE_NAME_SESSION_KEY = `college_name_${collegeId}`;
 
   useEffect(() => {
-    async function fetchStatsData() {
+    async function fetchData() {
       try {
-        // ✅ Check if data exists in session storage (with window check)
+        // ✅ Check session storage for BOTH stats and college name
         if (typeof window !== 'undefined') {
-          const cachedData = sessionStorage.getItem(SESSION_KEY);
+          const cachedStats = sessionStorage.getItem(STATS_SESSION_KEY);
+          const cachedCollegeName = sessionStorage.getItem(COLLEGE_NAME_SESSION_KEY);
           
-          if (cachedData) {
-            console.log('📦 [Stats] Loading from session storage');
-            const parsedData = JSON.parse(cachedData);
-            setStatsData(parsedData);
+          if (cachedStats && cachedCollegeName) {
+            console.log('📦 [Stats] Loading BOTH from session storage (0 API calls)');
+            setStatsData(JSON.parse(cachedStats));
+            setCollegeName(cachedCollegeName);
             setLoading(false);
             return;
           }
         }
 
-        // If no cached data, fetch from API
-        console.log('🔄 [Stats] Fetching from API...');
-        const response = await fetch(`https://dynamic-section-api.vercel.app/api/public/sections?college_id=${collegeId}&section_name=Stats`);
-        const data = await response.json();
-        console.log('📦 [Stats] API Response:', data);
+        console.log('🔄 [Stats] Fetching from APIs...');
 
-        let finalData;
-        if (data.success && data.content && data.content.stats) {
-          console.log('✅ [Stats] Stats found:', data.content.stats.length);
-          finalData = data.content;
+        // ✅ API CALL 1: Stats data
+        console.log('📡 [Stats] API Call 1: Fetching stats...');
+        const statsResponse = await fetch(
+          `https://dynamic-section-api.vercel.app/api/public/sections?college_id=${collegeId}&section_name=Stats`
+        );
+        const statsDataResult = await statsResponse.json();
+        console.log('📦 [Stats] Stats API Response:', statsDataResult);
+
+        // ✅ API CALL 2: College name (from form API)
+        console.log('📡 [Stats] API Call 2: Fetching college name...');
+        const collegeResponse = await fetch(
+          `https://dynamic-section-api.vercel.app/api/public/college/form?college_id=${collegeId}`
+        );
+        const collegeResult = await collegeResponse.json();
+        console.log('🏫 [Stats] College API Response:', collegeResult);
+
+        // ✅ Extract college name
+        let collegeNameFromApi = "College";
+        if (collegeResult.success && collegeResult.data && collegeResult.data.college) {
+          collegeNameFromApi = collegeResult.data.college.name;
+        }
+        console.log('🏫 [Stats] College name from API:', collegeNameFromApi);
+
+        // ✅ Extract stats
+        let finalStatsData: StatsData;
+        if (statsDataResult.success && statsDataResult.content && statsDataResult.content.stats) {
+          console.log('✅ [Stats] Stats found:', statsDataResult.content.stats.length);
+          finalStatsData = statsDataResult.content;
         } else {
           console.log('⚠️ [Stats] No stats, using fallback');
-          finalData = getDefaultStatsData();
+          finalStatsData = getDefaultStatsData();
         }
 
         // ✅ Save to session storage (with window check)
         if (typeof window !== 'undefined') {
-          sessionStorage.setItem(SESSION_KEY, JSON.stringify(finalData));
+          sessionStorage.setItem(STATS_SESSION_KEY, JSON.stringify(finalStatsData));
+          sessionStorage.setItem(COLLEGE_NAME_SESSION_KEY, collegeNameFromApi);
         }
-        setStatsData(finalData);
+
+        setStatsData(finalStatsData);
+        setCollegeName(collegeNameFromApi);
       } catch (error) {
         console.error('❌ [Stats] Error:', error);
         const fallbackData = getDefaultStatsData();
+        const fallbackName = "College";
         if (typeof window !== 'undefined') {
-          sessionStorage.setItem(SESSION_KEY, JSON.stringify(fallbackData));
+          sessionStorage.setItem(STATS_SESSION_KEY, JSON.stringify(fallbackData));
+          sessionStorage.setItem(COLLEGE_NAME_SESSION_KEY, fallbackName);
         }
         setStatsData(fallbackData);
+        setCollegeName(fallbackName);
       } finally {
         setLoading(false);
       }
     }
-    fetchStatsData();
-  }, [SESSION_KEY]);
+    fetchData();
+  }, [collegeId]);
 
   const getDefaultStatsData = (): StatsData => ({
     title: 'Why Choose',
@@ -163,7 +194,7 @@ export default function Stats() {
     ]
   });
 
-  // ✅ Show loading only on first visit (no cache) - with window check
+  // ✅ Show loading only on first visit
   if (loading && typeof window !== 'undefined' && !statsData) {
     return (
       <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#f0f4ff]">
@@ -176,11 +207,7 @@ export default function Stats() {
   }
 
   const data = statsData || getDefaultStatsData();
-  console.log('📊 [Stats] Final data:', data);
-
   const displayStats = data.stats || [];
-  console.log('📊 [Stats] Display stats length:', displayStats.length);
-
   const displayTitle = data.title || 'Why Choose';
   const displaySubtitle = data.subtitle || 'Excellence in education, innovation, and student success';
   const displayBadge = data.achievementsBadge || 'Our Achievements';
@@ -191,8 +218,6 @@ export default function Stats() {
     target: stat.target || 0,
     suffix: stat.suffix || ''
   }));
-
-  console.log('📊 [Stats] Processed stats:', processedStats);
 
   return (
     <section
@@ -244,7 +269,7 @@ export default function Stats() {
 
       {/* Stats Section */}
       <div className="relative w-full flex-1 flex items-center justify-center overflow-hidden px-0 sm:px-5 py-12 sm:py-16">
-        {/* Background Image - Fixed height to cover full area */}
+        {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
             src={bgImage}
@@ -254,7 +279,6 @@ export default function Stats() {
             priority
             sizes="100vw"
           />
-          {/* Dark overlay for better text readability */}
           <div className="absolute inset-0 bg-black/30 z-[1]" />
         </div>
 
@@ -288,7 +312,7 @@ export default function Stats() {
                 no-scrollbar
               "
             >
-              {/* Card 1 - Hero Card */}
+              {/* Card 1 - Hero Card with DYNAMIC college name */}
               <motion.div
                 variants={cardHover}
                 whileHover={{
@@ -304,14 +328,7 @@ export default function Stats() {
               >
                 <Sheen />
                 <div className="relative z-[2] px-4 text-[20px] font-extrabold leading-snug tracking-wide">
-                  ASPIRE
-                  <br />
-                  COLLEGE
-                </div>
-                <div className="relative z-[2] mt-2.5 text-xs leading-relaxed text-white/80">
-                  Shaping Futures,
-                  <br />
-                  Inspiring Excellence
+                  {collegeName.toUpperCase()}
                 </div>
               </motion.div>
 
